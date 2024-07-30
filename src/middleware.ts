@@ -1,0 +1,36 @@
+import { pagesOptions } from "@/app/api/auth/[...nextauth]/pages-options";
+import withAuth, { NextRequestWithAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
+import { Role } from "./constants/role.enum";
+export default withAuth(
+
+  function middleware(req: NextRequestWithAuth) {
+  console.log("this is me ==============>",req.nextauth.token )
+
+    if (
+      req.nextauth.token?.roles.length &&  req.nextauth.token?.roles.length < 1 ||
+      !req.nextauth.token?.roles
+        ?.map((item) => item.Name)
+        .includes(Role.ADMIN)
+    ) {
+      return NextResponse.rewrite(new URL("/access-denied", req.url));
+    }
+  },
+
+  {
+    pages: {
+      ...pagesOptions,
+    },
+
+    callbacks: {
+      authorized: ({ token }) => {
+        return !!token;
+      },
+    },
+  }
+);
+
+export const config = {
+  // restricted routes that need authentication
+  matcher: ["/", "/admin"],
+};
