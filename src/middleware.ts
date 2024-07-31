@@ -5,7 +5,6 @@ import { Role } from "./constants/role.enum";
 export default withAuth(
 
   function middleware(req: NextRequestWithAuth) {
-  console.log("this is me ==============>",req.nextauth.token )
 
     if (
       req.nextauth.token?.roles.length &&  req.nextauth.token?.roles.length < 1 ||
@@ -32,5 +31,5 @@ export default withAuth(
 
 export const config = {
   // restricted routes that need authentication
-  matcher: ["/", "/admin"],
+  matcher: ["/", "/home"],
 };

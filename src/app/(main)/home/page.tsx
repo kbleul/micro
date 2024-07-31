@@ -27,9 +27,7 @@ const page = () => {
   return (
     <>
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
-
       <Dashboard />
-      <PermissionsList />
     </>
   );
 };

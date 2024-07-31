@@ -3,7 +3,7 @@ import { PiFileImageDuotone } from "react-icons/pi";
 
 import { CiUser } from "react-icons/ci";
 
-export const adminMenuItems = [
+export const MenuItems = [
 
   {
     name: "Dashboard",
@@ -34,3 +34,8 @@ export const adminMenuItems = [
     ],
   },
 ];
+
+
+const getMenuItems = (userPermissions : string[]) => {
+  
+}

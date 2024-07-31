@@ -6,7 +6,7 @@ import { Title } from "rizzui";
 const Loading = () => {
 
   return (
-    <div className="m-auto px-5 pb-8 pt-5 @lg:pt-6 @2xl:px-7">
+    <div className="m-auto px-5 pb-8 pt-5 @lg:pt-6 @2xl:px- w-full flex flex-col justify-center items-center min-h-[40vh]">
       <div className="mb-7 flex items-center justify-between">
         <Title as="h4" className="font-semibold">
           Loading...

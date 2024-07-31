@@ -13,7 +13,7 @@ import { Collapse } from "@/components/ui/collapse";
 import cn from "@/utils/class-names";
 import { PiCaretDownBold } from "react-icons/pi";
 import SimpleBar from "@/components/ui/simplebar";
-import { adminMenuItems } from "./menu-items";
+import { MenuItems } from "./menu-items";
 import Logo from "@/components/logo";
 import { signOut, useSession } from "next-auth/react";
 
@@ -21,7 +21,7 @@ import { UrlObject } from "url";
 import { Role } from "@/constants/role.enum";
 
 const roleMenuItems: any = {
-  [Role.ADMIN]: adminMenuItems,
+  [Role.ADMIN]: MenuItems,
 };
 
 export default function Sidebar({ className }: { className?: string }) {

@@ -15,7 +15,7 @@ import { FaUser } from "react-icons/fa";
 function DropdownMenu() {
   const { data: session } = useSession();
   const role = session?.user.user.roles?.map(
-    (item: { name: string }) => item.name
+    (item: { Name: string }) => item.Name
   );
 
   const menuItems = [
@@ -84,7 +84,7 @@ export default function ProfileMenu({
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
-console.log(session?.user?.user)
+
   return (
     <Popover
       isOpen={isOpen}
