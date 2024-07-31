@@ -17,7 +17,7 @@ import { handleFetchState } from "@/utils/fetch-state-handler";
 import AddRoleForm from "./AddRoleForm";
 import ViewRolePermissions from "./ViewRolePermissions";
 
-const RolesList = () => {
+const BranchesList = () => {
   const { data: session } = useSession();
 
   const { openModal } = useModal();
@@ -32,22 +32,19 @@ const RolesList = () => {
         name: "Home",
       },
       {
-        name: "User Settings",
-      },
-      {
-        name: "Permissions",
+        name: "Branches",
       },
     ],
   };
 
-  const rolesData = useFetchData(
+  const branchesData = useFetchData(
     [queryKeys.getAllRoles],
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}user-roles`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}branches`,
     headers
   );
 
   const fetchStateHandler = handleFetchState(
-    rolesData,
+    branchesData,
     <PageHeader
       title={pageHeader.title ?? ""}
       breadcrumb={pageHeader.breadcrumb}
@@ -58,7 +55,7 @@ const RolesList = () => {
     return fetchStateHandler;
   }
 
-  const Roles = rolesData?.data?.data ?? null;
+  const Branches = branchesData?.data?.data ?? null;
 
   return (
     <article>
@@ -66,8 +63,28 @@ const RolesList = () => {
         title={pageHeader.title ?? ""}
         breadcrumb={pageHeader.breadcrumb}
       />
+
+      {Branches.length === 0 && (
+        <div className="my-10 flex flex-col gap-y-5 items-center justify-center text-lg mt-[20vh]">
+          <p>No branches added yet.</p>
+
+          <Button
+            size="lg"
+            color="primary"
+            className="text-white bg-primary-dark"
+            onClick={() =>
+              openModal({
+                view: <AddRoleForm />,
+              })
+            }
+          >
+            Add Branch
+          </Button>
+        </div>
+      )}
+
       {session?.user?.permissions &&
-        session?.user?.permissions.includes("create:role") && (
+        session?.user?.permissions.includes("create:branch") && Branches.length > 0 && (
           <div className="flex justify-end mb-6">
             <Button
               size="lg"
@@ -79,14 +96,14 @@ const RolesList = () => {
                 })
               }
             >
-              Add Role
+              Add Branch
             </Button>
           </div>
         )}
 
       <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 items-stretch justify-start gap-x-[2.6%] gap-y-10 flex-wrap mt-10">
-        {Roles &&
-          Roles.map((role: any) => (
+        {Branches &&
+          Branches.map((role: any) => (
             <section
               className=" mb-4 border rounded-xl shadow-md overflow-hidden relative"
               key={role.ID}
@@ -106,14 +123,12 @@ const RolesList = () => {
                   }
                   onClick={() => {
                     openModal({
-                      view: (
-                        <ViewRolePermissions id={role.ID} slug={role.Slug} />
-                      ),
+                      view: <></>,
                       customSize: "1150px",
                     });
                   }}
                 >
-                 View
+                  View
                 </Button>
               </div>
             </section>
@@ -123,44 +138,44 @@ const RolesList = () => {
   );
 };
 
-const SideMenu = ({ role }: { role: any }) => {
-  const router = useRouter();
+// const SideMenu = ({ role }: { role: any }) => {
+//   const router = useRouter();
 
-  const { openModal, closeModal } = useModal();
+//   const { openModal, closeModal } = useModal();
 
-  const [showMenu, setShowMenu] = useState(false);
+//   const [showMenu, setShowMenu] = useState(false);
 
-  return (
-    <section className=" w-full">
-      <Button
-        color="primary"
-        variant="outline"
-        onClick={() => setShowMenu((prev) => !prev)}
-        className="text-black bg-white z-50  rounded-full  absolute top-3 right-3 py-1 px-[0.6rem] flex justify-center items-center border border-gray-200"
-      >
-        <BsThreeDots size={20} />
-      </Button>
-      {showMenu && (
-        <div
-          className="absolute top-12 right-10 border bg-white flex flex-col"
-          onMouseEnter={() => setShowMenu(true)}
-        >
-          <button
-            type="button"
-            className="py-2 hover:bg-gray-100 px-6 border-b"
-            onClick={() => {
-              setShowMenu(false);
-              openModal({
-                view: <AddRoleForm id={role.ID} />,
-              });
-            }}
-          >
-            Edit role
-          </button>
-        </div>
-      )}
-    </section>
-  );
-};
+//   return (
+//     <section className=" w-full">
+//       <Button
+//         color="primary"
+//         variant="outline"
+//         onClick={() => setShowMenu((prev) => !prev)}
+//         className="text-black bg-white z-50  rounded-full  absolute top-3 right-3 py-1 px-[0.6rem] flex justify-center items-center border border-gray-200"
+//       >
+//         <BsThreeDots size={20} />
+//       </Button>
+//       {showMenu && (
+//         <div
+//           className="absolute top-12 right-10 border bg-white flex flex-col"
+//           onMouseEnter={() => setShowMenu(true)}
+//         >
+//           <button
+//             type="button"
+//             className="py-2 hover:bg-gray-100 px-6 border-b"
+//             onClick={() => {
+//               setShowMenu(false);
+//               openModal({
+//                 view: <AddRoleForm id={role.ID} />,
+//               });
+//             }}
+//           >
+//             Edit role
+//           </button>
+//         </div>
+//       )}
+//     </section>
+//   );
+// };
 
-export default RolesList;
+export default BranchesList;

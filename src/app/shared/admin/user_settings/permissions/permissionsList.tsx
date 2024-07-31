@@ -43,38 +43,48 @@ const PermissionsList = () => {
     headers
   );
 
-  const fetchStateHandler = handleFetchState(permissionssData,  <PageHeader
-    title={pageHeader.title ?? ""}
-    breadcrumb={pageHeader.breadcrumb}
-  />);
+  const fetchStateHandler = handleFetchState(
+    permissionssData,
+    <PageHeader
+      title={pageHeader.title ?? ""}
+      breadcrumb={pageHeader.breadcrumb}
+    />
+  );
 
   if (fetchStateHandler) {
     return fetchStateHandler;
   }
 
   const PermissionsListData = permissionssData?.data?.data;
-
+console.log(session?.user?.permissions)
   return (
     <main>
       <PageHeader
         title={pageHeader.title ?? ""}
         breadcrumb={pageHeader.breadcrumb}
       />
-      
+
       {PermissionsListData && (
         <WidgetCard
           title={"Users List"}
           className={"flex flex-col"}
           headerClassName="widget-card-header flex-col sm:flex-row [&>.ps-2]:ps-0 [&>.ps-2]:w-full sm:[&>.ps-2]:w-auto [&>.ps-2]:mt-3 sm:[&>.ps-2]:mt-0"
           action={
-              <Button size="lg" color="primary" className="bg-primary-dark"
-              onClick={() =>
-                openModal({
-                  view: <AddPermissionForm />,
-                })
-              }>
+            session?.user?.permissions &&
+            session?.user?.permissions.includes("create:permission") && (
+              <Button
+                size="lg"
+                color="primary"
+                className="bg-primary-dark"
+                onClick={() =>
+                  openModal({
+                    view: <AddPermissionForm />,
+                  })
+                }
+              >
                 Add Permission
               </Button>
+            )
           }
         >
           <div className={"table-wrapper flex-grow mt-4"}>
@@ -91,9 +101,7 @@ const PermissionsList = () => {
                   key: "Name",
                   width: 10,
                   render: (Name: string) => (
-                    <Text className="font-medium text-gray-700">
-                      {Name}
-                    </Text>
+                    <Text className="font-medium text-gray-700">{Name}</Text>
                   ),
                 },
                 {

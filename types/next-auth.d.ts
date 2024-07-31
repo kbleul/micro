@@ -23,6 +23,7 @@ declare module "next-auth" {
         }[];
       };
       token: string;
+      permissions: string[]
     } & DefaultSession["user"];
   }
 }

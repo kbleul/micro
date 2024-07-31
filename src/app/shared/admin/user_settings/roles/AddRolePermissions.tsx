@@ -108,8 +108,8 @@ export default function AddRolePermissions({
       </ActionIcon>
 
       <div className="mb-7  mt-8">
-        <Title as="h4" className="font-semibold">
-          {"Admin"}
+        <Title as="h4" className="font-semibold capitalize">
+          {slug}
         </Title>
 
         <Title as="h6" className="font-medium">
