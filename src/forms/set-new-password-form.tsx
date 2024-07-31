@@ -38,7 +38,7 @@ export default function SetNewPasswordForm() {
   ) => {
     try {
       await postMutation.mutateAsync({
-        url: `${process.env.NEXT_PUBLIC_AUTH_BACKEND_URL}create-password`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}create-password`,
         method: "POST",
         headers,
         body: {

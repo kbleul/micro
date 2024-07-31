@@ -27,7 +27,7 @@ const OtpForm = ({ phone, setActiveStep, setTempToken }: Props) => {
   const initialLoginMutationSubmitHandler = async (values: OtpCodeType) => {
     try {
       await postMutation.mutateAsync({
-        url: `${process.env.NEXT_PUBLIC_AUTH_BACKEND_URL}verify-otp`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}verify-otp`,
         method: "POST",
         headers,
         body: {

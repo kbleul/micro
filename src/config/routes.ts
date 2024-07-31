@@ -6,11 +6,10 @@ export const routes = {
   home: {
     dashboard: "/home",
     userSettings: {
-      permissions: "/home/user_settings/permissions"
+      permissions: "/home/user_settings/permissions",
+      roles: "/home/user_settings/roles"
     },
     users: "/home/users",
-    reading: "/home/reading",
-    readingTWo: "/home/reading_two",
 
   },
 

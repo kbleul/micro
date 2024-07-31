@@ -32,7 +32,7 @@ export default function ForgotPasswordForm() {
   ) => {
     try {
       await postMutation.mutateAsync({
-        url: `${process.env.NEXT_PUBLIC_AUTH_BACKEND_URL}reset-password`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}reset-password`,
         method: "POST",
         headers,
         body: {

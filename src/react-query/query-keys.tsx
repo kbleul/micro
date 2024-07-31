@@ -1,4 +1,6 @@
 export const queryKeys = {
   getAllUsers: "getAllUsers",
-  getAllPermissions: "getAllPermissions"
+  getAllPermissions: "getAllPermissions",
+  getAllRoles: "getAllRoles"
+  
 };

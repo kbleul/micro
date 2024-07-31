@@ -45,7 +45,6 @@ export default function Sidebar({ className }: { className?: string }) {
     }, []);
 
 
-    console.log("sidenav", sidenav)
     return sidenav;
   };
 

@@ -18,7 +18,7 @@ const UsersList = () => {
   
     const reportsData:any = useFetchData(
       [queryKeys.getAllUsers],
-      `${process.env.NEXT_PUBLIC_AUTH_BACKEND_URL}users/users`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}users/users`,
       headers
     );
 

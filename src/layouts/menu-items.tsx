@@ -1,6 +1,6 @@
 import { routes } from "@/config/routes";
 import { PiFileImageDuotone } from "react-icons/pi";
-
+import { IoSettingsOutline } from "react-icons/io5";
 import { CiUser } from "react-icons/ci";
 
 export const MenuItems = [
@@ -24,13 +24,16 @@ export const MenuItems = [
   {
     name: "User Settings",
     href: "#",
-    icon: <PiFileImageDuotone />,
+    icon: <IoSettingsOutline />,
     dropdownItems: [
       {
         name: "Permissions",
         href: routes.home.userSettings.permissions,
       },
-    
+      {
+        name: "Roles",
+        href: routes.home.userSettings.roles,
+      },
     ],
   },
 ];

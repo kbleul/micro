@@ -51,7 +51,7 @@ export default function SignInForm() {
   const initialLoginMutationSubmitHandler = async (values: LoginType) => {
     try {
       await postMutation.mutateAsync({
-        url: `${process.env.NEXT_PUBLIC_AUTH_BACKEND_URL}auth/login`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}auth/login`,
         method: "POST",
         headers,
         body: {
@@ -59,13 +59,11 @@ export default function SignInForm() {
           password: values.password,
         },
         onSuccess: (responseData) => {
-          console.log(responseData.data)
 
           const role = responseData?.data?.roles?.map(
             (item: { Name: string }) => item.Name
           );
 
-console.log("-------------", role)
           if (!role.includes(Role.ADMIN)) {
             toast.info("Unknown account rol.");
             return;

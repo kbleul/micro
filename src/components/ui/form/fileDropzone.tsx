@@ -67,7 +67,6 @@ const ReusableDropzone: React.FC<ReusableDropzoneProps> = ({
             raw: false,
             dateNF: 'dd"."mm"."yyyy',
           });
-          console.log("---->", dataParse);
 
           if (!areArrayLengthEqual(columnHeaders, dataParse[0])) {
             alert("Invalid column type");

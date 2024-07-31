@@ -77,7 +77,7 @@ Here's a brief overview of the project structure:
 
 1.  Add a custom logo imae for your project, currently image 403.svg is used in multiple places as a place holder for the logo image
 2.  Configure tailwind.config.tsx file according to your design requirments
-3.  Add a .env file with your auth api in the variable NEXT_PUBLIC_AUTH_BACKEND_URL
+3.  Add a .env file with your auth api in the variable NEXT_PUBLIC_BACKEND_URL
 4.  Cahnge or update the login and route handling based on how you handle roles, an example working setup is aleady available but may need to change according to api design
 
 ---

@@ -11,14 +11,12 @@ import { handleFetchState } from "../../../../../utils/fetch-state-handler";
 import { useSession } from "next-auth/react";
 import { routes } from "@/config/routes";
 import PageHeader from "@/app/shared/page-header";
-import useDynamicMutation from "@/react-query/usePostData";
 import { useModal } from "@/app/shared/modal-views/use-modal";
 import AddPermissionForm from "./AddPermissionForm";
 import { convertDateTimeFormate } from "@/utils/time_manuplation";
 
 const PermissionsList = () => {
   const { data: session } = useSession();
-  const postMutation = useDynamicMutation();
   const headers = useGetHeaders({ type: "Json" });
 
   const { openModal } = useModal();
@@ -41,7 +39,7 @@ const PermissionsList = () => {
 
   const permissionssData: any = useFetchData(
     [queryKeys.getAllPermissions],
-    `${process.env.NEXT_PUBLIC_AUTH_BACKEND_URL}user-permissions`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}user-permissions`,
     headers
   );
 
@@ -55,7 +53,6 @@ const PermissionsList = () => {
   }
 
   const PermissionsListData = permissionssData?.data?.data;
-  console.log(PermissionsListData);
 
   return (
     <main>
@@ -70,7 +67,7 @@ const PermissionsList = () => {
           className={"flex flex-col"}
           headerClassName="widget-card-header flex-col sm:flex-row [&>.ps-2]:ps-0 [&>.ps-2]:w-full sm:[&>.ps-2]:w-auto [&>.ps-2]:mt-3 sm:[&>.ps-2]:mt-0"
           action={
-              <Button size="lg" color="primary"
+              <Button size="lg" color="primary" className="bg-primary-dark"
               onClick={() =>
                 openModal({
                   view: <AddPermissionForm />,
@@ -130,14 +127,5 @@ const PermissionsList = () => {
     </main>
   );
 };
-
-// const PageHeader = ({pageHeader}) => {
-//   return (<article>
-//      <PageHeader
-//         title={pageHeader.title ?? ""}
-//         breadcrumb={pageHeader.breadcrumb}
-//       />
-//   </article>)
-// }
 
 export default PermissionsList;

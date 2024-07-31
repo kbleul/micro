@@ -10,8 +10,6 @@ const Home = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  console.log("--------->",session)
-
   if (status === "loading") return <PageLoader />;
   if (
     session?.user?.user?.roles
