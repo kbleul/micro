@@ -25,7 +25,7 @@ const RolesList = () => {
   const headers = useGetHeaders({ type: "Json" });
 
   const pageHeader = {
-    title: session?.user?.user?.roles[0].Name,
+    title: "Roles",
     breadcrumb: [
       {
         href: routes.home.dashboard,
@@ -35,7 +35,7 @@ const RolesList = () => {
         name: "User Settings",
       },
       {
-        name: "Permissions",
+        name: "Roles",
       },
     ],
   };
@@ -113,7 +113,7 @@ const RolesList = () => {
                     });
                   }}
                 >
-                 View
+                  View
                 </Button>
               </div>
             </section>

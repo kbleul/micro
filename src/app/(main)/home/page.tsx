@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 const pageHeader = {
-  title: "Admin",
+  title: "Dashboard",
   breadcrumb: [
     {
       href: routes.home.dashboard,

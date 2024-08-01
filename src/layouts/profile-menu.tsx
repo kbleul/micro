@@ -4,13 +4,11 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Popover } from "@/components/ui/popover";
 import { Title, Text } from "@/components/ui/text";
-import { routes } from "@/config/routes";
 import cn from "@/utils/class-names";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaUser } from "react-icons/fa";
 
 function DropdownMenu() {
   const { data: session } = useSession();

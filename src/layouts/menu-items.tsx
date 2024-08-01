@@ -2,10 +2,7 @@ import { routes } from "@/config/routes";
 import { PiFileImageDuotone } from "react-icons/pi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlinePlace } from "react-icons/md";
-import {
-  menuItemtype,
-  subMenuItemtype,
-} from "types/common_types";
+import { menuItemtype, subMenuItemtype } from "types/common_types";
 
 // export const MenuItems = [
 //   {
@@ -83,7 +80,7 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   if (userPermissions.includes("read:branch")) {
     menuItems.push({
       name: "Branches",
-      href: routes.home.branches,
+      href: routes.home.branches.view_all,
       icon: <MdOutlinePlace />,
     });
   }

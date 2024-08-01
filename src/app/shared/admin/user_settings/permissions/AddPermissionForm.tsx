@@ -13,9 +13,11 @@ import { useFetchData } from "@/react-query/useFetchData";
 import Spinner from "@/components/ui/spinner";
 import { Form, Formik } from "formik";
 import { useModal } from "@/app/shared/modal-views/use-modal";
-import FormikTextArea from "@/components/ui/form/formik-textarea";
 import Loading from "@/components/ui/Loading";
-import { PermissionType, permissionSchema } from "@/validations/permission.schema";
+import {
+  PermissionType,
+  PermissionSchema,
+} from "@/validations/permission.schema";
 import FormikInput from "@/components/ui/form/input";
 
 export default function AddPermissionForm({ id }: { id?: string }) {
@@ -32,16 +34,16 @@ export default function AddPermissionForm({ id }: { id?: string }) {
   );
 
   if (permissionsData.isFetching) {
-    return <Loading  />;
+    return <Loading />;
   }
+
   const initialValues: PermissionType = {
     name: id ? permissionsData?.data?.data?.name : "",
   };
 
   const createPermission = async (values: PermissionType) => {
     try {
-
-        const newValues = {...values, slug: values.name}
+      const newValues = { ...values, slug: values.name };
 
       await postMutation.mutateAsync({
         url: id
@@ -88,7 +90,7 @@ export default function AddPermissionForm({ id }: { id?: string }) {
       ) : (
         <Formik
           initialValues={initialValues}
-          validationSchema={permissionSchema}
+          validationSchema={PermissionSchema}
           onSubmit={createPermission}
         >
           {() => (

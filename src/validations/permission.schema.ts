@@ -1,9 +1,8 @@
 import * as Yup from "yup";
-export const permissionSchema = Yup.object().shape({
+export const PermissionSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
 });
 
-
-type PermissionType = Yup.InferType<typeof permissionSchema>;
+type PermissionType = Yup.InferType<typeof PermissionSchema>;
 
 export type { PermissionType };

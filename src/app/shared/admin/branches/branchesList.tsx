@@ -25,7 +25,7 @@ const BranchesList = () => {
   const headers = useGetHeaders({ type: "Json" });
 
   const pageHeader = {
-    title: session?.user?.user?.roles[0].Name,
+    title: "Branches",
     breadcrumb: [
       {
         href: routes.home.dashboard,
@@ -38,7 +38,7 @@ const BranchesList = () => {
   };
 
   const branchesData = useFetchData(
-    [queryKeys.getAllRoles],
+    [queryKeys.getAllBranches],
     `${process.env.NEXT_PUBLIC_BACKEND_URL}branches`,
     headers
   );
@@ -64,71 +64,77 @@ const BranchesList = () => {
         breadcrumb={pageHeader.breadcrumb}
       />
 
-      {Branches.length === 0 && (
-        <div className="my-10 flex flex-col gap-y-5 items-center justify-center text-lg mt-[20vh]">
-          <p>No branches added yet.</p>
+      {session?.user?.permissions &&
+        session?.user?.permissions.includes("create:branch") &&
+        Branches.length === 0 && (
+          <div className="my-10 flex flex-col gap-y-5 items-center justify-center text-lg mt-[20vh]">
+            <p>No branches added yet.</p>
 
-          <Button
-            size="lg"
-            color="primary"
-            className="text-white bg-primary-dark"
-            onClick={() =>
-              openModal({
-                view: <AddRoleForm />,
-              })
-            }
-          >
-            Add Branch
-          </Button>
-        </div>
-      )}
+            <Button
+              size="lg"
+              color="primary"
+              className="text-white bg-primary-dark"
+            >
+              <Link
+                className="w-full h-full"
+                href={routes.home.branches["add-branch"]}
+              >
+                Add Branch
+              </Link>
+            </Button>
+          </div>
+        )}
 
       {session?.user?.permissions &&
-        session?.user?.permissions.includes("create:branch") && Branches.length > 0 && (
+        session?.user?.permissions.includes("create:branch") &&
+        Branches.length > 0 && (
           <div className="flex justify-end mb-6">
             <Button
               size="lg"
               color="primary"
               className="text-white bg-primary-dark"
-              onClick={() =>
-                openModal({
-                  view: <AddRoleForm />,
-                })
-              }
             >
-              Add Branch
+              <Link
+                className="w-full h-full"
+                href={routes.home.branches["add-branch"]}
+              >
+                Add Branch
+              </Link>
             </Button>
           </div>
         )}
 
       <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 items-stretch justify-start gap-x-[2.6%] gap-y-10 flex-wrap mt-10">
         {Branches &&
-          Branches.map((role: any) => (
+          Branches.map((branch: any) => (
             <section
               className=" mb-4 border rounded-xl shadow-md overflow-hidden relative"
-              key={role.ID}
+              key={branch.id}
             >
-              {/* <SideMenu role={role} /> */}
+              {/* <SideMenu branch={branch} /> */}
 
               <div className="p-4">
-                <Title as="h6" className="text-xl font-medium h-14">
-                  {role.Name}
+                <Title as="h6" className="text-lg font-medium line-clamp-1">
+                  {branch.name}
                 </Title>
+
+                <p className="text-xs line-clamp-1">
+                  Address: {branch.address}
+                </p>
 
                 <Button
                   color="primary"
                   type="button"
                   className={
-                    "w-full text-white bg-primary-dark hover:text-white hover:border-none mt-4 mb-2"
+                    "w-full text-white bg-primary-dark hover:text-white hover:border-none mt-10 mb-2"
                   }
-                  onClick={() => {
-                    openModal({
-                      view: <></>,
-                      customSize: "1150px",
-                    });
-                  }}
                 >
-                  View
+                  <Link
+                    href={routes.home.branches["view-branch"](branch.id)}
+                    className="w-full h-full"
+                  >
+                    View
+                  </Link>
                 </Button>
               </div>
             </section>
