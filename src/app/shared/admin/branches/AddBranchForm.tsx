@@ -215,13 +215,29 @@ const AddBranchForm = ({
                   </FormGroup>
                 </div>
 
-                <div className="mt-6">
-                  <FormFooter
-                    submitBtnText={branchId ? "Update" : "Save"}
-                    showSveBtn={false}
-                    isLoading={postMutation.isPending}
-                  />
-                </div>
+                {session?.user?.permissions &&
+                  session?.user?.permissions.includes("create:branch") &&
+                  !branchId && (
+                    <div className="mt-6">
+                      <FormFooter
+                        submitBtnText="Add Branch"
+                        showSveBtn={false}
+                        isLoading={postMutation.isPending}
+                      />
+                    </div>
+                  )}
+
+                {session?.user?.permissions &&
+                  session?.user?.permissions.includes("update:branch") &&
+                  branchId && (
+                    <div className="mt-6">
+                      <FormFooter
+                        submitBtnText="Update Branch"
+                        showSveBtn={false}
+                        isLoading={postMutation.isPending}
+                      />
+                    </div>
+                  )}
               </Form>
             );
           }}

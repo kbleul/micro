@@ -9,7 +9,7 @@ export default withAuth(
     if (
       req.nextauth.token?.roles.length &&  req.nextauth.token?.roles.length < 1 ||
       !req.nextauth.token?.roles
-        ?.map((item) => item.Name)
+        ?.map((item) => item.name)
         .includes(Role.ADMIN)
     ) {
       return NextResponse.rewrite(new URL("/access-denied", req.url));

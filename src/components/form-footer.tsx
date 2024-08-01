@@ -38,7 +38,7 @@ export default function FormFooter({
         <Button
           color="primary"
           variant="outline"
-          className="w-full @xl:w-auto"
+          className="w-full @xl:w-auto bg-primary-dark hover:bg-primary"
           onClick={handleSkip}
         >
           {skipBtnText}
@@ -49,7 +49,7 @@ export default function FormFooter({
         <Button
           color="primary"
           variant="outline"
-          className="w-full @xl:w-auto"
+          className="w-full @xl:w-auto bg-primary-dark hover:bg-primary"
           onClick={handleAltBtn}
         >
           {altBtnText}
@@ -59,7 +59,7 @@ export default function FormFooter({
         type="submit"
         isLoading={isLoading}
         color="primary"
-        className="w-full @xl:w-auto dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
+        className="w-full @xl:w-auto bg-primary-dark hover:bg-primary dark:bg-gray-100 dark:text-white dark:active:bg-gray-100"
       >
         {submitBtnText}
       </Button>

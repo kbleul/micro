@@ -13,7 +13,7 @@ const Home = () => {
   if (status === "loading") return <PageLoader />;
   if (
     session?.user?.user?.roles
-      ?.map((item: {Name: string }) => item.Name)
+      ?.map((item: {name: string }) => item.name)
       .includes(Role.ADMIN)
   ) {
     return router.push(routes.home.dashboard);

@@ -130,13 +130,13 @@ export default function ViewRolePermissions({
 
           <section className="grid grid-cols-1 md:grid-cols-4 mt-4 px-6 gap-5 border-t py-6 justify-center items-center">
             {Permissions.map(
-              (permission: { ID: string; Name: string; Slug: string }) => (
-                <div key={permission.ID}>
+              (permission: { id: string; name: string; slug: string }) => (
+                <div key={permission.id}>
                   <Checkbox
                     className="m-2 checked:bg-primary-dark"
-                    label={permission.Name}
+                    label={permission.name}
                     iconClassName="text-red-400 checked:bg-primary-dark"
-                    value={permission.Slug}
+                    value={permission.slug}
                     defaultChecked={true}
                     onChange={(e) => handleUpdatePermission(e.target.value)}
                     disabled={postMutation.isPending}

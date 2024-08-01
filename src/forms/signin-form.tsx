@@ -61,11 +61,11 @@ export default function SignInForm() {
         onSuccess: (responseData) => {
 
           const role = responseData?.data?.roles?.map(
-            (item: { Name: string }) => item.Name
+            (item: { name: string }) => item.name
           );
 
           if (!role.includes(Role.ADMIN)) {
-            toast.info("Unknown account rol.");
+            toast.info("Unknown account role.");
             return;
           }
           setIsLoading(true);

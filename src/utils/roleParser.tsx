@@ -5,11 +5,11 @@ export const getParsedPermissions = (
   rolePermissions: permissionType[]
 ) => {
   const rolePermissions_NamesArr = rolePermissions.flatMap(
-    (rolePermission) => rolePermission.Name
+    (rolePermission) => rolePermission.name
   );
 
   const parsedPermissions = allPermissions.filter((permission) => {
-    return !rolePermissions_NamesArr.includes(permission.Name);
+    return !rolePermissions_NamesArr.includes(permission.name);
   });
 
   return parsedPermissions;

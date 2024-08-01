@@ -41,7 +41,7 @@ export default function Sidebar({ className }: { className?: string }) {
     }
 
     const sidenav = roles.reduce((acc: any[], role) => {
-      const roleItems: any = roleMenuItems[role.Name];
+      const roleItems: any = roleMenuItems[role.name];
       if (roleItems) {
         acc.push(...roleItems);
       }
@@ -66,8 +66,8 @@ export default function Sidebar({ className }: { className?: string }) {
       </div>
  
     {roles &&  <div className="py-1 px-2 pl-8 mt-6 mb-4 border-l-[5px] border-l-primary-dark border-b text-base font-medium capitalize ">
-      <p className=" ">{roles[0].Name.toLocaleLowerCase()} Dashboard</p>
-      <p className="mt-1 text-sm text-[#7b7b7b]">{roles[0].Name.toLocaleLowerCase()} Privilege</p>
+      <p className=" ">{roles[0].name.toLocaleLowerCase()} Dashboard</p>
+      <p className="mt-1 text-sm text-[#7b7b7b]">{roles[0].name.toLocaleLowerCase()} Privilege</p>
       
 
     </div>

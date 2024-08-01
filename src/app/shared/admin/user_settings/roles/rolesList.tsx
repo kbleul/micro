@@ -95,7 +95,7 @@ const RolesList = () => {
 
               <div className="p-4">
                 <Title as="h6" className="text-xl font-medium h-14">
-                  {role.Name}
+                  {role.name}
                 </Title>
 
                 <Button
@@ -107,7 +107,7 @@ const RolesList = () => {
                   onClick={() => {
                     openModal({
                       view: (
-                        <ViewRolePermissions id={role.ID} slug={role.Slug} />
+                        <ViewRolePermissions id={role.ID} slug={role.slug} />
                       ),
                       customSize: "1150px",
                     });

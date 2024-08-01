@@ -96,20 +96,20 @@ const PermissionsList = () => {
               columns={[
                 {
                   title: <HeaderCell title="Permission" />,
-                  dataIndex: "Name",
-                  key: "Name",
+                  dataIndex: "name",
+                  key: "name",
                   width: 10,
-                  render: (Name: string) => (
-                    <Text className="font-medium text-gray-700">{Name}</Text>
+                  render: (name: string) => (
+                    <Text className="font-medium text-gray-700">{name}</Text>
                   ),
                 },
                 {
                   title: <HeaderCell title="Slug" />,
-                  dataIndex: "Slug",
-                  key: "Slug",
+                  dataIndex: "slug",
+                  key: "slug",
                   width: 10,
-                  render: (Slug: string) => (
-                    <Text className="font-medium text-gray-700">{Slug}</Text>
+                  render: (slug: string) => (
+                    <Text className="font-medium text-gray-700">{slug}</Text>
                   ),
                 },
                 {

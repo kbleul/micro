@@ -40,12 +40,12 @@ const AddRoleForm = ({
   }
 
   const initialValues: RoleType = {
-    Name: id ? rolesData.data.data.role.Name : "",
+    name: id ? rolesData.data.data.role.name : "",
   };
 
   const createROleSubmitHandler = async (values: RoleType) => {
     try {
-      const newValues = { ...values, Slug: values.Name };
+      const newValues = { ...values, Slug: values.name };
       await postMutation.mutateAsync({
         url: id
           ? `${process.env.NEXT_PUBLIC_BACKEND_URL}user-roles/${id}`
@@ -95,7 +95,7 @@ const AddRoleForm = ({
               </Title>
 
               <FormikInput
-                name="Name"
+                name="name"
                 label="Role Name"
                 placeholder="Enter the role name"
                 color="primary"

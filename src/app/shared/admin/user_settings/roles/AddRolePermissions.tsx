@@ -14,7 +14,6 @@ import { useModal } from "@/app/shared/modal-views/use-modal";
 import Loading from "@/components/ui/Loading";
 
 import { Checkbox } from "rizzui";
-import Spinner from "@/components/ui/spinner";
 import { getParsedPermissions } from "@/utils/roleParser";
 import { permissionType } from "types/common_types";
 import { useState } from "react";
@@ -126,12 +125,12 @@ export default function AddRolePermissions({
       <article>
         <section className="grid grid-cols-1 md:grid-cols-4 mt-4 px-6 gap-5 border-t py-6 justify-center items-center">
           {unassignedPermissions.map((permission) => (
-            <div key={permission.ID}>
+            <div key={permission.id}>
               <Checkbox
                 className="m-2 checked:bg-primary-dark"
-                label={permission.Name}
+                label={permission.name}
                 iconClassName="text-red-400 checked:bg-primary-dark"
-                value={permission.Slug}
+                value={permission.slug}
                 defaultChecked={false}
                 onChange={(e) => handleCheck(e.target.value)}
                 disabled={postMutation.isPending}

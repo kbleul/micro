@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 function DropdownMenu() {
   const { data: session } = useSession();
   const role = session?.user.user.roles?.map(
-    (item: { Name: string }) => item.Name
+    (item: { name: string }) => item.name
   );
 
   const menuItems = [
@@ -33,8 +33,8 @@ function DropdownMenu() {
       <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
         {session && (
           <Avatar
-            name={session?.user?.user.name}
-            initials={session?.user?.user.name[0].toUpperCase()}
+            name={session?.user?.user.first_name}
+            initials={session?.user?.user.first_name[0].toUpperCase()}
             color="invert"
           />
         )}
@@ -83,6 +83,8 @@ export default function ProfileMenu({
     setIsOpen(false);
   }, [pathname]);
 
+
+  console.log(session?.user?.user)
   return (
     <Popover
       isOpen={isOpen}
@@ -101,8 +103,8 @@ export default function ProfileMenu({
         {session?.user?.user && (
           <Avatar
             src={""}
-            name={session?.user?.user.name}
-            initials={session?.user?.user.name[0].toUpperCase()}
+            name={session?.user?.user.first_name}
+            initials={session?.user?.user.first_name[0].toUpperCase()}
             className={cn("!h-9 w-9 sm:!h-10 sm:w-10", avatarClassName)}
           />
         )}

@@ -11,8 +11,8 @@ export type menuItemtype = {
 }
 
 export type permissionType = {
-    ID: string,
-    Name: string,
-    Slug: string,
-    CreatedAt: string,
+    id: string,
+    name: string,
+    slug: string,
+    createdAt: string,
 }

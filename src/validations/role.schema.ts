@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 export const RoleSchema = Yup.object().shape({
-  Name: Yup.string().required("Name is required"),
+  name: Yup.string().required("Name is required"),
 });
 
 

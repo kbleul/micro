@@ -19,7 +19,7 @@ declare module "next-auth" {
         need_create_password: boolean;
         roles: {
           uuid: string;
-          Name: string;
+          name: string;
         }[];
       };
       token: string;
@@ -33,7 +33,7 @@ declare module "next-auth/jwt" {
   interface JWT {
     roles: {
       uuid: string;
-      Name: string;
+      name: string;
     }[];
     user: {
       id: string;
@@ -50,7 +50,7 @@ declare module "next-auth/jwt" {
       need_create_password: boolean;
       roles: {
         uuid: string;
-        Name: string;
+        name: string;
       }[];
       token: string;
     } & DefaultSession["user"];
