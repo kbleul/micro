@@ -123,3 +123,25 @@ export const genderOptions = [
     value: "Female",
   },
 ];
+
+
+
+
+export const periodOptions = [
+  {
+    name: "Weekly",
+    value: "Weekly",
+  },
+  {
+    name: "Monthly",
+    value: "Monthly",
+  },
+  {
+    name: "Quarterly",
+    value: "Quarterly",
+  },
+  {
+    name: "Yearly",
+    value: "Yearly",
+  },
+];

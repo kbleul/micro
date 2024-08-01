@@ -84,7 +84,6 @@ export default function ProfileMenu({
   }, [pathname]);
 
 
-  console.log(session?.user?.user)
   return (
     <Popover
       isOpen={isOpen}

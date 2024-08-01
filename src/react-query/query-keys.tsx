@@ -4,4 +4,6 @@ export const queryKeys = {
   getAllRoles: "getAllRoles",
   getAllBranches: "getAllBranches",
   getAllEmployees: "getAllEmployees",
+  getInterstTerms: "getInterstTerms",
+  getAccountTypes: "getAccountTypes",
 };

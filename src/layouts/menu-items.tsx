@@ -4,40 +4,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlinePlace } from "react-icons/md";
 import { menuItemtype, subMenuItemtype } from "types/common_types";
 import { FaUsers } from "react-icons/fa";
-
-// export const MenuItems = [
-//   {
-//     name: "Dashboard",
-//     href: routes.home.dashboard,
-//     icon: <PiFileImageDuotone />,
-//   },
-//   {
-//     name: "Members",
-//     href: "#",
-//     icon: <CiUser />,
-//     dropdownItems: [
-//       {
-//         name: "List",
-//         href: routes.home.users,
-//       },
-//     ],
-//   },
-//   {
-//     name: "User Settings",
-//     href: "#",
-//     icon: <IoSettingsOutline />,
-//     dropdownItems: [
-//       {
-//         name: "Permissions",
-//         href: routes.home.userSettings.permissions,
-//       },
-//       {
-//         name: "Roles",
-//         href: routes.home.userSettings.roles,
-//       },
-//     ],
-//   },
-// ];
+import { RiMailSettingsLine } from "react-icons/ri";
 
 export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   if (!userPermissions) {
@@ -94,6 +61,29 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
     });
   }
 
+  if (
+    userPermissions.includes("read:account-type") ||
+    userPermissions.includes("read:account")
+  ) {
+    const subItems: subMenuItemtype[] = [];
+
+      subItems.push({
+        name: "Intrest Terms",
+        href: routes.home.accountSettings.interst_terms,
+      });
+
+      subItems.push({
+        name: "Account Types",
+        href: routes.home.accountSettings.account_types,
+      });
+
+    menuItems.push({
+      name: "Account Settings",
+      href: "#",
+      icon: <RiMailSettingsLine />,
+      dropdownItems: subItems,
+    });
+  }
 
   return menuItems;
 };

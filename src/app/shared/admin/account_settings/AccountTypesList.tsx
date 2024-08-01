@@ -6,17 +6,15 @@ import { useGetHeaders } from "@/hooks/use-get-headers";
 import { useFetchData } from "@/react-query/useFetchData";
 import { queryKeys } from "@/react-query/query-keys";
 
-import { BsThreeDots } from "react-icons/bs";
+
 import { routes } from "@/config/routes";
-import { useRouter } from "next/navigation";
 import { useModal } from "@/app/shared/modal-views/use-modal";
 import PageHeader from "@/app/shared/page-header";
 import { useSession } from "next-auth/react";
 import { handleFetchState } from "@/utils/fetch-state-handler";
-import AddRoleForm from "./AddRoleForm";
-import ViewRolePermissions from "./ViewRolePermissions";
+import AddTypeForm from "./AddTypeForm";
 
-const RolesList = () => {
+const AccountTypesList = () => {
   const { data: session } = useSession();
 
   const { openModal } = useModal();
@@ -30,23 +28,23 @@ const RolesList = () => {
         href: routes.home.dashboard,
         name: "Home",
       },
-  
+
       {
         name: "Account Settings",
       },
       {
-        name: "Interst Terms",
+        name: "Account Types",
       },
     ],
   };
-  const rolesData = useFetchData(
-    [queryKeys.getAllRoles],
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}user-roles`,
+  const typesData = useFetchData(
+    [queryKeys.getAccountTypes],
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}account-types`,
     headers
   );
 
   const fetchStateHandler = handleFetchState(
-    rolesData,
+    typesData,
     <PageHeader
       title={pageHeader.title ?? ""}
       breadcrumb={pageHeader.breadcrumb}
@@ -56,8 +54,7 @@ const RolesList = () => {
   if (fetchStateHandler) {
     return fetchStateHandler;
   }
-
-  const Roles = rolesData?.data?.data ?? null;
+  const Terms: any[] = typesData?.data?.data?.accountTypes ?? null;
 
   return (
     <article>
@@ -66,7 +63,8 @@ const RolesList = () => {
         breadcrumb={pageHeader.breadcrumb}
       />
       {session?.user?.permissions &&
-        session?.user?.permissions.includes("create:role") && (
+        (session?.user?.permissions.includes("create:account-type") ||
+          session?.user?.permissions.includes("create:account")) && (
           <div className="flex justify-end mb-6">
             <Button
               size="lg"
@@ -74,27 +72,27 @@ const RolesList = () => {
               className="text-white bg-primary-dark"
               onClick={() =>
                 openModal({
-                  view: <AddRoleForm />,
+                  view: <AddTypeForm />,
                 })
               }
             >
-              Add Role
+              Add Type
             </Button>
           </div>
         )}
 
       <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 items-stretch justify-start gap-x-[2.6%] gap-y-10 flex-wrap mt-10">
-        {Roles &&
-          Roles.map((role: any) => (
+        {Terms &&
+          Terms.map((term: any) => (
             <section
               className=" mb-4 border rounded-xl shadow-md overflow-hidden relative"
-              key={role.isPending}
+              key={term.id}
             >
-              {/* <SideMenu role={role} /> */}
+              {/* <SideMenu term={term} /> */}
 
               <div className="p-4">
                 <Title as="h6" className="text-xl font-medium h-14">
-                  {role.name}
+                  {term.name}
                 </Title>
 
                 <Button
@@ -105,10 +103,7 @@ const RolesList = () => {
                   }
                   onClick={() => {
                     openModal({
-                      view: (
-                        <ViewRolePermissions id={role.id} slug={role.slug} />
-                      ),
-                      customSize: "1150px",
+                      view: <AddTypeForm id={term.id} />,
                     });
                   }}
                 >
@@ -122,44 +117,44 @@ const RolesList = () => {
   );
 };
 
-const SideMenu = ({ role }: { role: any }) => {
-  const router = useRouter();
+// const SideMenu = ({ term }: { role: any }) => {
+//   const router = useRouter();
 
-  const { openModal, closeModal } = useModal();
+//   const { openModal, closeModal } = useModal();
 
-  const [showMenu, setShowMenu] = useState(false);
+//   const [showMenu, setShowMenu] = useState(false);
 
-  return (
-    <section className=" w-full">
-      <Button
-        color="primary"
-        variant="outline"
-        onClick={() => setShowMenu((prev) => !prev)}
-        className="text-black bg-white z-50  rounded-full  absolute top-3 right-3 py-1 px-[0.6rem] flex justify-center items-center border border-gray-200"
-      >
-        <BsThreeDots size={20} />
-      </Button>
-      {showMenu && (
-        <div
-          className="absolute top-12 right-10 border bg-white flex flex-col"
-          onMouseEnter={() => setShowMenu(true)}
-        >
-          <button
-            type="button"
-            className="py-2 hover:bg-gray-100 px-6 border-b"
-            onClick={() => {
-              setShowMenu(false);
-              openModal({
-                view: <AddRoleForm id={role.id} />,
-              });
-            }}
-          >
-            Edit role
-          </button>
-        </div>
-      )}
-    </section>
-  );
-};
+//   return (
+//     <section className=" w-full">
+//       <Button
+//         color="primary"
+//         variant="outline"
+//         onClick={() => setShowMenu((prev) => !prev)}
+//         className="text-black bg-white z-50  rounded-full  absolute top-3 right-3 py-1 px-[0.6rem] flex justify-center items-center border border-gray-200"
+//       >
+//         <BsThreeDots size={20} />
+//       </Button>
+//       {showMenu && (
+//         <div
+//           className="absolute top-12 right-10 border bg-white flex flex-col"
+//           onMouseEnter={() => setShowMenu(true)}
+//         >
+//           <button
+//             type="button"
+//             className="py-2 hover:bg-gray-100 px-6 border-b"
+//             onClick={() => {
+//               setShowMenu(false);
+//               openModal({
+//                 view: <AddTypeForm id={role.id} />,
+//               });
+//             }}
+//           >
+//             Edit role
+//           </button>
+//         </div>
+//       )}
+//     </section>
+//   );
+// };
 
-export default RolesList;
+export default AccountTypesList;

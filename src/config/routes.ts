@@ -9,6 +9,10 @@ export const routes = {
       permissions: "/home/user_settings/permissions",
       roles: "/home/user_settings/roles",
     },
+    accountSettings: {
+      interst_terms: "/home/account_settings/interst_terms",
+      account_types: "/home/account_settings/account_types",
+    },
     branches: {
       view_all: "/home/branches",
       "add-branch": "/home/branches/add-branch",

@@ -20,6 +20,7 @@ import { useFetchData } from "@/react-query/useFetchData";
 import { queryKeys } from "@/react-query/query-keys";
 import Loading from "@/components/ui/Loading";
 import { handleFetchState } from "@/utils/fetch-state-handler";
+import { Button } from "rizzui";
 
 const AddBranchForm = ({
   branchId,
@@ -122,6 +123,20 @@ const AddBranchForm = ({
         breadcrumb={pageHeader.breadcrumb}
       />
 
+     { branchId && session?.user?.permissions.includes("update:branch") && 
+     
+     <div className="flex justify-end">
+      <div className="self-end flex justify-end gap-x-6 border rounded-xl w-fit items-center pl-6 font-medium text-primary-dark">
+      <p>Manager is not added for this branch yet</p>
+        <Button
+          size="lg"
+          color="primary"
+          className="text-white bg-primary-dark"
+        >
+            Add Manager
+        </Button>
+      </div>
+      </div>}
       <main className="@container">
         <Formik
           initialValues={initialValues}
