@@ -15,6 +15,12 @@ export const routes = {
       "view-branch": (branchId: string) =>
         `/home/branches/view-branch/${branchId}`,
     },
+    employees: {
+      view_all: "/home/employees",
+      "add-employee": "/home/employees/add-employee",
+      "view-employee": (employeeId: string) =>
+        `/home/employees/view-employee/${employeeId}`,
+    },
     users: "/home/users",
   },
 };

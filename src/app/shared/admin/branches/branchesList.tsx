@@ -15,7 +15,6 @@ import PageHeader from "@/app/shared/page-header";
 import { useSession } from "next-auth/react";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 import AddRoleForm from "./AddRoleForm";
-import ViewRolePermissions from "./ViewRolePermissions";
 
 const BranchesList = () => {
   const { data: session } = useSession();

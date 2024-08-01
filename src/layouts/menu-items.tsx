@@ -3,6 +3,7 @@ import { PiFileImageDuotone } from "react-icons/pi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlinePlace } from "react-icons/md";
 import { menuItemtype, subMenuItemtype } from "types/common_types";
+import { FaUsers } from "react-icons/fa";
 
 // export const MenuItems = [
 //   {
@@ -84,6 +85,15 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
       icon: <MdOutlinePlace />,
     });
   }
+
+  if (userPermissions.includes("read:employee")) {
+    menuItems.push({
+      name: "Employees",
+      href: routes.home.employees.view_all,
+      icon: <FaUsers />,
+    });
+  }
+
 
   return menuItems;
 };
