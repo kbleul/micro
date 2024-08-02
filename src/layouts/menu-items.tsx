@@ -67,10 +67,10 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   ) {
     const subItems: subMenuItemtype[] = [];
 
-    subItems.push({
-      name: "Interest Terms",
-      href: routes.home.accountSettings.interst_terms,
-    });
+    // subItems.push({
+    //   name: "Interest Terms",
+    //   href: routes.home.accountSettings.interst_terms,
+    // });
 
     subItems.push({
       name: "Saving Types",
