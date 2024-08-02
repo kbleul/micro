@@ -16,3 +16,17 @@ export type permissionType = {
     slug: string,
     createdAt: string,
 }
+
+export type branchType = {
+    id: string;
+    name: string;
+    phone_number: string;
+    email: string;
+    city: string;
+    region: string;
+    address: string;
+    ManagerID?: {
+      id: string;
+      full_name: string;
+    } | null;
+  };

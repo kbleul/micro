@@ -29,11 +29,11 @@ const Select = dynamic(() => import("@/components/ui/select"), {
   loading: () => <SelectLoader />,
 });
 
-const AddEmployeeForm = ({
-  employeeId,
+const AddMemberForm = ({
+  memberId,
   className,
 }: {
-  employeeId?: string;
+  memberId?: string;
   className?: string;
 }) => {
   const postMutation = useDynamicMutation();
@@ -42,58 +42,24 @@ const AddEmployeeForm = ({
   const { data: session } = useSession();
 
   const pageHeader = {
-    title: employeeId ? "View Employee" : "Add New Employee",
+    title: memberId ? "View Member" : "Add New Member",
     breadcrumb: [
       {
         href: routes.home.dashboard,
         name: "Home",
       },
       {
-        href: routes.home.employees.view_all,
-        name: "Employees",
+        href: routes.home.members.view_all,
+        name: "Members",
       },
       {
-        name: employeeId ? "View / Edit Employee" : "Add Employee",
+        name: memberId ? "View / Edit Member" : "Add Member",
       },
     ],
   };
 
-  const rolesData = useFetchData(
-    [queryKeys.getAllRoles, employeeId],
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}user-roles`,
-    headers
-  );
 
-  const employeehData = useFetchData(
-    [queryKeys.getAllEmployees, employeeId],
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}users/${employeeId}`,
-    headers,
-    !!employeeId
-  );
 
-  const fetchStateHandler = handleFetchState(
-    employeehData,
-    <PageHeader
-      title={pageHeader.title ?? ""}
-      breadcrumb={pageHeader.breadcrumb}
-    />
-  );
-
-  if (fetchStateHandler && employeeId) {
-    return fetchStateHandler;
-  }
-
-  const fetchStateHandlerRoles = handleFetchState(
-    rolesData,
-    <PageHeader
-      title={pageHeader.title ?? ""}
-      breadcrumb={pageHeader.breadcrumb}
-    />
-  );
-
-  if (fetchStateHandlerRoles) {
-    return fetchStateHandler;
-  }
 
   const initialValues: EmployeeType = {
     first_name: "",
@@ -126,11 +92,11 @@ const AddEmployeeForm = ({
         body: {
           ...values,
           phone_number: "+251" + values.phone_number,
-          role_id: roles.find((role) => role.slug === values.role).id,
+          role: roles.find((role) => role.slug === values.role).id,
           Status: true
         },
         onSuccess: (res) => {
-          toast.success("Employee Created Successfully");
+          toast.success("Member Created Successfully");
 
           router.push(routes.home.employees.view_all);
         },
@@ -163,7 +129,7 @@ const AddEmployeeForm = ({
               <Form className={"[&_label.block>span]:font-medium "}>
                 <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
                   <FormGroup
-                    title="Employee Info."
+                    title="Member Info."
                     description="Add employee information from here..."
                     className={cn(className)}
                   >
@@ -208,7 +174,7 @@ const AddEmployeeForm = ({
                           error={errors?.gender}
                           getOptionValue={(option) => option.name}
                           color="primary"
-                          placeholder="Select gender"
+                          placeholder="Selectfor this branch yet gender"
                         />
                       )}
                     </Field>
@@ -286,7 +252,7 @@ const AddEmployeeForm = ({
 
                 {session?.user?.permissions &&
                   session?.user?.permissions.includes("create:employee") &&
-                  !employeeId && (
+                  !memberId && (
                     <div className="mt-6">
                       <FormFooter
                         submitBtnText="Add Employee"
@@ -298,7 +264,7 @@ const AddEmployeeForm = ({
 
                 {session?.user?.permissions &&
                   session?.user?.permissions.includes("update:employee") &&
-                  employeeId && (
+                  memberId && (
                     <div className="mt-6">
                       <FormFooter
                         submitBtnText="Update Employee"
@@ -316,4 +282,4 @@ const AddEmployeeForm = ({
   );
 };
 
-export default AddEmployeeForm;
+export default AddMemberForm;

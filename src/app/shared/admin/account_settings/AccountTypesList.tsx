@@ -13,6 +13,7 @@ import PageHeader from "@/app/shared/page-header";
 import { useSession } from "next-auth/react";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 import AddTypeForm from "./AddTypeForm";
+import AddBtnContainer from "@/components/AddBtnContainer";
 
 const AccountTypesList = () => {
   const { data: session } = useSession();
@@ -62,23 +63,21 @@ const AccountTypesList = () => {
         title={pageHeader.title ?? ""}
         breadcrumb={pageHeader.breadcrumb}
       />
-      {session?.user?.permissions &&
+      
+
+{session?.user?.permissions &&
         (session?.user?.permissions.includes("create:account-type") ||
           session?.user?.permissions.includes("create:account")) && (
-          <div className="flex justify-end mb-6">
-            <Button
-              size="lg"
-              color="primary"
-              className="text-white bg-primary-dark"
-              onClick={() =>
-                openModal({
-                  view: <AddTypeForm />,
-                })
-              }
-            >
-              Add Type
-            </Button>
-          </div>
+          <AddBtnContainer
+            items={Terms}
+            actionName="account type"
+            onClick={() =>
+              openModal({
+                view: <AddTypeForm />,
+              })
+            }
+            btntext="Add type"
+          />
         )}
 
       <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 items-stretch justify-start gap-x-[2.6%] gap-y-10 flex-wrap mt-10">

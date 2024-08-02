@@ -15,6 +15,7 @@ import { useSession } from "next-auth/react";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 import AddRoleForm from "./AddRoleForm";
 import ViewRolePermissions from "./ViewRolePermissions";
+import AddBtnContainer from "@/components/AddBtnContainer";
 
 const RolesList = () => {
   const { data: session } = useSession();
@@ -30,7 +31,7 @@ const RolesList = () => {
         href: routes.home.dashboard,
         name: "Home",
       },
-  
+
       {
         name: "Account Settings",
       },
@@ -57,7 +58,7 @@ const RolesList = () => {
     return fetchStateHandler;
   }
 
-  const Roles = rolesData?.data?.data ?? null;
+  const Roles = rolesData?.data?.data ?? [];
 
   return (
     <article>
@@ -65,22 +66,19 @@ const RolesList = () => {
         title={pageHeader.title ?? ""}
         breadcrumb={pageHeader.breadcrumb}
       />
+
       {session?.user?.permissions &&
         session?.user?.permissions.includes("create:role") && (
-          <div className="flex justify-end mb-6">
-            <Button
-              size="lg"
-              color="primary"
-              className="text-white bg-primary-dark"
-              onClick={() =>
-                openModal({
-                  view: <AddRoleForm />,
-                })
-              }
-            >
-              Add Role
-            </Button>
-          </div>
+          <AddBtnContainer
+            items={Roles}
+            actionName="role"
+            onClick={() =>
+              openModal({
+                view: <AddRoleForm />,
+              })
+            }
+            btntext="Add role"
+          />
         )}
 
       <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 items-stretch justify-start gap-x-[2.6%] gap-y-10 flex-wrap mt-10">

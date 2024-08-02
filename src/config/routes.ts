@@ -25,6 +25,12 @@ export const routes = {
       "view-employee": (employeeId: string) =>
         `/home/employees/view-employee/${employeeId}`,
     },
+    members: {
+      view_all: "/home/members",
+      "add-member": "/home/members/add-member",
+      "view-member": (employeeId: string) =>
+        `/home/members/view-member/${employeeId}`,
+    },
     users: "/home/users",
   },
 };

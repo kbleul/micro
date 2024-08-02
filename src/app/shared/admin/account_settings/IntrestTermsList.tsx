@@ -14,6 +14,7 @@ import PageHeader from "@/app/shared/page-header";
 import { useSession } from "next-auth/react";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 import AddTermForm from "./AddTermForm";
+import AddBtnContainer from "@/components/AddBtnContainer";
 
 const IntrestTermsList = () => {
   const { data: session } = useSession();
@@ -55,7 +56,7 @@ const IntrestTermsList = () => {
   if (fetchStateHandler) {
     return fetchStateHandler;
   }
-  const Terms: any[] = termsData?.data?.data?.interestTerms ?? null;
+  const Terms: any[] = termsData?.data?.data?.interestTerms ?? [];
 
   return (
     <article>
@@ -63,23 +64,21 @@ const IntrestTermsList = () => {
         title={pageHeader.title ?? ""}
         breadcrumb={pageHeader.breadcrumb}
       />
+   
+
       {session?.user?.permissions &&
         (session?.user?.permissions.includes("create:account-type") ||
           session?.user?.permissions.includes("create:account")) && (
-          <div className="flex justify-end mb-6">
-            <Button
-              size="lg"
-              color="primary"
-              className="text-white bg-primary-dark"
-              onClick={() =>
-                openModal({
-                  view: <AddTermForm />,
-                })
-              }
-            >
-              Add Term
-            </Button>
-          </div>
+          <AddBtnContainer
+            items={Terms}
+            actionName="interst term"
+            onClick={() =>
+              openModal({
+                view: <AddTermForm />,
+              })
+            }
+            btntext="Add term"
+          />
         )}
 
       <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 items-stretch justify-start gap-x-[2.6%] gap-y-10 flex-wrap mt-10">
@@ -109,6 +108,7 @@ const IntrestTermsList = () => {
                       view: <AddTermForm id={term.id} />,
                     });
                   }}
+                  
                 >
                   View
                 </Button>

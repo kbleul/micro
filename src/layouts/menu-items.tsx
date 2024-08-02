@@ -5,7 +5,7 @@ import { MdOutlinePlace } from "react-icons/md";
 import { menuItemtype, subMenuItemtype } from "types/common_types";
 import { FaUsers } from "react-icons/fa";
 import { RiMailSettingsLine } from "react-icons/ri";
-
+import { LuUsers2 } from "react-icons/lu";
 export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   if (!userPermissions) {
     return [];
@@ -25,11 +25,11 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   ) {
     const subItems: subMenuItemtype[] = [];
 
-    userPermissions.includes("read:permission") &&
-      subItems.push({
-        name: "Permissions",
-        href: routes.home.userSettings.permissions,
-      });
+    // userPermissions.includes("read:permission") &&
+    //   subItems.push({
+    //     name: "Permissions",
+    //     href: routes.home.userSettings.permissions,
+    //   });
 
     userPermissions.includes("read:role") &&
       subItems.push({
@@ -45,19 +45,19 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
     });
   }
 
-  if (userPermissions.includes("read:branch")) {
-    menuItems.push({
-      name: "Branches",
-      href: routes.home.branches.view_all,
-      icon: <MdOutlinePlace />,
-    });
-  }
-
   if (userPermissions.includes("read:employee")) {
     menuItems.push({
       name: "Employees",
       href: routes.home.employees.view_all,
       icon: <FaUsers />,
+    });
+  }
+
+  if (userPermissions.includes("read:branch")) {
+    menuItems.push({
+      name: "Branches",
+      href: routes.home.branches.view_all,
+      icon: <MdOutlinePlace />,
     });
   }
 
@@ -67,15 +67,15 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   ) {
     const subItems: subMenuItemtype[] = [];
 
-      subItems.push({
-        name: "Intrest Terms",
-        href: routes.home.accountSettings.interst_terms,
-      });
+    subItems.push({
+      name: "Interest Terms",
+      href: routes.home.accountSettings.interst_terms,
+    });
 
-      subItems.push({
-        name: "Account Types",
-        href: routes.home.accountSettings.account_types,
-      });
+    subItems.push({
+      name: "Saving Types",
+      href: routes.home.accountSettings.account_types,
+    });
 
     menuItems.push({
       name: "Account Settings",
@@ -84,6 +84,16 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
       dropdownItems: subItems,
     });
   }
+
+  if (userPermissions.includes("read:account")) {
+    menuItems.push({
+      name: "Members",
+      href: routes.home.members.view_all,
+      icon: <LuUsers2 />,
+    });
+  }
+
+
 
   return menuItems;
 };

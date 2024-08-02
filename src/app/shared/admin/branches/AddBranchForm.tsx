@@ -18,9 +18,11 @@ import PageHeader from "../../page-header";
 import { useSession } from "next-auth/react";
 import { useFetchData } from "@/react-query/useFetchData";
 import { queryKeys } from "@/react-query/query-keys";
-import Loading from "@/components/ui/Loading";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 import { Button } from "rizzui";
+import { useModal } from "../../modal-views/use-modal";
+import AssignManagerForm from "./AssignManagerForm";
+import { branchType } from "types/common_types";
 
 const AddBranchForm = ({
   branchId,
@@ -33,6 +35,7 @@ const AddBranchForm = ({
   const headers = useGetHeaders({ type: "Json" });
   const router = useRouter();
   const { data: session } = useSession();
+  const { openModal } = useModal();
 
   const pageHeader = {
     title: branchId ? "View Branch" : "Add New Branch",
@@ -52,7 +55,9 @@ const AddBranchForm = ({
   };
 
   const branchData = useFetchData(
-    [queryKeys.getAllBranches, branchId],
+    branchId
+      ? [queryKeys.getAllBranches + branchId, branchId]
+      : [queryKeys.getAllBranches, branchId],
     `${process.env.NEXT_PUBLIC_BACKEND_URL}branches/${branchId}`,
     headers,
     !!branchId
@@ -70,22 +75,15 @@ const AddBranchForm = ({
     return fetchStateHandler;
   }
 
-  const Branch: {
-    name: string;
-    phone_number: string;
-    email: string;
-    city: string;
-    region: string;
-    address: string;
-  } = branchData?.data?.data;
+  const Branch: branchType = branchData?.data?.data ?? null;
 
   const initialValues: BranchType = {
-    name: branchId ? Branch.name : "",
-    phone_number: branchId ? Branch.phone_number : "",
-    email: branchId ? Branch.email : "",
-    city: branchId ? Branch.city : "",
-    region: branchId ? Branch.region : "",
-    address: branchId ? Branch.address : "",
+    name: branchId ? Branch?.name : "",
+    phone_number: branchId ? Branch?.phone_number : "",
+    email: branchId ? Branch?.email : "",
+    city: branchId ? Branch?.city : "",
+    region: branchId ? Branch?.region : "",
+    address: branchId ? Branch?.address : "",
   };
 
   const createBranchMangerSubmitHandler = async (values: BranchType) => {
@@ -116,27 +114,88 @@ const AddBranchForm = ({
     }
   };
 
+  console.log({Branch})
+
   return (
     <article>
       <PageHeader
         title={pageHeader.title ?? ""}
         breadcrumb={pageHeader.breadcrumb}
       />
+{/* <div className="flex justify-end">
+                <div className="self-end flex justify-end gap-x-6 border rounded-xl w-fit items-center pl-6 font-medium text-primary-dark">
+                <p>
+                      Branch Manager -
+                      <span className="ml-3 underline font-medium">
+                        {Branch.name}
+                      </span>{" "}
+                    </p>
 
-     { branchId && session?.user?.permissions.includes("update:branch") && 
-     
-     <div className="flex justify-end">
-      <div className="self-end flex justify-end gap-x-6 border rounded-xl w-fit items-center pl-6 font-medium text-primary-dark">
-      <p>Manager is not added for this branch yet</p>
-        <Button
-          size="lg"
-          color="primary"
-          className="text-white bg-primary-dark"
-        >
-            Add Manager
-        </Button>
-      </div>
-      </div>}
+                  <Button
+                    size="lg"
+                    color="primary"
+                    className="text-white bg-primary-dark"
+                    onClick={() =>
+                      openModal({
+                        view: <AssignManagerForm branch={Branch} />,
+                      })
+                    }
+                  >
+                    Change Manager
+                  </Button>
+                </div>
+              </div> */}
+      {branchId &&
+        Branch &&
+        session?.user?.permissions.includes("update:branch") && (
+          <section>
+            {Branch.ManagerID ? (
+              <div className="flex justify-end">
+                <div className="self-end flex justify-end gap-x-6 border rounded-xl w-fit items-center pl-6 font-medium text-primary-dark">
+                <p>
+                      Branch Manager -
+                      <span className="ml-3 underline font-medium">
+                        {Branch.name}
+                      </span>{" "}
+                    </p>
+
+                  <Button
+                    size="lg"
+                    color="primary"
+                    className="text-white bg-primary-dark"
+                    onClick={() =>
+                      openModal({
+                        view: <AssignManagerForm branch={Branch} />,
+                      })
+                    }
+                  >
+                    Change Manager
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex justify-end">
+
+              <div className="self-end flex justify-end gap-x-6 border rounded-xl w-fit items-center pl-6 font-medium text-primary-dark">
+                <p>Manager is not added for this branch yet</p>
+                <Button
+                  size="lg"
+                  color="primary"
+                  className="text-white bg-primary-dark"
+                  onClick={() =>
+                    openModal({
+                      view: <AssignManagerForm branch={Branch} />,
+                    })
+                  }
+                >
+                  Add Manager
+                </Button>
+              </div>
+              </div>
+            )}
+          </section>
+        )}
+
       <main className="@container">
         <Formik
           initialValues={initialValues}
@@ -187,7 +246,7 @@ const AddBranchForm = ({
                         label="Region"
                         options={REGIONS}
                         defaultValue={
-                          branchId &&
+                          branchId && Branch &&
                           REGIONS.find(
                             (region) => region.name === Branch.region
                           )
@@ -208,7 +267,7 @@ const AddBranchForm = ({
                         label="City"
                         options={CITIES}
                         defaultValue={
-                          branchId &&
+                          branchId && Branch &&
                           CITIES.find((city) => city.name === Branch.city)
                         }
                         onChange={(selectedOption: any) => {

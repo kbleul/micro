@@ -11,10 +11,10 @@ import { routes } from "@/config/routes";
 import PageHeader from "@/app/shared/page-header";
 import { useSession } from "next-auth/react";
 import { handleFetchState } from "@/utils/fetch-state-handler";
+import AddBtnContainer from "@/components/AddBtnContainer";
 
 const BranchesList = () => {
   const { data: session } = useSession();
-
 
   const headers = useGetHeaders({ type: "Json" });
 
@@ -49,7 +49,7 @@ const BranchesList = () => {
     return fetchStateHandler;
   }
 
-  const Branches = branchesData?.data?.data ?? null;
+  const Branches = branchesData?.data?.data ?? [];
 
   return (
     <article>
@@ -58,45 +58,12 @@ const BranchesList = () => {
         breadcrumb={pageHeader.breadcrumb}
       />
 
-      {session?.user?.permissions &&
-        session?.user?.permissions.includes("create:branch") &&
-        Branches.length === 0 && (
-          <div className="my-10 flex flex-col gap-y-5 items-center justify-center text-lg mt-[20vh]">
-            <p>No branches added yet.</p>
-
-            <Button
-              size="lg"
-              color="primary"
-              className="text-white bg-primary-dark"
-            >
-              <Link
-                className="w-full h-full"
-                href={routes.home.branches["add-branch"]}
-              >
-                Add Branch
-              </Link>
-            </Button>
-          </div>
-        )}
-
-      {session?.user?.permissions &&
-        session?.user?.permissions.includes("create:branch") &&
-        Branches.length > 0 && (
-          <div className="flex justify-end mb-6">
-            <Button
-              size="lg"
-              color="primary"
-              className="text-white bg-primary-dark"
-            >
-              <Link
-                className="w-full h-full"
-                href={routes.home.branches["add-branch"]}
-              >
-                Add Branch
-              </Link>
-            </Button>
-          </div>
-        )}
+     {session?.user?.permissions &&
+     session?.user?.permissions.includes("create:branch") && <AddBtnContainer
+      items={Branches}
+      actionName="branch"
+      route_address={routes.home.branches["add-branch"]}
+      />}
 
       <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 items-stretch justify-start gap-x-[2.6%] gap-y-10 flex-wrap mt-10">
         {Branches &&
@@ -137,7 +104,5 @@ const BranchesList = () => {
     </article>
   );
 };
-
-
 
 export default BranchesList;

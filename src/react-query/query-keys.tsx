@@ -6,4 +6,5 @@ export const queryKeys = {
   getAllEmployees: "getAllEmployees",
   getInterstTerms: "getInterstTerms",
   getAccountTypes: "getAccountTypes",
+  getAllMembers: "getAllMembers",
 };
