@@ -1,40 +1,33 @@
 "use client";
 
 import React, { useState } from "react";
-import { ActionIcon, Button, Input, Title } from "rizzui";
+import { ActionIcon, Button, Input } from "rizzui";
 import { useGetHeaders } from "@/hooks/use-get-headers";
 import { useFetchData } from "@/react-query/useFetchData";
 import { queryKeys } from "@/react-query/query-keys";
-import Select, { StylesConfig } from "react-select";
+import Select from "react-select";
 
-import { BsThreeDots } from "react-icons/bs";
 import Link from "next/link";
 import { routes } from "@/config/routes";
-import { useRouter } from "next/navigation";
-import { useModal } from "@/app/shared/modal-views/use-modal";
 import PageHeader from "@/app/shared/page-header";
 import { useSession } from "next-auth/react";
 import { handleFetchState } from "@/utils/fetch-state-handler";
-import AddRoleForm from "./AddRoleForm";
-import { useQueryClient } from "@tanstack/react-query";
-import useDynamicMutation from "@/react-query/usePostData";
-import { toast } from "sonner";
 import WidgetCard from "@/components/cards/widget-card";
 import ControlledTable from "@/components/controlled-table";
 import { PiMagnifyingGlassBold, PiXBold } from "react-icons/pi";
 import { getColumns } from "./employee_column";
-import CustomSelect from "@/components/ui/form/select";
-import { CITIES, REGIONS } from "@/utils/dummy";
+import { roleTypes } from "types/common_types";
+
+const firstRole = { id: "001-role", name: "All", slug: "all" };
 
 const EmployeesList = () => {
-  const queryClient = useQueryClient();
-  const postMutation = useDynamicMutation();
 
   const { data: session } = useSession();
 
   const headers = useGetHeaders({ type: "Json" });
 
   const [searchText, setSearchText] = useState("");
+  const [selectedRole, setSelectedRole] = useState<roleTypes | null>(firstRole);
 
   const [currentPage, setCurrentPage] = React.useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -53,10 +46,38 @@ const EmployeesList = () => {
   };
 
   const usersData = useFetchData(
-    [queryKeys.getAllEmployees, currentPage, pageSize, searchText],
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}users?page=${currentPage}&perPage=${pageSize}`,
+    [
+      queryKeys.getAllEmployees,
+      selectedRole,
+      currentPage,
+      pageSize,
+      searchText,
+    ],
+    selectedRole
+      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}users?page=${currentPage}&perPage=${pageSize}`
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}users?page=${currentPage}&perPage=${pageSize}`,
     headers
   );
+
+  const rolesData = useFetchData(
+    [queryKeys.getAllRoles, currentPage, pageSize, searchText],
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}user-roles`,
+    headers
+  );
+
+  const fetchStateHandler = handleFetchState(
+    rolesData,
+    <PageHeader
+      title={pageHeader.title ?? ""}
+      breadcrumb={pageHeader.breadcrumb}
+    />
+  );
+
+  if (fetchStateHandler) {
+    return fetchStateHandler;
+  }
+
+  const Roles: roleTypes[] = rolesData?.data?.data ?? [];
 
   return (
     <main>
@@ -80,16 +101,14 @@ const EmployeesList = () => {
         }
       >
         <section className="flex justify-between items-center mb-8">
-          <div className="flex  gap-x-4">
+          <div className="flex  gap-x-4 w-[180px]">
             <Select
-              name={"name"}
-              options={CITIES}
-              isMulti={true}
+              options={[firstRole, ...Roles]}
               isSearchable={true}
-              placeholder="All roles"
-              onChange={() => {}}
-              getOptionLabel={() => ""}
-              getOptionValue={() => ""}
+              getOptionLabel={(role) => role.name}
+              getOptionValue={(role) => role.id}
+              defaultValue={firstRole}
+              onChange={(value: any) => console.log(value)}
               className="w-full font-medium z-[100]"
               classNamePrefix="react-select"
               isDisabled={false}

@@ -30,3 +30,9 @@ export type branchType = {
       full_name: string;
     } | null;
   };
+
+  export type roleTypes = {
+    id: string,
+    name: string,
+    slug: string,
+  }
