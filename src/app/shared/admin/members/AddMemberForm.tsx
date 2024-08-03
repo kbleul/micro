@@ -82,7 +82,7 @@ const AddMemberForm = ({
       return;
     }
 
-    const roles: any[] = rolesData.data.data;
+    const roles: any[] = [];
 
     try {
       await postMutation.mutateAsync({
@@ -219,7 +219,7 @@ const AddMemberForm = ({
                         isSearchable
                         name="role"
                         label="Roles"
-                        options={rolesData.data.data}
+                        options={[]}
                         onChange={(selectedOption: any) => {
                           if (
                             !session?.user?.permissions.includes(
