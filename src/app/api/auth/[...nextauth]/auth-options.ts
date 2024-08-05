@@ -9,16 +9,19 @@ export const authOptions: NextAuthOptions = {
       credentials: {},
       async authorize(credentials: any, req: any): Promise<any> {
         if (req.body) {
-          return JSON.parse(req.body.data);
+          return { ...JSON.parse(req.body.data) };
         }
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
+      console.log("----jwt------>", token, token);
+
       return { ...token, ...user };
     },
     async session({ session, token, user }) {
+      console.log("---------->", session, token);
       session.user = token as any;
       return session;
     },

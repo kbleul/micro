@@ -51,6 +51,10 @@ const MembersList = () => {
     headers
   );
 
+  console.log(usersData)
+
+  const Members = usersData?.data?.members ?? []
+
   return (
     <main>
       <PageHeader
@@ -63,7 +67,7 @@ const MembersList = () => {
         className={"flex flex-col"}
         headerClassName="widget-card-header flex-col sm:flex-row [&>.ps-2]:ps-0 [&>.ps-2]:w-full sm:[&>.ps-2]:w-auto [&>.ps-2]:mt-3 sm:[&>.ps-2]:mt-0"
         action={
-          session?.user?.permissions.includes("create:account") && (
+          session?.user?.permissions.includes("create:member") && (
             <Link href={routes.home.members["add-member"]}>
               <Button size="lg" color="primary" className="bg-primary-dark">
                 Add Member
@@ -147,7 +151,7 @@ const MembersList = () => {
             variant={"modern"}
             isLoading={usersData.isFetching}
             showLoadingText={true}
-            data={usersData?.data?.data?.members}
+            data={Members}
             scroll={{ x: 900 }}
             // @ts-ignore
             columns={getColumns()}

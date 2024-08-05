@@ -112,7 +112,6 @@ export const CITIES = [
   },
 ];
 
-
 export const genderOptions = [
   {
     name: "Male",
@@ -123,9 +122,6 @@ export const genderOptions = [
     value: "Female",
   },
 ];
-
-
-
 
 export const periodOptions = [
   {
@@ -144,4 +140,18 @@ export const periodOptions = [
     name: "Yearly",
     value: "Yearly",
   },
+];
+
+export const MarriageStatusOptions = [
+  "married",
+  "unmarried",
+  "divorced",
+  "widowed",
+];
+
+export const IdentificationTypeOptions = [
+   "national_id",
+   "digital_id",
+   "driver_license",
+   "passport",
 ];

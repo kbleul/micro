@@ -59,7 +59,6 @@ export default function SignInForm() {
           password: values.password,
         },
         onSuccess: (responseData) => {
-
           const role = responseData?.data?.roles?.map(
             (item: { name: string }) => item.name
           );
@@ -70,17 +69,27 @@ export default function SignInForm() {
           }
           setIsLoading(true);
 
-
-
           signIn("credentials", {
-            data: JSON.stringify({...responseData?.data, token: responseData?.data?.access_token, user: {...responseData?.data?.user, roles: responseData?.data?.roles}}),
+            data: JSON.stringify({
+              ...responseData?.data,
+              roles: [...responseData?.data?.roles],
+              token: responseData?.data?.access_token,
+              user: {
+                ...responseData?.data?.user,
+                permissions: [...responseData?.data?.permissions],
+              },
+            }),
             redirect: true,
             callbackUrl: routes.home.dashboard,
           });
+
           toast.success("Login Successfull, Redirecting...");
         },
         onError: (err) => {
-          toast.error(err?.response?.data?.data);
+          console.log(err)
+          toast.error(
+            err?.response?.data?.data ?? err?.response?.data?.message
+          );
         },
       });
     } catch (err) {
