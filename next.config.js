@@ -3,7 +3,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    remotePatterns: [],
+    remotePatterns: [
+      {
+        hostname: "mullet-ready-suitably.ngrok-free.app",
+        protocol: "https",
+      },
+    ],
   },
 
 

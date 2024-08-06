@@ -23,7 +23,7 @@ const AddRoleForm = ({
   id?: string;
   className?: string;
 }) => {
-  const headers = useGetHeaders({ type: "FormData" });
+  const headers = useGetHeaders({ type: "Json" });
   const queryClient = useQueryClient();
   const postMutation = useDynamicMutation();
   const { closeModal } = useModal();
@@ -45,7 +45,7 @@ const AddRoleForm = ({
 
   const createROleSubmitHandler = async (values: RoleType) => {
     try {
-      const newValues = { ...values, Slug: values.name };
+      const newValues = { ...values, slug: values.name };
       await postMutation.mutateAsync({
         url: id
           ? `${process.env.NEXT_PUBLIC_BACKEND_URL}user-roles/${id}`
@@ -54,7 +54,6 @@ const AddRoleForm = ({
         headers,
         body: {
           ...newValues,
-          _method: id ? "PATCH" : "POST",
         },
         onSuccess: (res: any) => {
           queryClient.invalidateQueries({

@@ -22,6 +22,7 @@ import {
   InterstTermSchema,
   InterstTypeType,
 } from "@/validations/account_type.schema";
+import { handleErrorWithToast } from "@/utils/error-toast-handler";
 
 const AddTypeForm = ({
   id,
@@ -37,13 +38,12 @@ const AddTypeForm = ({
   const postMutation = useDynamicMutation();
   const { closeModal } = useModal();
 
-
   const interstTermsData = useFetchData(
     [queryKeys.getInterstTerms, id],
     `${process.env.NEXT_PUBLIC_BACKEND_URL}interest-terms`,
-    headers,
+    headers
   );
- 
+
   const typesData = useFetchData(
     [queryKeys.getAccountTypes + id, id],
     `${process.env.NEXT_PUBLIC_BACKEND_URL}account-types/${id}`,
@@ -51,7 +51,7 @@ const AddTypeForm = ({
     !!id
   );
 
-  if (typesData.isFetching || interstTermsData.isFetching ) {
+  if (typesData.isFetching || interstTermsData.isFetching) {
     return <Loading />;
   }
 
@@ -71,6 +71,7 @@ const AddTypeForm = ({
         headers,
         body: {
           ...values,
+          minimumthreshold: values.minimum_threshold,
           _method: id ? "PATCH" : "POST",
         },
         onSuccess: (res: any) => {
@@ -79,23 +80,22 @@ const AddTypeForm = ({
           });
 
           toast.success(
-            id ? "Account type updated Successfully" : "Account type created Successfully"
+            id
+              ? "Account type updated Successfully"
+              : "Account type created Successfully"
           );
           closeModal();
         },
         onError: (err: any) => {
-          toast.error(err?.response?.data?.data);
+          handleErrorWithToast(err, toast);
+
+          // toast.error(err?.response?.data?.data);
         },
       });
     } catch (err) {
       console.log(err);
     }
   };
-
-  console.log(
-    "//////////////////////",
-    session?.user?.permissions.includes("update:account-type")
-  );
 
   return (
     <article className="p-8 pb-28">
@@ -123,7 +123,7 @@ const AddTypeForm = ({
                 color="primary"
                 className="mb-4"
               />
-            
+
               <FormikInput
                 name="minimum_threshold"
                 label="Minimum Threshold"
@@ -132,23 +132,62 @@ const AddTypeForm = ({
                 className="mb-4"
                 type="number"
               />
+              <div className="mt-4 w-full flex flex-col gap-6 ">
+                <CustomSelect
+                  isSearchable
+                  name="interest_period"
+                  label="Interest Period"
+                  options={periodOptions}
+                  onChange={(selectedOption: { value: string }) => {
+                    setFieldValue("interest_period", selectedOption.value);
+                  }}
+                  placeholder="select period"
+                  getOptionValue={(interest_period: any) => interest_period?.id}
+                  getOptionLabel={(interest_period: any) =>
+                    interest_period?.name
+                  }
+                  noOptionsMessage={() => "Fetching periods..."}
+                  defaultValue={interstTermsData?.data?.data?.interestTerms.filter(
+                    (p: any) => p.id === typesData?.data?.data?.interest_period
+                  )}
+                />
+              </div>
+
+              <FormikInput
+                name="interest_rate"
+                label="Interest Rate"
+                placeholder="Enter the intrest rate"
+                color="primary"
+                className="my-6"
+                suffix="%"
+                type="number"
+              />
 
               <div className="mt-4 w-full flex flex-col gap-6 ">
                 <CustomSelect
                   isSearchable
-                  name="interest_term_id"
-                  label="Interest Term"
-                  options={interstTermsData?.data?.data?.interestTerms}
-                  onChange={(selectedOption: any) => {
-                    setFieldValue("interest_term_id", selectedOption.id);
+                  name="saving_period"
+                  label="Saving Period"
+                  options={periodOptions}
+                  onChange={(selectedOption: { value: string }) => {
+                    setFieldValue("saving_period", selectedOption.value);
                   }}
-                  placeholder="select interest term"
-                  getOptionValue={(interest_term_id: any) => interest_term_id?.id}
-                  getOptionLabel={(interest_term_id: any) => interest_term_id?.name}
-                  noOptionsMessage={() => "Fetching terms..."}
+                  placeholder="select period"
+                  getOptionValue={(saving_period: any) => saving_period?.id}
+                  getOptionLabel={(saving_period: any) => saving_period?.name}
+                  noOptionsMessage={() => "Fetching periods..."}
                   defaultValue={interstTermsData?.data?.data?.interestTerms.filter(
-                    (p: any) => p.id === typesData?.data?.data?.interest_term_id
+                    (p: any) => p.id === typesData?.data?.data?.saving_period
                   )}
+                />
+
+                <FormikInput
+                  name="penalty_rate"
+                  label="Penality Rate"
+                  placeholder="Enter the penality rate"
+                  color="primary"
+                  className="mb-4"
+                  type="number"
                 />
               </div>
 

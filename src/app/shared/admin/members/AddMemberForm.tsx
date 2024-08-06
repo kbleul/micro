@@ -11,7 +11,9 @@ import cn from "@/utils/class-names";
 import {
   CITIES,
   genderOptions,
+  IdentificationTypeOptions,
   MarriageStatusOptions,
+  periodOptions,
   REGIONS,
 } from "@/utils/dummy";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
@@ -23,9 +25,14 @@ import { useSession } from "next-auth/react";
 import { DatePicker } from "@/components/ui/datepicker";
 import dynamic from "next/dynamic";
 import SelectLoader from "@/components/loader/select-loader";
-import { EmployeeSchema, EmployeeType } from "@/validations/employee.schema";
-import FormikPasswordInput from "@/components/ui/form/password-input";
 import { Button } from "rizzui";
+import { MemberSchema, MemberType } from "@/validations/member.schema";
+import { secondaryDateFormat } from "@/utils/format-date";
+import AvaterPicker from "@/components/ui/form/avater-upload";
+import { handleErrorWithToast } from "@/utils/error-toast-handler";
+import { useFetchData } from "@/react-query/useFetchData";
+import { handleFetchState } from "@/utils/fetch-state-handler";
+import { queryKeys } from "@/react-query/query-keys";
 
 const Select = dynamic(() => import("@/components/ui/select"), {
   ssr: false,
@@ -40,7 +47,7 @@ const AddMemberForm = ({
   className?: string;
 }) => {
   const postMutation = useDynamicMutation();
-  const headers = useGetHeaders({ type: "Json" });
+  const headers = useGetHeaders({ type: "FormData" });
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -61,47 +68,137 @@ const AddMemberForm = ({
     ],
   };
 
-  const initialValues: EmployeeType = {
+  const accountTypesData = useFetchData(
+    [queryKeys.getAccountTypes],
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}account-types`,
+    headers
+  );
+
+  const fetchStateHandler = handleFetchState(
+    accountTypesData,
+    <PageHeader
+      title={pageHeader.title ?? ""}
+      breadcrumb={pageHeader.breadcrumb}
+    />
+  );
+
+  if (fetchStateHandler) {
+    return fetchStateHandler;
+  }
+  const Types: any[] = accountTypesData?.data?.data?.accountTypes ?? null;
+
+  const initialValues: MemberType = {
     first_name: "",
     last_name: "",
     phone_number: "",
-    email: "",
-    tin_number: "",
-    role: "",
-    date_of_birth: undefined,
+    middle_name: "",
+    birth_date: undefined,
     gender: "",
-    password: "",
+    age: 18,
+
+    birth_place: "",
+    birth_district: "",
+    birth_neighborhood: "",
+    birth_zone: "",
+    birth_subcity: "",
+    birth_region: "",
+    birth_house_number: "",
+
+    current_region: "",
+    current_district: "",
+    current_neighborhood: "",
+    current_zone: "",
+    current_subcity: "",
+    current_house_number: "",
+
+    marriage_status: "",
+    spouse_name: "",
+
+    registration_fee: 0,
+
+    photo: undefined,
+    id_photo: undefined,
+
+    method_of_identifcation: "",
+    identification_number: "",
+
+    children: [
+      {
+        name: "",
+        age: 0,
+        gender: "",
+      },
+    ],
+    heirs: [
+      {
+        address: "",
+        city: "",
+        first_name: "",
+        last_name: "",
+        house_number: "",
+        occupation: "",
+        phone_number: "",
+        relationship: "",
+        subcity: "",
+        woreda: "",
+        zone: "",
+        kebele: "",
+      },
+    ],
+    emergency_contacts: [
+      {
+        address: "",
+        city: "",
+        first_name: "",
+        last_name: "",
+        house_number: "",
+        occupation: "",
+        phone_number: "",
+        relationship: "",
+        subcity: "",
+        woreda: "",
+        zone: "",
+        kebele: "",
+      },
+    ],
+
+    initial_balance: 0,
+    account_type_id: "",
+    term_grace_period: "",
+    term_amount: 0,
   };
 
-  const createEmployeeSubmitHandler = async (values: EmployeeType) => {
-    if (
-      !session?.user?.permissions.includes("create:manager") &&
-      values.role === "manager"
-    ) {
-      toast.error("You dont have permission to create a manager");
-      return;
-    }
-
-    const roles: any[] = [];
-
+  const createEmployeeSubmitHandler = async (values: MemberType) => {
     try {
       await postMutation.mutateAsync({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}users`,
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}members`,
         method: "POST",
         headers,
         body: {
           ...values,
           phone_number: "+251" + values.phone_number,
-          role: roles.find((role) => role.slug === values.role).id,
+          gender: values.gender.toLowerCase(),
+          birth_date: secondaryDateFormat(values.birth_date),
           Status: true,
+          firstname: values.first_name,
+          lastname: values.last_name,
+          middlename: values.middle_name,
+          birthdate: secondaryDateFormat(values.birth_date),
+          currentregion: values.current_region,
+          number_of_children_boys: values.children.filter(
+            (child) => child.gender === "Male"
+          ).length,
+          number_of_children_girls: values.children.filter(
+            (child) => child.gender === "Female"
+          ).length,
         },
         onSuccess: (res) => {
           toast.success("Member Created Successfully");
 
-          router.push(routes.home.employees.view_all);
+          router.push(routes.home.members.view_all);
         },
         onError: (err) => {
-          toast.error(err?.response?.data?.data);
+          handleErrorWithToast(err, toast);
         },
       });
     } catch (err) {
@@ -119,7 +216,7 @@ const AddMemberForm = ({
       <main className="@container">
         <Formik
           initialValues={initialValues}
-          validationSchema={EmployeeSchema}
+          validationSchema={MemberSchema}
           onSubmit={(values) => createEmployeeSubmitHandler(values)}
         >
           {({ values, setFieldValue, errors }) => {
@@ -155,6 +252,14 @@ const AddMemberForm = ({
                       className=""
                     />
 
+                    <FormikInput
+                      name="age"
+                      label="Age"
+                      placeholder="Enter age"
+                      color="primary"
+                      className=""
+                    />
+
                     <Field name="gender">
                       {() => (
                         <Select
@@ -165,7 +270,7 @@ const AddMemberForm = ({
                           error={errors?.gender}
                           getOptionValue={(option) => option.name}
                           color="primary"
-                          placeholder="Selectfor this branch yet gender"
+                          placeholder="Select gender"
                         />
                       )}
                     </Field>
@@ -185,7 +290,7 @@ const AddMemberForm = ({
                           <DatePicker
                             inputProps={{ label: "Birth Date" }}
                             placeholderText="Select DOB"
-                            selected={values.date_of_birth}
+                            selected={values.birth_date}
                             onChange={(date) =>
                               setFieldValue("birth_date", date)
                             }
@@ -201,6 +306,118 @@ const AddMemberForm = ({
                         </div>
                       )}
                     </Field>
+                  </FormGroup>
+
+                  <FormGroup
+                    title="Marriage & Children info"
+                    description="Add mariage and children details here..."
+                    className={cn(className)}
+                  >
+                    <div className="mt-4 w-full flex flex-col gap-6 col-span-2">
+                      <CustomSelect
+                        name="marriage_status"
+                        label="Marriage Status"
+                        options={MarriageStatusOptions}
+                        onChange={(selectedOption: { value: string }) => {
+                          setFieldValue(
+                            "marriage_status",
+                            selectedOption.value
+                          );
+                        }}
+                        placeholder="select marriage status type"
+                        getOptionValue={(status: { value: string }) =>
+                          status.value
+                        }
+                        getOptionLabel={(status: { name: string }) =>
+                          status.name
+                        }
+                        noOptionsMessage={() => "Fetching status..."}
+                      />
+                    </div>
+
+                    {values.marriage_status === "married" && (
+                      <FormikInput
+                        name="spouse_name"
+                        label="Spouse Name"
+                        placeholder="Enter full name"
+                        color="primary"
+                        className="col-span-2"
+                      />
+                    )}
+
+                    <FieldArray name="children">
+                      {(data: any) => (
+                        <div className=" col-span-2 shadow-lg rounded-lg p-6 border-t">
+                          <p className="font-semibold underline text-lg">
+                            Add children information
+                          </p>
+                          {values.children?.map((_: any, index: number) => (
+                            <div className="grid grid-cols-2 gap-4 transition-opacity  duration-300 ease-in-out transform my- 4 pt-4 pb-8 border-b border-broken">
+                              <FormikInput
+                                name={`children.${index}.name`}
+                                label="Name"
+                                placeholder="Enter full name"
+                                color="primary"
+                                className="col-span-2"
+                              />
+
+                              <FormikInput
+                                name={`children.${index}.age`}
+                                label="Age"
+                                placeholder="Enter age"
+                                color="primary"
+                                className=""
+                                type="number"
+                              />
+
+                              <Field name={`children.${index}.gender`}>
+                                {() => (
+                                  <Select
+                                    options={genderOptions}
+                                    value={values.children[index].gender}
+                                    onChange={(value) =>
+                                      setFieldValue(
+                                        `children.${index}.gender`,
+                                        value
+                                      )
+                                    }
+                                    label="Gender"
+                                    getOptionValue={(option) => option.value}
+                                    color="primary"
+                                    placeholder="Select gender"
+                                  />
+                                )}
+                              </Field>
+                            </div>
+                          ))}
+
+                          <div className="flex justify-between mt-6">
+                            <Button
+                              onClick={() => {
+                                data.push({
+                                  age: "",
+                                  name: "",
+                                  gender: "",
+                                });
+                              }}
+                              className="w-fit bg-primary text-white font-semibold"
+                            >
+                              Add Children
+                            </Button>
+                            {values.children.length > 1 && (
+                              <Button
+                                onClick={() => {
+                                  data.pop();
+                                }}
+                                className="w-fit bg-red-400 text-white font-semibold"
+                              >
+                                Remove Children
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </FieldArray>
                   </FormGroup>
 
                   <FormGroup
@@ -238,13 +455,6 @@ const AddMemberForm = ({
                         noOptionsMessage={() => "Fetching cities..."}
                       />
                     </div>
-                    <FormikInput
-                      name="birth_zone"
-                      label="Zone"
-                      placeholder="Enter birth place zone"
-                      color="primary"
-                      className="col-span-2"
-                    />
 
                     <FormikInput
                       name="birth_district"
@@ -275,15 +485,15 @@ const AddMemberForm = ({
                       label="Zone"
                       placeholder="Enter birth place zone"
                       color="primary"
-                      className="col-span-2"
+                      className=""
                     />
 
                     <FormikInput
                       name="birth_house_number"
-                      label="Zone"
+                      label="House Number"
                       placeholder="Enter birth place house_number"
                       color="primary"
-                      className="col-span-2"
+                      className=""
                     />
                   </FormGroup>
 
@@ -326,13 +536,6 @@ const AddMemberForm = ({
                         noOptionsMessage={() => "Fetching cities..."}
                       />
                     </div>
-                    <FormikInput
-                      name="current_zone"
-                      label="Zone"
-                      placeholder="Enter current place zone"
-                      color="primary"
-                      className="col-span-2"
-                    />
 
                     <FormikInput
                       name="current_district"
@@ -363,73 +566,16 @@ const AddMemberForm = ({
                       label="Zone"
                       placeholder="Enter current place zone"
                       color="primary"
-                      className="col-span-2"
+                      className=""
                     />
 
                     <FormikInput
                       name="current_house_number"
-                      label="Zone"
+                      label="House Number"
                       placeholder="Enter current place house_number"
                       color="primary"
-                      className="col-span-2"
+                      className=""
                     />
-                  </FormGroup>
-
-                  <FormGroup
-                    title="Marriage & Children info"
-                    description="Add mariage and children details here..."
-                    className={cn(className)}
-                  >
-                    <div className="mt-4 w-full flex flex-col gap-6 col-span-2">
-                      <CustomSelect
-                        isSearchable
-                        name="MarriageStatus"
-                        label="Marriage Status"
-                        options={MarriageStatusOptions}
-                        onChange={(selectedOption: string) => {
-                          setFieldValue("MarriageStatus", selectedOption);
-                        }}
-                        placeholder="select marriage status type"
-                        getOptionValue={(status: string) => status}
-                        getOptionLabel={(status: string) => status}
-                        noOptionsMessage={() => "Fetching status..."}
-                      />
-                    </div>
-
-                    <FieldArray name={`product_variants.additionalInfo`}>
-                      {(data: any) => (
-                        <div className="grid grid-cols-2 gap-4 col-span-2">
-                          <FormikInput
-                            name="age"
-                            label="Age"
-                            placeholder="Enter age"
-                            color="primary"
-                            className=""
-                            type="number"
-                          />
-
-                          <FormikInput
-                            name="name"
-                            label="Full Name"
-                            placeholder="Enter full name"
-                            color="primary"
-                            className=""
-                          />
-
-                          <Button
-                            onClick={() =>
-                              data.push({
-                                age: "",
-                                name: "",
-                              })
-                            }
-                            className="w-fit"
-                          >
-                            Add Children
-                          </Button>
-                        </div>
-                      )}
-                    </FieldArray>
                   </FormGroup>
 
                   <FormGroup
@@ -437,204 +583,388 @@ const AddMemberForm = ({
                     description="Add emergency contacts information here..."
                     className={cn(className)}
                   >
-                    <FieldArray name={`product_variants.additionalInfo`}>
+                    <FieldArray name={`emergency_contacts`}>
                       {(data: any) => (
-                        <div>
-                          <FormikInput
-                            name="first_name"
-                            label="First Name"
-                            placeholder="Enter first name"
-                            color="primary"
-                            className=""
-                          />
+                        <div className="col-span-2 shadow-lg rounded-lg p-6 border-t">
+                          <p className="font-semibold underline text-lg">
+                            Add contacts information
+                          </p>
+                          {values.emergency_contacts?.map(
+                            (_: any, index: number) => (
+                              <div className="grid grid-cols-2 gap-4 my- 4 pt-4 pb-8 border-b border-broken">
+                                <FormikInput
+                                  name={`emergency_contacts.[${index}].first_name`}
+                                  label="First Name"
+                                  placeholder="Enter first name"
+                                  color="primary"
+                                  className=""
+                                />
+                                <FormikInput
+                                  name={`emergency_contacts.[${index}].last_name`}
+                                  label="Last Name"
+                                  placeholder="Enter last name"
+                                  color="primary"
+                                  className=""
+                                />
+                                <FormikInput
+                                  name={`emergency_contacts.[${index}].phone_number`}
+                                  label="Phone Number"
+                                  placeholder="9**********"
+                                  prefix="+251"
+                                  color="primary"
+                                  className="col-span-2 xl:col-span-1"
+                                />
 
-                          <FormikInput
-                            name="last_name"
-                            label="Last Name"
-                            placeholder="Enter last name"
-                            color="primary"
-                            className=""
-                          />
+                                <div className="mt-4 w-full flex flex-col gap-6 ">
+                                  <CustomSelect
+                                    isSearchable
+                                    name={`emergency_contacts.[${index}].city`}
+                                    label="City"
+                                    options={CITIES}
+                                    onChange={(selectedOption: any) => {
+                                      setFieldValue(
+                                        `emergency_contacts.[${index}].city`,
+                                        selectedOption.name
+                                      );
+                                    }}
+                                    placeholder="select city"
+                                    getOptionValue={(city: any) => city?.name}
+                                    getOptionLabel={(city: any) => city?.name}
+                                    noOptionsMessage={() =>
+                                      "Fetching cities..."
+                                    }
+                                  />
+                                </div>
 
-                          <FormikInput
-                            name="phone_number"
-                            label="Phone Number"
-                            placeholder="9**********"
-                            prefix="+251"
-                            color="primary"
-                            className="col-span-2 xl:col-span-1"
-                          />
+                                <FormikInput
+                                  name={`emergency_contacts.[${index}].zone`}
+                                  label="Zone"
+                                  placeholder="Enter place zone"
+                                  color="primary"
+                                  className="col-span-2"
+                                />
 
-                          <FormikInput
-                            name="birth_zone"
-                            label="Zone"
-                            placeholder="Enter birth place zone"
-                            color="primary"
-                            className="col-span-2"
-                          />
+                                <FormikInput
+                                  name={`emergency_contacts.[${index}].subcity`}
+                                  label="Birth Subcity"
+                                  placeholder="Enter subcity"
+                                  color="primary"
+                                  className=""
+                                />
 
-                          <FormikInput
-                            name="birth_district"
-                            label="District"
-                            placeholder="Enter birth place district"
-                            color="primary"
-                            className="col-span-2"
-                          />
+                                <FormikInput
+                                  name={`emergency_contacts.[${index}].woreda`}
+                                  label="Woreda"
+                                  placeholder="Enter woreda"
+                                  color="primary"
+                                  className=""
+                                />
+                                <FormikInput
+                                  name={`emergency_contacts.[${index}].house_number`}
+                                  label="House Number"
+                                  placeholder="Enter house number"
+                                  color="primary"
+                                  className=""
+                                />
+                                <FormikInput
+                                  name={`emergency_contacts.[${index}].address`}
+                                  label="Specific Address"
+                                  placeholder="Enter specific address"
+                                  color="primary"
+                                  className="col-span-2"
+                                />
+                              </div>
+                            )
+                          )}
 
-                          <FormikInput
-                            name="birth_subcity"
-                            label="Birth Subcity"
-                            placeholder="Enter birth subcity"
-                            color="primary"
-                            className=""
-                          />
-
-                          <FormikInput
-                            name="birth_neighborhood"
-                            label="Birth Neighborhood"
-                            placeholder="Enter birth neighborhood"
-                            color="primary"
-                            className=""
-                          />
-
-                          <FormikInput
-                            name="birth_zone"
-                            label="Zone"
-                            placeholder="Enter birth place zone"
-                            color="primary"
-                            className="col-span-2"
-                          />
-
-                          <FormikInput
-                            name="birth_house_number"
-                            label="Zone"
-                            placeholder="Enter birth place house_number"
-                            color="primary"
-                            className="col-span-2"
-                          />
-
-                          <Button
-                            onClick={() =>
-                              data.push({
-                                type: "",
-                                valueEnglish: "",
-                                valueAmharic: "",
-                                colorNameEnglish: "",
-                                colorNameAmharic: "",
-                                hash: "",
-                                product_image: undefined,
-                                additionalInfo: [],
-                              })
-                            }
-                          >
-                            Add Contact
-                          </Button>
+                          <div className="flex justify-between mt-6">
+                            <Button
+                              onClick={() => {
+                                data.push({
+                                  address: "",
+                                  city: "",
+                                  first_name: "",
+                                  last_name: "",
+                                  house_number: "",
+                                  occupation: "",
+                                  phone_number: "",
+                                  relationship: "",
+                                  subcity: "",
+                                  woreda: "",
+                                  zone: "",
+                                  kebele: "",
+                                });
+                              }}
+                              className="w-fit bg-primary text-white font-semibold"
+                            >
+                              Add Contact
+                            </Button>
+                            {values.emergency_contacts.length > 1 && (
+                              <Button
+                                onClick={() => {
+                                  data.pop();
+                                }}
+                                className="w-fit bg-red-400 text-white font-semibold"
+                              >
+                                Remove Contact
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       )}
                     </FieldArray>
                   </FormGroup>
 
                   <FormGroup
-                    title="Hairs Info"
+                    title="Heir Info"
                     description="Add hair information here..."
                     className={cn(className, "")}
                   >
-                    <FieldArray name={`product_variants.additionalInfo`}>
+                    <FieldArray name={`heirs`}>
                       {(data: any) => (
-                        <div className="grid grid-cols-2 gap-4 border col-span-2">
-                          <FormikInput
-                            name="first_name"
-                            label="First Name"
-                            placeholder="Enter first name"
-                            color="primary"
-                            className=""
-                          />
+                        <div className="col-span-2 shadow-lg rounded-lg p-6 border-t">
+                          {values.heirs?.map((_: any, index: number) => (
+                            <div className="grid grid-cols-2 gap-4 my- 4 pt-4 pb-8 border-b border-broken">
+                              <FormikInput
+                                name={`heirs.[${index}].first_name`}
+                                label="First Name"
+                                placeholder="Enter first name"
+                                color="primary"
+                                className=""
+                              />
+                              <FormikInput
+                                name={`heirs.[${index}].last_name`}
+                                label="Last Name"
+                                placeholder="Enter last name"
+                                color="primary"
+                                className=""
+                              />
+                              <FormikInput
+                                name={`heirs.[${index}].phone_number`}
+                                label="Phone Number"
+                                placeholder="9**********"
+                                prefix="+251"
+                                color="primary"
+                                className="col-span-2 xl:col-span-1"
+                              />
 
-                          <FormikInput
-                            name="last_name"
-                            label="Last Name"
-                            placeholder="Enter last name"
-                            color="primary"
-                            className=""
-                          />
+                              <div className="mt-4 w-full flex flex-col gap-6 ">
+                                <CustomSelect
+                                  isSearchable
+                                  name={`heirs.[${index}].city`}
+                                  label="City"
+                                  options={CITIES}
+                                  onChange={(selectedOption: any) => {
+                                    setFieldValue(
+                                      `heirs.[${index}].city`,
+                                      selectedOption.name
+                                    );
+                                  }}
+                                  placeholder="select city"
+                                  getOptionValue={(city: any) => city?.name}
+                                  getOptionLabel={(city: any) => city?.name}
+                                  noOptionsMessage={() => "Fetching cities..."}
+                                />
+                              </div>
 
-                          <FormikInput
-                            name="phone_number"
-                            label="Phone Number"
-                            placeholder="9**********"
-                            prefix="+251"
-                            color="primary"
-                            className="col-span-2 xl:col-span-1"
-                          />
+                              <FormikInput
+                                name={`heirs.[${index}].zone`}
+                                label="Zone"
+                                placeholder="Enter place zone"
+                                color="primary"
+                                className=""
+                              />
 
-                          <FormikInput
-                            name="birth_zone"
-                            label="Zone"
-                            placeholder="Enter birth place zone"
-                            color="primary"
-                            className="col-span-2"
-                          />
+                              <FormikInput
+                                name={`heirs.[${index}].subcity`}
+                                label="Subcity"
+                                placeholder="Enter subcity"
+                                color="primary"
+                                className=""
+                              />
 
-                          <FormikInput
-                            name="birth_district"
-                            label="District"
-                            placeholder="Enter birth place district"
-                            color="primary"
-                            className="col-span-2"
-                          />
+                              <FormikInput
+                                name={`heirs.[${index}].woreda`}
+                                label="Woreda"
+                                placeholder="Enter woreda"
+                                color="primary"
+                                className=""
+                              />
+                              <FormikInput
+                                name={`heirs.[${index}].house_number`}
+                                label="House Number"
+                                placeholder="Enter house number"
+                                color="primary"
+                                className=""
+                              />
+                              <FormikInput
+                                name={`heirs.[${index}].address`}
+                                label="Specific Address"
+                                placeholder="Enter specific address"
+                                color="primary"
+                                className="col-span-2"
+                              />
+                            </div>
+                          ))}
 
-                          <FormikInput
-                            name="birth_subcity"
-                            label="Birth Subcity"
-                            placeholder="Enter birth subcity"
-                            color="primary"
-                            className=""
-                          />
-
-                          <FormikInput
-                            name="birth_neighborhood"
-                            label="Birth Neighborhood"
-                            placeholder="Enter birth neighborhood"
-                            color="primary"
-                            className=""
-                          />
-
-                          <FormikInput
-                            name="birth_zone"
-                            label="Zone"
-                            placeholder="Enter birth place zone"
-                            color="primary"
-                            className="col-span-2"
-                          />
-
-                          <FormikInput
-                            name="birth_house_number"
-                            label="House Number"
-                            placeholder="Enter birth place house_number"
-                            color="primary"
-                            className="col-span-2"
-                          />
-
-                          <Button
-                            onClick={() =>
-                              data.push({
-                                first_name: "",
-                                last_name: "",
-                                phone_number: "",
-                                birth_zone: "",
-                                birth_district: "",
-                                birth_subcity: "",
-                                birth_neighborhood: "",
-                                birth_house_number: "",
-                              })
-                            }
-                            className="w-fit"
-                          >
-                            Add Hair
-                          </Button>
+                          <div className="flex justify-between mt-6">
+                            <Button
+                              onClick={() => {
+                                data.push({
+                                  address: "",
+                                  city: "",
+                                  first_name: "",
+                                  last_name: "",
+                                  house_number: "",
+                                  occupation: "",
+                                  phone_number: "",
+                                  relationship: "",
+                                  subcity: "",
+                                  woreda: "",
+                                  zone: "",
+                                  kebele: "",
+                                });
+                              }}
+                              className="w-fit bg-primary text-white font-semibold"
+                            >
+                              Add Heir
+                            </Button>
+                            {values.heirs.length > 1 && (
+                              <Button
+                                onClick={() => {
+                                  data.pop();
+                                }}
+                                className="w-fit bg-red-400 text-white font-semibold"
+                              >
+                                Remove Heir
+                              </Button>
+                            )}
+                          </div>
                         </div>
                       )}
                     </FieldArray>
+                  </FormGroup>
+
+                  <FormGroup
+                    title="Id & Images"
+                    description="Add id type and images here..."
+                    className={cn(className, "")}
+                  >
+                    <div className="mt-4 w-full flex flex-col gap-6 col-span-2">
+                      <CustomSelect
+                        name="method_of_identifcation"
+                        label="Identifcation Type"
+                        options={IdentificationTypeOptions}
+                        onChange={(selectedOption: { value: string }) => {
+                          setFieldValue(
+                            "method_of_identifcation",
+                            selectedOption.value
+                          );
+                        }}
+                        placeholder="select id type"
+                        getOptionValue={(status: { value: string }) =>
+                          status.value
+                        }
+                        getOptionLabel={(status: { name: string }) =>
+                          status.name
+                        }
+                        noOptionsMessage={() => "Fetching types..."}
+                      />
+                    </div>
+
+                    <AvaterPicker
+                      name="photo"
+                      label="Photo"
+                      isMultiple={false}
+                      className="col-span-2"
+                    />
+
+                    {values.method_of_identifcation === "digital_id" && (
+                      <FormikInput
+                        name={`identification_number`}
+                        label="Digital Id Number (FAN Number)"
+                        placeholder="Enter FAN number"
+                        color="primary"
+                        className="col-span-2"
+                      />
+                    )}
+
+                    {values.method_of_identifcation === "national_id" && (
+                      <AvaterPicker
+                        name="id_photo"
+                        label="Scanned paper id image"
+                        isMultiple={false}
+                        className="col-span-2"
+                      />
+                    )}
+                  </FormGroup>
+
+                  <FormGroup
+                    title="Disposit and Payments"
+                    description="Add amounts here..."
+                    className={cn(className, "")}
+                  >
+                    <FormikInput
+                      name={`registration_fee`}
+                      label="Registration Fee"
+                      placeholder="Enter registration fee"
+                      color="primary"
+                      className=""
+                    />
+
+                    <FormikInput
+                      name={`initial_balance`}
+                      label="Deposit"
+                      placeholder="Enter registration fee"
+                      color="primary"
+                      className=""
+                    />
+                  </FormGroup>
+
+                  <FormGroup
+                    title="Account Info"
+                    description="Add account info here..."
+                    className={cn(className, "")}
+                  >
+                    <div className="mt-4 w-full flex flex-col gap-6 col-span-2">
+                      <CustomSelect
+                        name="account_type_id"
+                        label="Account Types"
+                        options={Types}
+                        onChange={(selectedOption: { id: string }) => {
+                          setFieldValue(
+                            "account_type_id",
+                            selectedOption.id
+                          );
+                        }}
+                        placeholder="select account type"
+                        getOptionValue={(type: { id: string }) =>
+                          type.id
+                        }
+                        getOptionLabel={(type: { name: string }) =>
+                          type.name
+                        }
+                        noOptionsMessage={() => "Fetching account period types..."}
+                        isLoading={accountTypesData.isFetching}
+                      />
+                    </div>
+
+                    <FormikInput
+                      name={`term_grace_period`}
+                      label="Payment Grace Period duration(in days)"
+
+                      placeholder="Enter grace period"
+                      color="primary"
+                      className=""
+                    />
+
+                    <FormikInput
+                      name="term_amount"
+                      label="Term amount"
+                      placeholder="Enter amount"
+                      color="primary"
+                      className=""
+                    />
                   </FormGroup>
                 </div>
 
@@ -643,7 +973,7 @@ const AddMemberForm = ({
                   !memberId && (
                     <div className="mt-6">
                       <FormFooter
-                        submitBtnText="Add Employee"
+                        submitBtnText="Add Member"
                         showSveBtn={false}
                         isLoading={postMutation.isPending}
                       />
@@ -651,11 +981,11 @@ const AddMemberForm = ({
                   )}
 
                 {session?.user?.permissions &&
-                  session?.user?.permissions.includes("update:employee") &&
+                  session?.user?.permissions.includes("update:member") &&
                   memberId && (
                     <div className="mt-6">
                       <FormFooter
-                        submitBtnText="Update Employee"
+                        submitBtnText="Update Member"
                         showSveBtn={false}
                         isLoading={postMutation.isPending}
                       />

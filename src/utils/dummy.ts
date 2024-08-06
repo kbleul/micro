@@ -142,16 +142,43 @@ export const periodOptions = [
   },
 ];
 
-export const MarriageStatusOptions = [
-  "married",
-  "unmarried",
-  "divorced",
-  "widowed",
+export const MarriageStatusOptions = [ 
+  {
+    name: "Married",
+    value: "married",
+  }, 
+  {
+    name: "Unmarried",
+    value: "unmarried",
+  }, 
+  {
+    name: "Divorced",
+    value: "divorced",
+  }, 
+  {
+    name: "Widowed",
+    value: "widowed",
+  }, 
 ];
 
 export const IdentificationTypeOptions = [
-   "national_id",
-   "digital_id",
-   "driver_license",
-   "passport",
+  {
+    name: "National Id",
+    value: "national_id",
+  }, 
+  {
+    name: "Digital Id",
+    value: "digital_id",
+  }, 
+  {
+    name: "Driver License",
+    value: "driver_license",
+  }, 
+  {
+    name: "Passport",
+    value: "passport",
+  }, 
 ];
+
+
+

@@ -16,8 +16,9 @@ import useDynamicMutation from "@/react-query/usePostData";
 import WidgetCard from "@/components/cards/widget-card";
 import ControlledTable from "@/components/controlled-table";
 import { PiMagnifyingGlassBold, PiXBold } from "react-icons/pi";
-import { getColumns } from "./employee_column";
+import { getColumns } from "./members_column";
 import { CITIES, REGIONS } from "@/utils/dummy";
+import { toast } from "sonner";
 
 const MembersList = () => {
   const queryClient = useQueryClient();
@@ -51,9 +52,33 @@ const MembersList = () => {
     headers
   );
 
-  console.log(usersData)
 
-  const Members = usersData?.data?.members ?? []
+  const Members = usersData?.data?.data?.members ?? []
+
+  const changeStatus = async ( id: string, currentStatus: string) => {
+    try {
+      await postMutation.mutateAsync({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}members/status/${id}`,
+        method: "PUT",
+        headers,
+        body: {
+          status: currentStatus === "pending" || currentStatus === "rejected" ? "approved" : "rejected" 
+        },
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [queryKeys.getAllMembers],
+          });
+          toast.success("Status updated Successfully");
+        },
+        onError: (err) => {
+          toast.error(err?.response?.data?.data);
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   return (
     <main>
@@ -93,21 +118,7 @@ const MembersList = () => {
               isLoading={false}
               isClearable={true}
             />
-            {/* <Select
-              name={"name"}
-              options={CITIES}
-              isMulti={true}
-              isSearchable={true}
-              placeholder="All branches"
-              onChange={() => {}}
-              getOptionLabel={() => ""}
-              getOptionValue={() => ""}
-              className="w-full font-medium z-[100]"
-              classNamePrefix="react-select"
-              isDisabled={false}
-              isLoading={false}
-              isClearable={true}
-            /> */}
+          
           </div>
           <div className=" flex items-center  px-5 py-4 w-1/2">
             <Input
@@ -154,7 +165,7 @@ const MembersList = () => {
             data={Members}
             scroll={{ x: 900 }}
             // @ts-ignore
-            columns={getColumns()}
+            columns={getColumns(changeStatus, session?.user?.permissions)}
             paginatorOptions={{
               pageSize,
               setPageSize,
