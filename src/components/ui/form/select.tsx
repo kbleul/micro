@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import Select, { StylesConfig } from "react-select";
 import { useField, ErrorMessage } from "formik";
 import cn from "@/utils/class-names";
+import appendAsterisk from "./asterrisk";
 interface SelectProps {
   label: string;
   name: string;
@@ -20,6 +21,7 @@ interface SelectProps {
   isMulti?: boolean;
   setSearchQuery?: Dispatch<SetStateAction<string>>;
   className?: string;
+  isRequired?: boolean;
 }
 
 const CustomSelect: React.FC<SelectProps> = ({
@@ -40,6 +42,7 @@ const CustomSelect: React.FC<SelectProps> = ({
   isMulti = false,
   setSearchQuery,
   className,
+  isRequired= false
 }) => {
   const [, , helpers] = useField(name);
   const { setValue, setTouched } = helpers;
@@ -101,7 +104,7 @@ const CustomSelect: React.FC<SelectProps> = ({
        text-sm mb-1.5
      `}
       >
-        {label}
+       {appendAsterisk(label, isRequired)}
       </label>
       <div className="mt-1">
         <Select

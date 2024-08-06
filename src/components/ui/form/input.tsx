@@ -2,6 +2,7 @@
 import { Input } from "@/components/ui/input";
 import cn from "@/utils/class-names";
 import { useField, ErrorMessage } from "formik";
+import appendAsterisk from "./asterrisk";
 interface FormikInputProps {
   label: string;
   name: string;
@@ -34,7 +35,11 @@ interface FormikInputProps {
     | "success"
     | "warning"
     | undefined;
+    isRequired?: boolean;
 }
+
+
+
 
 const FormikInput: React.FC<FormikInputProps> = ({
   label,
@@ -47,6 +52,7 @@ const FormikInput: React.FC<FormikInputProps> = ({
   inputClassName,
   color,
   disabled = false,
+  isRequired = false, 
 }) => {
   const [field] = useField(name);
   return (
@@ -57,7 +63,7 @@ const FormikInput: React.FC<FormikInputProps> = ({
           {...field}
           // @ts-ignore
           type={type}
-          label={label}
+          label={appendAsterisk(label, isRequired)}
           name={name}
           prefix={prefix}
           suffix={suffix}

@@ -164,7 +164,7 @@ const AddMemberForm = ({
 
     initial_balance: 0,
     account_type_id: "",
-    term_grace_period: "",
+    term_grace_period: 0,
     term_amount: 0,
   };
 
@@ -198,6 +198,7 @@ const AddMemberForm = ({
           router.push(routes.home.members.view_all);
         },
         onError: (err) => {
+          console.log("--------->",err)
           handleErrorWithToast(err, toast);
         },
       });
@@ -234,6 +235,7 @@ const AddMemberForm = ({
                       placeholder="Enter first name"
                       color="primary"
                       className=""
+                      isRequired
                     />
 
                     <FormikInput
@@ -242,6 +244,7 @@ const AddMemberForm = ({
                       placeholder="Enter middle name"
                       color="primary"
                       className=""
+                      isRequired
                     />
 
                     <FormikInput
@@ -250,6 +253,7 @@ const AddMemberForm = ({
                       placeholder="Enter last name"
                       color="primary"
                       className=""
+                      isRequired
                     />
 
                     <FormikInput
@@ -258,6 +262,7 @@ const AddMemberForm = ({
                       placeholder="Enter age"
                       color="primary"
                       className=""
+                      isRequired
                     />
 
                     <Field name="gender">
@@ -271,6 +276,7 @@ const AddMemberForm = ({
                           getOptionValue={(option) => option.name}
                           color="primary"
                           placeholder="Select gender"
+                          isRequired
                         />
                       )}
                     </Field>
@@ -282,6 +288,7 @@ const AddMemberForm = ({
                       prefix="+251"
                       color="primary"
                       className="col-span-2 xl:col-span-1"
+                      isRequired
                     />
 
                     <Field name="birth_date">
@@ -319,6 +326,7 @@ const AddMemberForm = ({
                         label="Marriage Status"
                         options={MarriageStatusOptions}
                         onChange={(selectedOption: { value: string }) => {
+                          console.log(errors)
                           setFieldValue(
                             "marriage_status",
                             selectedOption.value
@@ -332,6 +340,7 @@ const AddMemberForm = ({
                           status.name
                         }
                         noOptionsMessage={() => "Fetching status..."}
+                        isRequired
                       />
                     </div>
 
@@ -449,7 +458,7 @@ const AddMemberForm = ({
                         onChange={(selectedOption: any) => {
                           setFieldValue("birth_place", selectedOption.name);
                         }}
-                        placeholder="select birth_place"
+                        placeholder="select birth place"
                         getOptionValue={(birth_place: any) => birth_place?.name}
                         getOptionLabel={(birth_place: any) => birth_place?.name}
                         noOptionsMessage={() => "Fetching cities..."}
@@ -494,6 +503,7 @@ const AddMemberForm = ({
                       placeholder="Enter birth place house_number"
                       color="primary"
                       className=""
+                      isRequired
                     />
                   </FormGroup>
 
@@ -515,6 +525,7 @@ const AddMemberForm = ({
                         getOptionValue={(region: any) => region?.name}
                         getOptionLabel={(region: any) => region?.name}
                         noOptionsMessage={() => "Fetching regions..."}
+                        isRequired
                       />
                     </div>
                     <div className="mt-4 w-full flex flex-col gap-6 ">
@@ -575,6 +586,7 @@ const AddMemberForm = ({
                       placeholder="Enter current place house_number"
                       color="primary"
                       className=""
+                      isRequired
                     />
                   </FormGroup>
 
@@ -665,6 +677,7 @@ const AddMemberForm = ({
                                   placeholder="Enter house number"
                                   color="primary"
                                   className=""
+                                  isRequired
                                 />
                                 <FormikInput
                                   name={`emergency_contacts.[${index}].address`}
@@ -796,6 +809,7 @@ const AddMemberForm = ({
                                 placeholder="Enter house number"
                                 color="primary"
                                 className=""
+                                isRequired
                               />
                               <FormikInput
                                 name={`heirs.[${index}].address`}
@@ -869,6 +883,7 @@ const AddMemberForm = ({
                           status.name
                         }
                         noOptionsMessage={() => "Fetching types..."}
+                        isRequired
                       />
                     </div>
 
@@ -877,6 +892,7 @@ const AddMemberForm = ({
                       label="Photo"
                       isMultiple={false}
                       className="col-span-2"
+                      isRequired
                     />
 
                     {values.method_of_identifcation === "digital_id" && (
@@ -900,7 +916,7 @@ const AddMemberForm = ({
                   </FormGroup>
 
                   <FormGroup
-                    title="Disposit and Payments"
+                    title="Desposit and Payments"
                     description="Add amounts here..."
                     className={cn(className, "")}
                   >
@@ -910,6 +926,8 @@ const AddMemberForm = ({
                       placeholder="Enter registration fee"
                       color="primary"
                       className=""
+                      isRequired
+                      type="number"
                     />
 
                     <FormikInput
@@ -918,6 +936,8 @@ const AddMemberForm = ({
                       placeholder="Enter registration fee"
                       color="primary"
                       className=""
+                      isRequired
+                      type="number"
                     />
                   </FormGroup>
 
@@ -932,30 +952,27 @@ const AddMemberForm = ({
                         label="Account Types"
                         options={Types}
                         onChange={(selectedOption: { id: string }) => {
-                          setFieldValue(
-                            "account_type_id",
-                            selectedOption.id
-                          );
+                          setFieldValue("account_type_id", selectedOption.id);
                         }}
                         placeholder="select account type"
-                        getOptionValue={(type: { id: string }) =>
-                          type.id
+                        getOptionValue={(type: { id: string }) => type.id}
+                        getOptionLabel={(type: { name: string }) => type.name}
+                        noOptionsMessage={() =>
+                          "Fetching account period types..."
                         }
-                        getOptionLabel={(type: { name: string }) =>
-                          type.name
-                        }
-                        noOptionsMessage={() => "Fetching account period types..."}
                         isLoading={accountTypesData.isFetching}
+                        isRequired
                       />
                     </div>
 
                     <FormikInput
                       name={`term_grace_period`}
                       label="Payment Grace Period duration(in days)"
-
                       placeholder="Enter grace period"
                       color="primary"
                       className=""
+                      isRequired
+                      type="number"
                     />
 
                     <FormikInput
@@ -964,6 +981,8 @@ const AddMemberForm = ({
                       placeholder="Enter amount"
                       color="primary"
                       className=""
+                      isRequired
+                      type="number"
                     />
                   </FormGroup>
                 </div>

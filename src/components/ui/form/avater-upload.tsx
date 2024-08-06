@@ -16,6 +16,7 @@ import {
   PiTrashBold,
 } from "react-icons/pi";
 import { ActionIcon } from "@/components/ui/action-icon";
+import appendAsterisk from "./asterrisk";
 export interface Accept {
   [key: string]: string[];
 }
@@ -27,6 +28,7 @@ interface AvaterPickerProps {
   className?: string;
   isDoc?: boolean;
   isMultiple?: boolean;
+  isRequired?: boolean;
 }
 
 const AvaterPicker: React.FC<AvaterPickerProps> = ({
@@ -36,6 +38,7 @@ const AvaterPicker: React.FC<AvaterPickerProps> = ({
   className,
   isDoc = false,
   isMultiple = false,
+  isRequired=false
 }) => {
   const { setFieldValue } = useFormikContext();
   const [meta] = useField(name);
@@ -98,7 +101,7 @@ const AvaterPicker: React.FC<AvaterPickerProps> = ({
         className
       )}
     >
-      <label className=" block font-medium">{label}</label>
+      <label className=" block font-medium">{appendAsterisk(label, isRequired)}</label>
 
       <Dropzone {...dropzoneOptions}>
         {({ getRootProps, getInputProps, isDragActive, isDragReject }) => (

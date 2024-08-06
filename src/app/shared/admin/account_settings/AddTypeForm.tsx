@@ -56,9 +56,12 @@ const AddTypeForm = ({
   }
 
   const initialValues: InterstTypeType = {
-    name: id ? typesData?.data?.data?.name : "",
-    minimum_threshold: id ? typesData?.data?.data?.minimum_threshold : 0,
-    interest_term_id: id ? typesData?.data?.data?.interest_term_id : 0,
+    name: "",
+    minimum_threshold: 0,
+    interest_period: "",
+    interest_rate: 0,
+    saving_period: "",
+    penalty_rate: 0,
   };
 
   const createTermSubmitHandler = async (values: InterstTypeType) => {
@@ -121,7 +124,8 @@ const AddTypeForm = ({
                 label="Account type"
                 placeholder="Enter the term name"
                 color="primary"
-                className="mb-4"
+                className="mt-6"
+                isRequired
               />
 
               <FormikInput
@@ -129,10 +133,11 @@ const AddTypeForm = ({
                 label="Minimum Threshold"
                 placeholder="Enter the minumum threshold"
                 color="primary"
-                className="mb-4"
+                className="mt-6"
                 type="number"
+                isRequired
               />
-              <div className="mt-4 w-full flex flex-col gap-6 ">
+              <div className="mt-6 w-full flex flex-col gap-6 ">
                 <CustomSelect
                   isSearchable
                   name="interest_period"
@@ -150,6 +155,7 @@ const AddTypeForm = ({
                   defaultValue={interstTermsData?.data?.data?.interestTerms.filter(
                     (p: any) => p.id === typesData?.data?.data?.interest_period
                   )}
+                  isRequired
                 />
               </div>
 
@@ -158,12 +164,13 @@ const AddTypeForm = ({
                 label="Interest Rate"
                 placeholder="Enter the intrest rate"
                 color="primary"
-                className="my-6"
+                className="mt-6"
                 suffix="%"
                 type="number"
+                isRequired
               />
 
-              <div className="mt-4 w-full flex flex-col gap-6 ">
+              <div className="mt-8 w-full flex flex-col gap-6 ">
                 <CustomSelect
                   isSearchable
                   name="saving_period"
@@ -179,6 +186,7 @@ const AddTypeForm = ({
                   defaultValue={interstTermsData?.data?.data?.interestTerms.filter(
                     (p: any) => p.id === typesData?.data?.data?.saving_period
                   )}
+                  isRequired
                 />
 
                 <FormikInput
@@ -186,8 +194,10 @@ const AddTypeForm = ({
                   label="Penality Rate"
                   placeholder="Enter the penality rate"
                   color="primary"
-                  className="mb-4"
+                  className=""
                   type="number"
+                  isRequired
+                  suffix="%"
                 />
               </div>
 
