@@ -8,7 +8,7 @@ export const MemberSchema = Yup.object().shape({
   age: Yup.number()
     .min(0, "Age is too small")
     .max(150, "Age is too large")
-    .required("Gender is required"),
+    .required("Age is required"),
 
   phone_number: Yup.string()
     .min(1)
@@ -47,20 +47,20 @@ export const MemberSchema = Yup.object().shape({
 
   method_of_identifcation: Yup.string().required("Id type is required"),
   identification_number: Yup.string()
-  .typeError("Invalid input")
-  .when("method_of_identifcation", {
-    is: "digital_id",
-    then: (schema) => schema.required("FAN number is required is required"),
-    otherwise: (schema) => schema.nullable(),
-  }),
+    .typeError("Invalid input")
+    .when("method_of_identifcation", {
+      is: "digital_id",
+      then: (schema) => schema.required("FAN number is required is required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
 
   current_region: Yup.string().required("Current region is required"),
-  
 
-    account_type_id: Yup.string().required("Account type is required"),
-    term_grace_period: Yup.number().required("Grace period is required"),
-    term_amount: Yup.number().min(0, "Amount is too small").required("Grace period is required"),
-
+  account_type_id: Yup.string().required("Account type is required"),
+  term_grace_period: Yup.number().required("Grace period is required"),
+  term_amount: Yup.number()
+    .min(0, "Amount is too small")
+    .required("Grace period is required"),
 });
 
 export type MemberType = {
@@ -134,5 +134,4 @@ export type MemberType = {
   account_type_id: string;
   term_grace_period: number;
   term_amount: number;
-  
 };
