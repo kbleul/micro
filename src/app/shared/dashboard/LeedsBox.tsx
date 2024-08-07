@@ -1,11 +1,12 @@
 "use client";
 
-import { timeSectionOptions } from "@/constants/form-constants";
+
 import { useGetHeaders } from "@/hooks/use-get-headers";
 import { queryKeys } from "@/react-query/query-keys";
 import { useFetchData } from "@/react-query/useFetchData";
 import LeedsCard from "./LeedsCard";
 import BoxHeader from "./BoxHeader";
+import { periodOptions } from "@/utils/dummy";
 
 export type SocialLeedsArrType = {
   [key: string]: { id: string; name: string; key: string };
@@ -14,63 +15,63 @@ export type SocialLeedsArrType = {
 const SocialLeedsArr: SocialLeedsArrType = {
   facebook_click: {
     id: "SocialLeeds1",
-    name: "Facebook",
+    name: "Bole",
     key: "facebook_click",
   },
   instagram_click: {
     id: "SocialLeeds2",
-    name: "Instagram",
+    name: "Kera",
     key: "instagram_click",
   },
   twitter_click: {
     id: "SocialLeeds3",
-    name: "Twitter",
+    name: "Lafto",
     key: "twitter_click",
   },
   linkedIn_click: {
     id: "SocialLeeds4",
-    name: "LinkedIn",
+    name: "Merkato",
     key: "linkedin_click",
   },
   phone_click: {
     id: "SocialLeeds5",
     key: "phone_click",
-    name: "Phone Click",
+    name: "Semit",
   },
   map_click: {
     id: "SocialLeeds6",
     key: "map_click",
-    name: "Map",
+    name: "Koye",
   },
   telegram_click: {
     id: "SocialLeeds7",
     key: "telegram_click",
-    name: "Telegram",
+    name: "Bambis",
   },
   whatsapp_click: {
     id: "SocialLeeds8",
     key: "whatsapp_click",
-    name: "Whatsapp",
+    name: "Mexico",
   },
   website_click: {
     id: "SocialLeeds9",
     key: "website_click",
-    name: "Website",
+    name: "Stadium",
   },
 };
 
 const LeedsBox = ({ queryStr }: { queryStr: string }) => {
   const headers = useGetHeaders({ type: "Json" });
 
-  const leadsData = useFetchData(
-    [queryKeys.getLeadsStats],
-    `${process.env.NEXT_PUBLIC_SERVICE_BACKEND_URL}${queryStr}/dashboard/leads-graph`,
-    headers
-  );
+  // const leadsData = useFetchData(
+  //   [queryKeys.getAccountTypes],
+  //   `${process.env.NEXT_PUBLIC_SERVICE_BACKEND_URL}${queryStr}/dashboard/leads-graph`,
+  //   headers
+  // );
 
-  if (leadsData.isPending || leadsData.isFetching) {
-    return <></>;
-  }
+  // if (leadsData.isPending || leadsData.isFetching) {
+  //   return <></>;
+  // }
 
   const leadsDataobj: {
     phone_click: number;
@@ -79,12 +80,22 @@ const LeedsBox = ({ queryStr }: { queryStr: string }) => {
     whatsapp_click: number;
     facebook_click: number;
     website_click: number;
+    twitter_click: number;
     total: number;
-  } = leadsData.data?.data;
+  } = {
+    phone_click: 700,
+    map_click: 500,
+    telegram_click: 800,
+    whatsapp_click: 625,
+    facebook_click: 500,
+    website_click: 790,
+    twitter_click: 700,
+    total: 875,
+  }
 
   return (
-    <article className="border border-[#D0D0D0] rounded-lg px-4 py-6 ">
-      <BoxHeader title="Top Leads" optionsList={timeSectionOptions} />
+    <article className=" rounded-lg px-4 py-6 ">
+      <BoxHeader title="Top Branches" optionsList={periodOptions} />
 
       <section className="flex flex-col gap-4 justify-between items-start mt-4">
         {Object.keys(leadsDataobj).map((leedKey: string) => {

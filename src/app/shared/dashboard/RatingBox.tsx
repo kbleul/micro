@@ -1,10 +1,10 @@
 "use client";
 import BoxHeader from "./BoxHeader";
 import GaugeChart from "react-gauge-chart";
-import { timeSectionOptions } from "@/constants/form-constants";
 import { useGetHeaders } from "@/hooks/use-get-headers";
 import { useFetchData } from "@/react-query/useFetchData";
 import { queryKeys } from "@/react-query/query-keys";
+import { periodOptions } from "@/utils/dummy";
 
 const ChartColor = ["#FF0036", "#702EC2", "#4771F1", "#55B685", "#E76F00"];
 const calculateSatisfactionLevel = (ratingsObj: {
@@ -56,7 +56,7 @@ const RatingBox = ({ queryStr }: { queryStr: string }) => {
   const headers = useGetHeaders({ type: "Json" });
 
   const ratingsData = useFetchData(
-    [queryKeys.getRatingStats],
+    [queryKeys.getAccountTypes],
     `${process.env.NEXT_PUBLIC_SERVICE_BACKEND_URL}${queryStr}/dashboard/rating-graph`,
     headers
   );
@@ -72,7 +72,13 @@ const RatingBox = ({ queryStr }: { queryStr: string }) => {
     3: number;
     4: number;
     5: number;
-  } = ratingsData.data.data;
+  } = {
+    1: 10,
+    2: 2000,
+    3: 5000,
+    4: 8544,
+    5: 4000,
+  };
 
   const satisfactionLevel = calculateSatisfactionLevel(ratingsObj);
 
@@ -81,12 +87,12 @@ const RatingBox = ({ queryStr }: { queryStr: string }) => {
       <div className="px-4">
         <BoxHeader
           title="Customer Satisfaction"
-          optionsList={timeSectionOptions}
+          optionsList={periodOptions}
         />
       </div>
 
-      <section className="bg-[#F8F8F8] h-full ">
-        <div className="bg-white h-[300px] max-h-[40vh] max-w-[600px] px-4 relative overflow-hidden">
+      <section className="bg-white h-full  flex justify-center items-center">
+        <div className=" h-[300px] max-h-[100vh] w-full px-4 relative overflow-hidden">
           {satisfactionLevel ? (
             <GaugeChart
               id="gauge-chart1"
@@ -97,7 +103,7 @@ const RatingBox = ({ queryStr }: { queryStr: string }) => {
               arcPadding={0.02}
               style={{ height: "100%" }}
               hideText={true}
-              className="self-center pt-[1vh] max-h-[30px]"
+              className="self-center pt-[1vh] max-h-[100px]"
             />
           ) : (
             <div className="pt-[15vh] text-xl flex justify-center items-center">

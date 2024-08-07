@@ -56,7 +56,7 @@ export default function MetricCard({
           {icon ? (
             <div
               className={cn(
-                "flex h-11 w-11 items-center justify-center rounded-lg bg-gray-100 lg:h-12 lg:w-12",
+                "flex h-11 w-11 items-center justify-center rounded-lg  lg:h-12 lg:w-12 border bg-green-400",
                 iconClassName
               )}
             >

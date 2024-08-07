@@ -8,6 +8,11 @@ const nextConfig = {
         hostname: "mullet-ready-suitably.ngrok-free.app",
         protocol: "https",
       },
+      {
+        hostname: "t3.ftcdn.net",
+        protocol: "https",
+
+      }
     ],
   },
 

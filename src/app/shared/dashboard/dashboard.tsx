@@ -13,12 +13,13 @@ const Dashboard = () => {
       </div>
 
 
-      {/* <article className="grid grid-cols-1 lg:grid-cols-2 4xl:grid-cols-3 gap-8 w-full items-stretch">
-        <LeedsBox queryStr="branch-manager" />
-        <TopSalesBox queryStr="branch-manager" />
-        <TopProductsBox queryStr="branch-manager" />
-        <RatingBox queryStr="branch-manager" />
-      </article> */}
+      <article className="grid grid-cols-1 lg:grid-cols-2 4xl:grid-cols-3 gap-8 w-full items-stretch mt-10">
+        <LeedsBox queryStr="" />
+        <TopSalesBox queryStr="" />
+        <TopProductsBox queryStr="" />
+        <RatingBox queryStr="" />
+        
+      </article>
     </div>
   );
 };

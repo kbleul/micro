@@ -4,59 +4,57 @@ import cn from "@/utils/class-names";
 
 import MetricCard from "@/components/cards/metric-card";
 
-import ExpertIcon from "@/components/icons/expert-icon";
-import CenterIcon from "@/components/icons/center-icon";
-import AppointmentErrorIcon from "@/components/icons/appointement-error";
-import AppointmentCheckIcon from "@/components/icons/appointment-check";
+import { MdAccountBalance } from "react-icons/md";
+import { FaMoneyBillTrendUp } from "react-icons/fa6";
 
 const ticketStats = [
   {
     id: 1,
-    icon: <AppointmentCheckIcon className="h-full w-full" />,
-    title: "completed ",
+    icon: <MdAccountBalance className="text-green-400" size={24} />,
+    title: "Total Accounts ",
     metric: "12,450",
   },
   {
     id: 2,
-    icon: <AppointmentErrorIcon className="h-full w-full" />,
-    title: "Canceled ",
+    icon: <MdAccountBalance className="text-red-400" size={24} />,
+    title: "Active Accounts",
     metric: "3,590",
   },
   {
     id: 3,
-    icon: <CenterIcon className="h-full w-full" />,
-    title: "Total Centers",
+    icon: <MdAccountBalance className="text-blue-400" size={24} />,
+    title: "Rejected Accounts",
     metric: "7,890",
   },
   {
     id: 3,
-    icon: <ExpertIcon className="h-full w-full" />,
-    title: "Total Centers",
+    icon: <MdAccountBalance className="text-yellow-400" size={24} />,
+    title: "Pending Accounts",
     metric: "1,160",
   },
   {
     id: 1,
-    icon: <AppointmentCheckIcon className="h-full w-full" />,
-    title: "completed ",
-    metric: "12,450",
+    icon: <FaMoneyBillTrendUp className="text-green-400" size={24} />,
+    title: "Loan Requests",
+    metric: "12",
   },
   {
     id: 2,
-    icon: <AppointmentErrorIcon className="h-full w-full" />,
-    title: "Canceled ",
-    metric: "3,590",
+    icon: <FaMoneyBillTrendUp className="text-red-400" size={24} />,
+    title: "Loans Given",
+    metric: "300,00 birr",
   },
   {
     id: 3,
-    icon: <CenterIcon className="h-full w-full" />,
-    title: "Total",
-    metric: "7,890",
+    icon: <FaMoneyBillTrendUp className="text-blue-400" size={24} />,
+    title: "Pending Loans",
+    metric: "7",
   },
   {
     id: 3,
-    icon: <ExpertIcon className="h-full w-full" />,
-    title: "Total",
-    metric: "1,160",
+    icon: <FaMoneyBillTrendUp className="text-yellow-400" size={24} />,
+    title: "Accepted Loans",
+    metric: "100",
   },
 ];
 
