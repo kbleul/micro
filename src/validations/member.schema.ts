@@ -4,7 +4,6 @@ export const MemberSchema = Yup.object().shape({
   // last_name: Yup.string().required("Last name is required"),
   middle_name: Yup.string().required("Middle name is required"),
 
-  birth_date: Yup.date().required("Date of birth is required"),
   gender: Yup.string().required("Gender is required"),
   age: Yup.number()
     .min(0, "Age is too small")
@@ -69,7 +68,6 @@ export type MemberType = {
   last_name: string;
   middle_name: string;
   gender: string;
-  birth_date: Date | undefined;
   phone_number: string;
   age: number;
 

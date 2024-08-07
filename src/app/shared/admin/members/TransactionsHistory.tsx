@@ -6,25 +6,42 @@ import { useModal } from "../../modal-views/use-modal";
 import { useFetchData } from "@/react-query/useFetchData";
 // import { getColumns } from "./history_columns";
 import { queryKeys } from "@/react-query/query-keys";
-import { getColumns } from "./members_column";
+import { handleFetchState } from "@/utils/fetch-state-handler";
+import PageHeader from "../../page-header";
+import Loading from "@/components/ui/Loading";
+import { getColumns } from "./transactions_column";
 // import SessionForm from "../questionnairs/session-form";
 
-const AppointmentsHistory = ({ clientId }: { clientId: string }) => {
+const TransactionsHistory = ({
+  memberId,
+  accountId,
+}: {
+  memberId: string;
+  accountId: string;
+}) => {
   const headers = useGetHeaders({ type: "Json" });
   const { openModal } = useModal();
   const [currentPage, setCurrentPage] = React.useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  const appointments = useFetchData(
-    [
-      queryKeys.getAccountTypes + clientId,
-      clientId,
-      currentPage,
-      pageSize,
-    ],
-    `${process.env.NEXT_PUBLIC_WELLBEING_BACKEND_URL}expert/client-appointment-histories/${clientId}`,
+  const transactionsData = useFetchData(
+    [queryKeys.getAllTransactions + memberId, memberId, currentPage, pageSize],
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}accounts/transactions/${accountId}`,
     headers
   );
+
+  const fetchStateHandler = handleFetchState(
+    transactionsData,
+    <div className="flex justify-center items-center">
+      <Loading />
+    </div>
+  );
+
+  if (fetchStateHandler) {
+    return fetchStateHandler;
+  }
+
+  const Transactions = transactionsData.data.data;
 
   const addSessionSummary = (appointmentId: string) => {
     openModal({
@@ -37,7 +54,7 @@ const AppointmentsHistory = ({ clientId }: { clientId: string }) => {
     return (
       <div className="bg-[#FFF9F2] pb-4 pr-4">
         <></>
-        {/* <SessionForm clientId={clientId} appointmentId={appointmentId} /> */}
+        {/* <SessionForm memberId={memberId} appointmentId={appointmentId} /> */}
       </div>
     );
   };
@@ -51,16 +68,16 @@ const AppointmentsHistory = ({ clientId }: { clientId: string }) => {
       >
         <div className={"table-wrapper flex-grow"}>
           <ControlledTable
-            isLoading={appointments.isLoading}
-            data={appointments?.data?.data?.data}
-            columns={getColumns(() => {}, [])}
+            isLoading={transactionsData.isLoading}
+            data={Transactions}
+            columns={getColumns()}
             scroll={{ x: 400 }}
             variant={"modern"}
             className="mt-4"
             paginatorOptions={{
               pageSize,
               setPageSize,
-              total: appointments?.data?.data?.total,
+              total: transactionsData?.data?.data?.total,
               current: currentPage,
               onChange: (page: number) => setCurrentPage(page),
             }}
@@ -71,4 +88,4 @@ const AppointmentsHistory = ({ clientId }: { clientId: string }) => {
   );
 };
 
-export default AppointmentsHistory;
+export default TransactionsHistory;

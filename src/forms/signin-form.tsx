@@ -19,20 +19,8 @@ import { LoginType, loginSchema } from "@/validations/auth.schema";
 import FormikInput from "@/components/ui/form/input";
 import FormikPasswordInput from "@/components/ui/form/password-input";
 import { Role } from "@/constants/role.enum";
+import { handleErrorWithToast } from "@/utils/error-toast-handler";
 
-const assignRediresct = (role: any, params: string | null) => {
-  let redirectUrl = "";
-
-  switch (true) {
-    case role.includes(Role.ADMIN):
-      redirectUrl = routes.home.dashboard;
-      return redirectUrl;
-
-    default:
-      redirectUrl = "";
-      return redirectUrl;
-  }
-};
 
 export default function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -86,10 +74,7 @@ export default function SignInForm() {
           toast.success("Login Successfull, Redirecting...");
         },
         onError: (err) => {
-          console.log(err)
-          toast.error(
-            err?.response?.data?.data ?? err?.response?.data?.message
-          );
+          handleErrorWithToast(err, toast);
         },
       });
     } catch (err) {

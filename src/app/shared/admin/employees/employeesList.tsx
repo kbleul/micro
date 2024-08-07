@@ -53,7 +53,7 @@ const EmployeesList = () => {
       searchText,
     ],
     selectedRole && selectedRole !== "all"
-      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}users/roles/${selectedRole}`
+      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}users/roles/slug/${selectedRole}`
       : `${process.env.NEXT_PUBLIC_BACKEND_URL}users?page=${currentPage}&perPage=${pageSize}`,
     headers
   );

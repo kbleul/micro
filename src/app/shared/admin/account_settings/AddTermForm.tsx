@@ -85,10 +85,6 @@ const AddTermForm = ({
     }
   };
 
-  console.log(
-    "//////////////////////",
-    session?.user?.permissions.includes("update:account-type")
-  );
 
   return (
     <article className="p-8 pb-28">

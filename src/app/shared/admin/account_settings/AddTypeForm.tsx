@@ -55,13 +55,15 @@ const AddTypeForm = ({
     return <Loading />;
   }
 
+  const AccountTYpe:InterstTypeType = typesData?.data?.data
+
   const initialValues: InterstTypeType = {
-    name: "",
-    minimum_threshold: 0,
-    interest_period: "",
-    interest_rate: 0,
-    saving_period: "",
-    penalty_rate: 0,
+    name: id ? AccountTYpe.name : "",
+    minimum_threshold: id ? AccountTYpe.minimum_threshold : 0,
+    interest_period: id ? AccountTYpe.interest_period : "",
+    interest_rate: id ? AccountTYpe.interest_rate : 0,
+    saving_period: id ? AccountTYpe.saving_period : "",
+    penalty_rate: id ? AccountTYpe.penalty_rate : 0,
   };
 
   const createTermSubmitHandler = async (values: InterstTypeType) => {
@@ -152,9 +154,7 @@ const AddTypeForm = ({
                     interest_period?.name
                   }
                   noOptionsMessage={() => "Fetching periods..."}
-                  defaultValue={interstTermsData?.data?.data?.interestTerms.filter(
-                    (p: any) => p.id === typesData?.data?.data?.interest_period
-                  )}
+                  defaultValue={id && periodOptions.find(p => p.name === AccountTYpe.interest_period)}
                   isRequired
                 />
               </div>
@@ -183,9 +183,7 @@ const AddTypeForm = ({
                   getOptionValue={(saving_period: any) => saving_period?.id}
                   getOptionLabel={(saving_period: any) => saving_period?.name}
                   noOptionsMessage={() => "Fetching periods..."}
-                  defaultValue={interstTermsData?.data?.data?.interestTerms.filter(
-                    (p: any) => p.id === typesData?.data?.data?.saving_period
-                  )}
+                  defaultValue={id && periodOptions.find(p => p.name === AccountTYpe.saving_period)}
                   isRequired
                 />
 

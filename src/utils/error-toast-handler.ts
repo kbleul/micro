@@ -1,25 +1,56 @@
-export const handleErrorWithToast = (err: any, toast: any) => {
-    console.log("9999999999999999999-----------------",err?.response?.data?.error )
+// export const handleErrorWithToast = (err: any, toast: any) => {
 
-  if (err?.response?.data?.error) {
-    console.log("111111111111111111111111")
+//   if (err?.response?.data?.error) {
 
-    if (typeof err.response?.data?.error === "string") {
-        console.log("2222222222222222222222")
+//     if (typeof err.response?.data?.error === "string") {
 
-      toast.error(err?.response?.data?.error);
-    } else if (err?.response?.data?.error?.details) {
-        console.log("33333333333333333333")
-      const details = err?.response?.data?.error?.details ?? [];
-      let msg = "";
+//       toast.error(err?.response?.data?.error);
+//     } else if (err?.response?.data?.error?.details) {
 
-      details.forEach((detail: any) => {
-        if (detail?.message) {
-          msg +=   detail.message + ", ";
-        }
-      });
+//       if (err?.response?.data?.error?.details?.message) {
+//         toast.error(err?.response?.data?.error?.details?.message);
+//         return
+//       }
+//       const details = err?.response?.data?.error?.details ?? [];
+//       let msg = "";
 
-      toast.error(msg);
-    }
+//       details.forEach((detail: any) => {
+//         if (detail?.message) {
+//           msg += detail.message + ", ";
+//         }
+//       });
+
+//       toast.error(msg);
+//     }
+//   }
+// };
+
+
+// Helper function to extract error messages
+const getErrorMessage = (err: any): string => {
+  if (!err?.response?.data?.error) {
+    return "An unknown error occurred";
   }
+
+  const error = err.response.data.error;
+
+  if (typeof error === "string") {
+    return error;
+  }
+
+  if (error.details?.message) {
+    return error.details.message;
+  }
+
+  if (Array.isArray(error.details)) {
+    return error.details.map((detail: any) => detail?.message).filter(Boolean).join(", ");
+  }
+
+  return "An unknown error occurred";
+};
+
+// Main function to handle errors and display toast notifications
+export const handleErrorWithToast = (err: any, toast: any) => {
+  const errorMessage = getErrorMessage(err);
+  toast.error(errorMessage);
 };

@@ -12,22 +12,30 @@ import ClientDetailsHeader from "./ClientDetailsHeader";
 import CustomCategoryButton from "@/components/ui/CustomCategoryButton";
 import ClientInfo from "./ClientInfo";
 import UpcommingAppointments from "./UpcommingAppointment";
-import AppointmentsHistory from "./AppointmentsHistory";
+import TransactionsHistory from "./TransactionsHistory";
+import DepositForm from "./DepositForm";
+import WithdrawalForm from "./Withdrawal";
 
 export type memberType = {
-    id: string;
-    full_name: string;
-    first_name: string;
-    last_name: string;
-    middle_name: string;
-    phone_number: string;
-    birth_date: string;
-    gender: string;
-    photo: string;
-    account: {number: string, status: string};
-    marriage_status: string
-}
-const CategoriesArr = ["Account Info", "Personal Info", "Transactions", "Deposite"];
+  id: string;
+  full_name: string;
+  first_name: string;
+  last_name: string;
+  middle_name: string;
+  phone_number: string;
+  birth_date: string;
+  gender: string;
+  photo: string;
+  account: { number: string; status: string };
+  marriage_status: string;
+};
+export const CategoriesArr = [
+  "Personal Info",
+  // "Account Info",
+  "Transactions",
+  "Deposite",
+  // "Withdrawal",
+];
 
 const ViewMember = ({
   memberId,
@@ -79,10 +87,10 @@ const ViewMember = ({
 
   return (
     <main className="">
-        <PageHeader
-      title={pageHeader.title ?? ""}
-      breadcrumb={pageHeader.breadcrumb}
-    />
+      <PageHeader
+        title={pageHeader.title ?? ""}
+        breadcrumb={pageHeader.breadcrumb}
+      />
 
       <div className="my-3 mb-6">
         <ClientDetailsHeader userData={MemberInfo} />
@@ -100,13 +108,35 @@ const ViewMember = ({
           <ClientInfo userData={MemberInfo} />
         )}
 
-        {categoryLink === CategoriesArr[1] && (
+        {/* {categoryLink === CategoriesArr[1] && (
           <UpcommingAppointments clientId={memberId} />
+        )} */}
+
+        {categoryLink === CategoriesArr[1] && (
+          <TransactionsHistory
+            memberId={memberId}
+            accountId={MemberInfo?.account?.id}
+          />
         )}
 
         {categoryLink === CategoriesArr[2] && (
-          <AppointmentsHistory clientId={memberId} />
+          <DepositForm
+            memberId={memberId}
+            accountId={MemberInfo?.account?.id}
+            accountNumber={MemberInfo?.account?.number}
+            setCategoryLink={setCategoryLink}
+          />
         )}
+
+        {/* {categoryLink === CategoriesArr[3] && (
+          <WithdrawalForm
+            memberId={memberId}
+            accountId={MemberInfo?.account?.id}
+            accountNumber={MemberInfo?.account?.number}
+            currentBalance={MemberInfo?.account?.balance}
+            setCategoryLink={setCategoryLink}
+          />
+        )} */}
       </section>
     </main>
   );

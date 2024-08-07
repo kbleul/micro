@@ -135,7 +135,6 @@ export const getColumns = (changeStatus: (id: number, currentStatus: string) => 
               size="lg"
               variant="outline"
               className="hover:text-gray-700"
-              onClick={() => changeStatus(row.id, row.status)}
             >
              <TbEye size="25" />
             

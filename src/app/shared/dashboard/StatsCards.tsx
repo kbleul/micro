@@ -71,7 +71,7 @@ const StatsCards = ({
   const headers = useGetHeaders({ type: "Json" });
 
   const statsData = useFetchData(
-    [queryKeys.getMainStats],
+    [queryKeys.getAccountTypes],
     `${process.env.NEXT_PUBLIC_SERVICE_BACKEND_URL}${queryStr}/dashboard/counts`,
 
     headers

@@ -18,6 +18,8 @@ import { PiXBold } from "react-icons/pi";
 import CustomSelect from "@/components/ui/form/select";
 import { useSession } from "next-auth/react";
 import { branchType } from "types/common_types";
+import { useRouter } from "next/navigation";
+import { routes } from "@/config/routes";
 
 type AssignType = {
   manager_id: string;
@@ -34,6 +36,7 @@ const AssignManagerForm = ({
 }) => {
   const headers = useGetHeaders({ type: "Json" });
   const { data: session } = useSession();
+  const router = useRouter();
 
   const queryClient = useQueryClient();
   const postMutation = useDynamicMutation();
@@ -51,7 +54,7 @@ const AssignManagerForm = ({
 
   console.log(managersData?.data?.data)
 
-  const managersList:any[] = managersData?.data?.data ?? []
+  const managersList:any[] = managersData?.data?.data?.users ?? []
 
   const initialValues: AssignType = {
     manager_id: "",
@@ -76,6 +79,9 @@ const AssignManagerForm = ({
 
           toast.success("Term updated Successfully");
           closeModal();
+
+          router.push(routes.home.branches.view_all);
+
         },
         onError: (err: any) => {
           toast.error(err?.response?.data?.data);

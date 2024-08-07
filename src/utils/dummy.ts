@@ -182,3 +182,10 @@ export const IdentificationTypeOptions = [
 
 
 
+
+
+export const StatusToColor = {
+  "green": "Able to deposit",
+  "yellow": "In grace period",
+  "red": "Not able to deposit"
+}

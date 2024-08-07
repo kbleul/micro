@@ -7,4 +7,6 @@ export const queryKeys = {
   getInterstTerms: "getInterstTerms",
   getAccountTypes: "getAccountTypes",
   getAllMembers: "getAllMembers",
+  getAllTransactions: "getAllTransactions",
+  getWithdrawelStatus: "getWithdrawelStatus",
 };

@@ -23,6 +23,7 @@ import { Button } from "rizzui";
 import { useModal } from "../../modal-views/use-modal";
 import AssignManagerForm from "./AssignManagerForm";
 import { branchType } from "types/common_types";
+import { handleErrorWithToast } from "@/utils/error-toast-handler";
 
 const AddBranchForm = ({
   branchId,
@@ -59,8 +60,7 @@ const AddBranchForm = ({
       ? [queryKeys.getAllBranches + branchId, branchId]
       : [queryKeys.getAllBranches, branchId],
     `${process.env.NEXT_PUBLIC_BACKEND_URL}branches/${branchId}`,
-    headers,
-    !!branchId
+    headers
   );
 
   const fetchStateHandler = handleFetchState(
@@ -75,7 +75,7 @@ const AddBranchForm = ({
     return fetchStateHandler;
   }
 
-  const Branch: branchType = branchData?.data?.data ?? null;
+  const Branch: branchType = branchData?.data?.data?.branch ?? null;
 
   const initialValues: BranchType = {
     name: branchId ? Branch?.name : "",
@@ -106,7 +106,9 @@ const AddBranchForm = ({
           router.push(routes.home.branches.view_all);
         },
         onError: (err) => {
-          toast.error(err?.response?.data?.data);
+          handleErrorWithToast(err, toast);
+
+          // toast.error(err?.response?.data?.data);
         },
       });
     } catch (err) {
@@ -114,7 +116,7 @@ const AddBranchForm = ({
     }
   };
 
-  console.log({Branch})
+  console.log({ Branch });
 
   return (
     <article>
@@ -122,7 +124,7 @@ const AddBranchForm = ({
         title={pageHeader.title ?? ""}
         breadcrumb={pageHeader.breadcrumb}
       />
-{/* <div className="flex justify-end">
+      {/* <div className="flex justify-end">
                 <div className="self-end flex justify-end gap-x-6 border rounded-xl w-fit items-center pl-6 font-medium text-primary-dark">
                 <p>
                       Branch Manager -
@@ -149,15 +151,15 @@ const AddBranchForm = ({
         Branch &&
         session?.user?.permissions.includes("update:branch") && (
           <section>
-            {Branch.ManagerID ? (
+            {branchData?.data?.data?.manager ? (
               <div className="flex justify-end">
                 <div className="self-end flex justify-end gap-x-6 border rounded-xl w-fit items-center pl-6 font-medium text-primary-dark">
-                <p>
-                      Branch Manager -
-                      <span className="ml-3 underline font-medium">
-                        {Branch.name}
-                      </span>{" "}
-                    </p>
+                  <p>
+                    Branch Manager -
+                    <span className="ml-3 underline font-medium">
+                      {branchData?.data?.data?.manager?.full_name}
+                    </span>{" "}
+                  </p>
 
                   <Button
                     size="lg"
@@ -175,22 +177,21 @@ const AddBranchForm = ({
               </div>
             ) : (
               <div className="flex justify-end">
-
-              <div className="self-end flex justify-end gap-x-6 border rounded-xl w-fit items-center pl-6 font-medium text-primary-dark">
-                <p>Manager is not added for this branch yet</p>
-                <Button
-                  size="lg"
-                  color="primary"
-                  className="text-white bg-primary-dark"
-                  onClick={() =>
-                    openModal({
-                      view: <AssignManagerForm branch={Branch} />,
-                    })
-                  }
-                >
-                  Add Manager
-                </Button>
-              </div>
+                <div className="self-end flex justify-end gap-x-6 border rounded-xl w-fit items-center pl-6 font-medium text-primary-dark">
+                  <p>Manager is not added for this branch yet</p>
+                  <Button
+                    size="lg"
+                    color="primary"
+                    className="text-white bg-primary-dark"
+                    onClick={() =>
+                      openModal({
+                        view: <AssignManagerForm branch={Branch} />,
+                      })
+                    }
+                  >
+                    Add Manager
+                  </Button>
+                </div>
               </div>
             )}
           </section>
@@ -217,6 +218,7 @@ const AddBranchForm = ({
                       placeholder="Enter branch name"
                       color="primary"
                       className="col-span-2"
+                      isRequired
                     />
                     <FormikInput
                       name="phone_number"
@@ -225,6 +227,7 @@ const AddBranchForm = ({
                       prefix="+251"
                       color="primary"
                       className="col-span-2 xl:col-span-1"
+                      isRequired
                     />
                     <FormikInput
                       name="email"
@@ -232,6 +235,7 @@ const AddBranchForm = ({
                       placeholder="example@gmail.com"
                       color="primary"
                       className="col-span-2 xl:col-span-1"
+                      isRequired
                     />
                   </FormGroup>
                   <FormGroup
@@ -246,7 +250,8 @@ const AddBranchForm = ({
                         label="Region"
                         options={REGIONS}
                         defaultValue={
-                          branchId && Branch &&
+                          branchId &&
+                          Branch &&
                           REGIONS.find(
                             (region) => region.name === Branch.region
                           )
@@ -258,6 +263,7 @@ const AddBranchForm = ({
                         getOptionValue={(region: any) => region?.name}
                         getOptionLabel={(region: any) => region?.name}
                         noOptionsMessage={() => "Fetching regions..."}
+                        isRequired
                       />
                     </div>
                     <div className="mt-4 w-full flex flex-col gap-6 ">
@@ -267,7 +273,8 @@ const AddBranchForm = ({
                         label="City"
                         options={CITIES}
                         defaultValue={
-                          branchId && Branch &&
+                          branchId &&
+                          Branch &&
                           CITIES.find((city) => city.name === Branch.city)
                         }
                         onChange={(selectedOption: any) => {
@@ -277,6 +284,7 @@ const AddBranchForm = ({
                         getOptionValue={(city: any) => city?.name}
                         getOptionLabel={(city: any) => city?.name}
                         noOptionsMessage={() => "Fetching cities..."}
+                        isRequired
                       />
                     </div>
                     <FormikInput
@@ -285,6 +293,7 @@ const AddBranchForm = ({
                       placeholder="Eg. Bole Medhanialem in front of Edna Mall"
                       color="primary"
                       className="col-span-2"
+                      isRequired
                     />
                   </FormGroup>
                 </div>

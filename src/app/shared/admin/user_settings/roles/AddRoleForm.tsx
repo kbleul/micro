@@ -99,6 +99,7 @@ const AddRoleForm = ({
                 placeholder="Enter the role name"
                 color="primary"
                 className=""
+                isRequired
               />
 
               <div className="col-span-2 flex items-end justify-end gap-4 mt-10">

@@ -13,7 +13,6 @@ import {
   genderOptions,
   IdentificationTypeOptions,
   MarriageStatusOptions,
-  periodOptions,
   REGIONS,
 } from "@/utils/dummy";
 import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
@@ -92,7 +91,6 @@ const AddMemberForm = ({
     last_name: "",
     phone_number: "",
     middle_name: "",
-    birth_date: undefined,
     gender: "",
     age: 18,
 
@@ -178,12 +176,10 @@ const AddMemberForm = ({
           ...values,
           phone_number: "+251" + values.phone_number,
           gender: values.gender.toLowerCase(),
-          birth_date: secondaryDateFormat(values.birth_date),
           Status: true,
           firstname: values.first_name,
           lastname: values.last_name,
           middlename: values.middle_name,
-          birthdate: secondaryDateFormat(values.birth_date),
           currentregion: values.current_region,
           number_of_children_boys: values.children.filter(
             (child) => child.gender === "Male"
@@ -290,7 +286,7 @@ const AddMemberForm = ({
                       isRequired
                     />
 
-                    <Field name="birth_date">
+                    {/* <Field name="birth_date">
                       {() => (
                         <div>
                           <DatePicker
@@ -311,7 +307,7 @@ const AddMemberForm = ({
                           />
                         </div>
                       )}
-                    </Field>
+                    </Field> */}
                   </FormGroup>
 
                   <FormGroup
@@ -913,32 +909,6 @@ const AddMemberForm = ({
                   </FormGroup>
 
                   <FormGroup
-                    title="Desposit and Payments"
-                    description="Add amounts here..."
-                    className={cn(className, "")}
-                  >
-                    <FormikInput
-                      name={`registration_fee`}
-                      label="Registration Fee"
-                      placeholder="Enter registration fee"
-                      color="primary"
-                      className=""
-                      isRequired
-                      type="number"
-                    />
-
-                    <FormikInput
-                      name={`initial_balance`}
-                      label="Deposit"
-                      placeholder="Enter registration fee"
-                      color="primary"
-                      className=""
-                      isRequired
-                      type="number"
-                    />
-                  </FormGroup>
-
-                  <FormGroup
                     title="Account Info"
                     description="Add account info here..."
                     className={cn(className, "")}
@@ -982,6 +952,35 @@ const AddMemberForm = ({
                       type="number"
                     />
                   </FormGroup>
+
+                  
+                  <FormGroup
+                    title="Desposit and Payments"
+                    description="Add amounts here..."
+                    className={cn(className, "")}
+                  >
+                    <FormikInput
+                      name={`registration_fee`}
+                      label="Registration Fee"
+                      placeholder="Enter registration fee"
+                      color="primary"
+                      className=""
+                      isRequired
+                      type="number"
+                    />
+
+                    <FormikInput
+                      name={`initial_balance`}
+                      label="Deposit"
+                      placeholder="Enter registration fee"
+                      color="primary"
+                      className=""
+                      isRequired
+                      type="number"
+                    />
+                  </FormGroup>
+
+                  
                 </div>
 
                 {session?.user?.permissions &&

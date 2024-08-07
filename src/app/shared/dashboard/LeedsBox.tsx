@@ -95,7 +95,7 @@ const LeedsBox = ({ queryStr }: { queryStr: string }) => {
 
   return (
     <article className=" rounded-lg px-4 py-6 ">
-      <BoxHeader title="Top Branches" optionsList={periodOptions} />
+      <BoxHeader title="Top Branches By New Branch" optionsList={periodOptions} />
 
       <section className="flex flex-col gap-4 justify-between items-start mt-4">
         {Object.keys(leadsDataobj).map((leedKey: string) => {

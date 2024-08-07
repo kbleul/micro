@@ -26,6 +26,7 @@ import FormikPasswordInput from "@/components/ui/form/password-input";
 import appendAsterisk from "@/components/ui/form/asterrisk";
 import { handleErrorWithToast } from "@/utils/error-toast-handler";
 import { secondaryDateFormat } from "@/utils/format-date";
+import { validateDate } from "@/utils/date_checker";
 
 const Select = dynamic(() => import("@/components/ui/select"), {
   ssr: false,
@@ -110,6 +111,7 @@ const AddEmployeeForm = ({
   };
 
   const createEmployeeSubmitHandler = async (values: EmployeeType) => {
+    console.log("object")
     if (
       !session?.user?.permissions.includes("create:manager") &&
       values.role === "manager"
@@ -118,6 +120,15 @@ const AddEmployeeForm = ({
       return;
     }
 
+
+
+    const isValidDate = validateDate(secondaryDateFormat(values.date_of_birth))
+    console.log({isValidDate})
+    if (!isValidDate.isAbove18 || isValidDate.isFuture) {
+      toast.error("Invalid Date of Birth. Date must be a valide date and above 18 years old");
+      return;
+    }
+    console.log("objectxxx", isValidDate)
 
     const roles: any[] = rolesData.data.data;
 
@@ -131,7 +142,7 @@ const AddEmployeeForm = ({
           phone_number: "+251" + values.phone_number,
           role_id: roles.find((role) => role.slug === values.role).id,
           date_of_birth: secondaryDateFormat(values.date_of_birth),
-          Status: true
+          Status: true,
         },
         onSuccess: (res) => {
           toast.success("Employee Created Successfully");
@@ -140,15 +151,12 @@ const AddEmployeeForm = ({
         },
         onError: (err) => {
           handleErrorWithToast(err, toast);
-
         },
       });
     } catch (err) {
       console.log(err);
     }
   };
-
-
 
   return (
     <article>
@@ -175,7 +183,7 @@ const AddEmployeeForm = ({
                     <FormikInput
                       name="first_name"
                       label="First Name"
-                      placeholder="Enter branch name"
+                      placeholder="Enter first name"
                       color="primary"
                       className=""
                       isRequired
@@ -183,7 +191,7 @@ const AddEmployeeForm = ({
                     <FormikInput
                       name="last_name"
                       label="Last Name"
-                      placeholder="Enter branch name"
+                      placeholder="Enter last name"
                       color="primary"
                       className=""
                       isRequired
@@ -227,7 +235,9 @@ const AddEmployeeForm = ({
                       {() => (
                         <div>
                           <DatePicker
-                            inputProps={{ label: appendAsterisk("Birth Date", true)  }}
+                            inputProps={{
+                              label: appendAsterisk("Birth Date", true),
+                            }}
                             placeholderText="Select DOB"
                             selected={values.date_of_birth}
                             onChange={(date) =>
@@ -284,8 +294,6 @@ const AddEmployeeForm = ({
                         isRequired
                       />
                     </div>
-
-                
                   </FormGroup>
                 </div>
 

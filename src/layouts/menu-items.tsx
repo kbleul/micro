@@ -99,13 +99,13 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   }
 
 
-  if (userPermissions.includes("read:branch")) {
-    menuItems.push({
-      name: "Transactions",
-      href: routes.home.branches.view_all,
-      icon: <LiaMoneyBillWaveSolid />,
-    });
-  }
+  // if (userPermissions.includes("read:branch")) {
+  //   menuItems.push({
+  //     name: "Transactions",
+  //     href: routes.home.branches.view_all,
+  //     icon: <LiaMoneyBillWaveSolid />,
+  //   });
+  // }
 
 
 
