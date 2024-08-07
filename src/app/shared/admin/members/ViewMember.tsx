@@ -33,7 +33,7 @@ export const CategoriesArr = [
   "Personal Info",
   // "Account Info",
   "Transactions",
-  "Deposite",
+  "Deposit",
   // "Withdrawal",
 ];
 

@@ -75,7 +75,7 @@ const DepositForm = ({
           return (
             <Form className={"[&_label.block>span]:font-medium "}>
               <Title as="h4" className="border-b mb-4 pb-1">
-                {"Deposite an amount"}
+                {"Deposit an amount"}
               </Title>
 
               <FormikInput
