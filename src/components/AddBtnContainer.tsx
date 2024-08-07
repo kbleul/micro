@@ -40,7 +40,7 @@ const AddBtnContainer = ({
         </div>
       )}
 
-      {items.length > 0 && !route_address && (
+      {items.length > 0  && (
         <div className="flex justify-end mb-6">
           <Button
             size="lg"

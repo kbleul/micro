@@ -19,6 +19,10 @@ import { PiMagnifyingGlassBold, PiXBold } from "react-icons/pi";
 import { getColumns } from "./members_column";
 import { CITIES, REGIONS } from "@/utils/dummy";
 import { toast } from "sonner";
+import { handleFetchState } from "@/utils/fetch-state-handler";
+
+const firstBranch = { id: "001-branch", name: "All"};
+
 
 const MembersList = () => {
   const queryClient = useQueryClient();
@@ -32,6 +36,8 @@ const MembersList = () => {
 
   const [currentPage, setCurrentPage] = React.useState(1);
   const [pageSize, setPageSize] = useState(10);
+
+  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(firstBranch.id);
 
   const pageHeader = {
     title: "Members",
@@ -47,22 +53,51 @@ const MembersList = () => {
   };
 
   const usersData = useFetchData(
-    [queryKeys.getAllMembers, currentPage, pageSize, searchText],
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}members?page=${currentPage}&perPage=${pageSize}`,
+    [
+      queryKeys.getAllMembers,
+      currentPage,
+      pageSize,
+      searchText,
+      selectedBranchId,
+    ],
+    selectedBranchId && selectedBranchId !== "001-branch"
+      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}branches/members/${selectedBranchId}`
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}members?page=${currentPage}&perPage=${pageSize}`,
     headers
   );
 
+  const Members = usersData?.data?.data?.members ?? [];
 
-  const Members = usersData?.data?.data?.members ?? []
+  const branchesData = useFetchData(
+    [queryKeys.getAllBranches],
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}branches`,
+    headers
+  );
 
-  const changeStatus = async ( id: string, currentStatus: string) => {
+  const fetchStateHandler = handleFetchState(
+    branchesData,
+    <PageHeader
+      title={pageHeader.title ?? ""}
+      breadcrumb={pageHeader.breadcrumb}
+    />
+  );
+
+  if (fetchStateHandler) {
+    return fetchStateHandler;
+  }
+
+
+  const changeStatus = async (id: string, currentStatus: string) => {
     try {
       await postMutation.mutateAsync({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}members/status/${id}`,
         method: "PUT",
         headers,
         body: {
-          status: currentStatus === "pending" || currentStatus === "rejected" ? "approved" : "rejected" 
+          status:
+            currentStatus === "pending" || currentStatus === "rejected"
+              ? "approved"
+              : "rejected",
         },
         onSuccess: () => {
           queryClient.invalidateQueries({
@@ -78,6 +113,8 @@ const MembersList = () => {
       console.log(err);
     }
   };
+
+  const Branches: {id: string, name: string}[] = branchesData?.data?.data?.branches ?? [];
 
 
   return (
@@ -105,20 +142,20 @@ const MembersList = () => {
           <div className="flex  gap-x-4">
             <Select
               name={"name"}
-              options={CITIES}
-              isMulti={true}
+              options={[firstBranch, ...Branches]}
               isSearchable={true}
-              placeholder="All branches"
-              onChange={() => {}}
-              getOptionLabel={() => ""}
-              getOptionValue={() => ""}
-              className="w-full font-medium z-[100]"
+              placeholder="All"
+              onChange={(value: any) => {
+                setSelectedBranchId(value.id)
+              }}
+              getOptionLabel={(value: {id: string, name: string}) => value.name}
+              getOptionValue={(value: {id: string, name: string}) => value.id}
+              className="font-medium z-[100] w-[180px]"
               classNamePrefix="react-select"
               isDisabled={false}
               isLoading={false}
               isClearable={true}
             />
-          
           </div>
           <div className=" flex items-center  px-5 py-4 w-1/2">
             <Input

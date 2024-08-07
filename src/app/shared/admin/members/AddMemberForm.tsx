@@ -198,7 +198,6 @@ const AddMemberForm = ({
           router.push(routes.home.members.view_all);
         },
         onError: (err) => {
-          console.log("--------->",err)
           handleErrorWithToast(err, toast);
         },
       });
@@ -677,7 +676,6 @@ const AddMemberForm = ({
                                   placeholder="Enter house number"
                                   color="primary"
                                   className=""
-                                  isRequired
                                 />
                                 <FormikInput
                                   name={`emergency_contacts.[${index}].address`}
@@ -809,7 +807,6 @@ const AddMemberForm = ({
                                 placeholder="Enter house number"
                                 color="primary"
                                 className=""
-                                isRequired
                               />
                               <FormikInput
                                 name={`heirs.[${index}].address`}

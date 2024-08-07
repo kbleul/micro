@@ -21,13 +21,12 @@ import { roleTypes } from "types/common_types";
 const firstRole = { id: "001-role", name: "All", slug: "all" };
 
 const EmployeesList = () => {
-
   const { data: session } = useSession();
 
   const headers = useGetHeaders({ type: "Json" });
 
   const [searchText, setSearchText] = useState("");
-  const [selectedRole, setSelectedRole] = useState<roleTypes | null>(firstRole);
+  const [selectedRole, setSelectedRole] = useState<string | null>(firstRole.name.toLocaleLowerCase());
 
   const [currentPage, setCurrentPage] = React.useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -53,14 +52,14 @@ const EmployeesList = () => {
       pageSize,
       searchText,
     ],
-    selectedRole
-      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}users?page=${currentPage}&perPage=${pageSize}`
+    selectedRole && selectedRole !== "all"
+      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}users/roles/${selectedRole}`
       : `${process.env.NEXT_PUBLIC_BACKEND_URL}users?page=${currentPage}&perPage=${pageSize}`,
     headers
   );
 
   const rolesData = useFetchData(
-    [queryKeys.getAllRoles, currentPage, pageSize, searchText],
+    [queryKeys.getAllRoles],
     `${process.env.NEXT_PUBLIC_BACKEND_URL}user-roles`,
     headers
   );
@@ -106,9 +105,11 @@ const EmployeesList = () => {
               options={[firstRole, ...Roles]}
               isSearchable={true}
               getOptionLabel={(role) => role.name}
-              getOptionValue={(role) => role.id}
+              getOptionValue={(role) => role.slug}
               defaultValue={firstRole}
-              onChange={(value: any) => console.log(value)}
+              onChange={(value: any) =>
+                setSelectedRole(value.slug)
+              }
               className="w-full font-medium z-[100]"
               classNamePrefix="react-select"
               isDisabled={false}

@@ -17,6 +17,8 @@ import { Checkbox } from "rizzui";
 import { getParsedPermissions } from "@/utils/roleParser";
 import { permissionType } from "types/common_types";
 import { useState } from "react";
+import { IoArrowBack } from "react-icons/io5";
+import ViewRolePermissions from "./ViewRolePermissions";
 
 export default function AddRolePermissions({
   id,
@@ -29,7 +31,7 @@ export default function AddRolePermissions({
   const postMutation = useDynamicMutation();
 
   const headers = useGetHeaders({ type: "Json" });
-  const { closeModal } = useModal();
+  const { openModal, closeModal } = useModal();
 
   const [selectedPermissions, setSelectedPermissions] = useState<string[]>([]);
 
@@ -59,7 +61,6 @@ export default function AddRolePermissions({
   );
 
   const handleUpdatePermission = async () => {
-    console.log(selectedPermissions)
     try {
       await postMutation.mutateAsync({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}user-roles/assign-permissions`,
@@ -97,16 +98,33 @@ export default function AddRolePermissions({
 
   return (
     <div className="m-auto px-5 pb-8 pt-5 @lg:pt-6 @2xl:px-7 relative">
-      <ActionIcon
-        size="sm"
-        variant="text"
-        onClick={() => closeModal()}
-        className="absolute top-4 right-4"
-      >
-        <PiXBold className="h-auto w-5" />
-      </ActionIcon>
+      <section className="flex justify-between items-center px-4 py-4 border-b">
+        <ActionIcon
+          size="sm"
+          variant="text"
+          onClick={() => {
+            closeModal();
+            openModal({
+              view: <ViewRolePermissions id={id} slug={slug} />,
+              customSize: "1150px",
+            });
+          }}
+          className=""
+        >
+          <IoArrowBack className="h-auto w-10" />
+        </ActionIcon>
 
-      <div className="mb-7  mt-8">
+        <ActionIcon
+          size="sm"
+          variant="text"
+          onClick={() => closeModal()}
+          className=""
+        >
+          <PiXBold className="h-auto w-5" />
+        </ActionIcon>
+      </section>
+
+      <div className="mb-7  mt-6">
         <Title as="h4" className="font-semibold capitalize">
           {slug}
         </Title>
@@ -139,17 +157,19 @@ export default function AddRolePermissions({
           ))}
         </section>
 
-       {unassignedPermissions.length !== 0 &&  <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
-          <Button
-            color="primary"
-            className="px-10 text-white bg-primary-dark"
-            type="submit"
-            isLoading={postMutation.isPending}
-            onClick={handleUpdatePermission}
-          >
-            Assign
-          </Button>
-        </div>}
+        {unassignedPermissions.length !== 0 && (
+          <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
+            <Button
+              color="primary"
+              className="px-10 text-white bg-primary-dark"
+              type="submit"
+              isLoading={postMutation.isPending}
+              onClick={handleUpdatePermission}
+            >
+              Assign
+            </Button>
+          </div>
+        )}
       </article>
     </div>
   );

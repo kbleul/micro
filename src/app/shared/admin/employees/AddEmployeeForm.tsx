@@ -23,6 +23,9 @@ import dynamic from "next/dynamic";
 import SelectLoader from "@/components/loader/select-loader";
 import { EmployeeSchema, EmployeeType } from "@/validations/employee.schema";
 import FormikPasswordInput from "@/components/ui/form/password-input";
+import appendAsterisk from "@/components/ui/form/asterrisk";
+import { handleErrorWithToast } from "@/utils/error-toast-handler";
+import { secondaryDateFormat } from "@/utils/format-date";
 
 const Select = dynamic(() => import("@/components/ui/select"), {
   ssr: false,
@@ -104,7 +107,6 @@ const AddEmployeeForm = ({
     role: "",
     date_of_birth: undefined,
     gender: "",
-    password: "",
   };
 
   const createEmployeeSubmitHandler = async (values: EmployeeType) => {
@@ -115,6 +117,7 @@ const AddEmployeeForm = ({
       toast.error("You dont have permission to create a manager");
       return;
     }
+
 
     const roles: any[] = rolesData.data.data;
 
@@ -127,6 +130,7 @@ const AddEmployeeForm = ({
           ...values,
           phone_number: "+251" + values.phone_number,
           role_id: roles.find((role) => role.slug === values.role).id,
+          date_of_birth: secondaryDateFormat(values.date_of_birth),
           Status: true
         },
         onSuccess: (res) => {
@@ -135,7 +139,8 @@ const AddEmployeeForm = ({
           router.push(routes.home.employees.view_all);
         },
         onError: (err) => {
-          toast.error(err?.response?.data?.data);
+          handleErrorWithToast(err, toast);
+
         },
       });
     } catch (err) {
@@ -173,6 +178,7 @@ const AddEmployeeForm = ({
                       placeholder="Enter branch name"
                       color="primary"
                       className=""
+                      isRequired
                     />
                     <FormikInput
                       name="last_name"
@@ -180,6 +186,7 @@ const AddEmployeeForm = ({
                       placeholder="Enter branch name"
                       color="primary"
                       className=""
+                      isRequired
                     />
 
                     <FormikInput
@@ -189,6 +196,7 @@ const AddEmployeeForm = ({
                       prefix="+251"
                       color="primary"
                       className="col-span-2 xl:col-span-1"
+                      isRequired
                     />
                     <FormikInput
                       name="email"
@@ -196,6 +204,7 @@ const AddEmployeeForm = ({
                       placeholder="example@gmail.com"
                       color="primary"
                       className="col-span-2 xl:col-span-1"
+                      isRequired
                     />
 
                     <Field name="gender">
@@ -209,6 +218,7 @@ const AddEmployeeForm = ({
                           getOptionValue={(option) => option.name}
                           color="primary"
                           placeholder="Select gender"
+                          isRequired
                         />
                       )}
                     </Field>
@@ -217,7 +227,7 @@ const AddEmployeeForm = ({
                       {() => (
                         <div>
                           <DatePicker
-                            inputProps={{ label: "Birth Date" }}
+                            inputProps={{ label: appendAsterisk("Birth Date", true)  }}
                             placeholderText="Select DOB"
                             selected={values.date_of_birth}
                             onChange={(date) =>
@@ -248,7 +258,7 @@ const AddEmployeeForm = ({
                     description="Add more details here..."
                     className={cn(className)}
                   >
-                    <div className="mt-4 w-full flex flex-col gap-6 col-span-1">
+                    <div className="mt-4 w-full flex flex-col gap-6 col-span-2">
                       <CustomSelect
                         isSearchable
                         name="role"
@@ -271,16 +281,11 @@ const AddEmployeeForm = ({
                         getOptionValue={(role: any) => role?.slug}
                         getOptionLabel={(role: any) => role?.name}
                         noOptionsMessage={() => "Fetching roles..."}
+                        isRequired
                       />
                     </div>
 
-                    <FormikPasswordInput
-                      label="Password"
-                      placeholder="Enter temporary password"
-                      color="primary"
-                      name="password"
-                      className="col-span-1"
-                    />
+                
                   </FormGroup>
                 </div>
 
