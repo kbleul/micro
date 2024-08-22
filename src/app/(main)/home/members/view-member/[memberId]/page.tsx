@@ -1,13 +1,13 @@
-import ViewMember from "@/app/shared/admin/members/ViewMember";
+import ViewMemberProfile from "@/app/shared/admin/members/ViewMemberProfile";
 import { metaObject } from "@/config/site.config";
 import React from "react";
 
 export const metadata = {
-  ...metaObject("Branches"),
+  ...metaObject("Members"),
 };
 
 const page = ({ params }: { params: { memberId: string } }) => {
-  return <ViewMember memberId={params.memberId} />;
+  return <ViewMemberProfile memberId={params.memberId} />;
 };
 
 export default page;

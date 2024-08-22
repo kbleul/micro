@@ -16,7 +16,7 @@ export const getColumns = (changeStatus: (id: number, currentStatus: string) => 
     title: <HeaderCell title="Photo" />,
     dataIndex: "photo",
     key: "photo",
-    width: 20,
+    width: 80,
     render: (photo: string | null | undefined) => (
       <div>
         {photo && photo !== "" ? (
@@ -38,7 +38,7 @@ export const getColumns = (changeStatus: (id: number, currentStatus: string) => 
     title: <HeaderCell title="Full Name" />,
     dataIndex: "full_name",
     key: "full_name",
-    width: 130,
+    width: 200,
     render: (full_name: string) => (
       <Text className="font-medium text-gray-700 line-clamp-1 capitalize">
         {full_name}
@@ -46,13 +46,13 @@ export const getColumns = (changeStatus: (id: number, currentStatus: string) => 
     ),
   },
   {
-    title: <HeaderCell title="Account No." />,
-    dataIndex: "account",
-    key: "account",
-    width: 150,
-    render: (account: {number: string | number}) => (
-      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1">
-        {account?.number ?? ""}
+    title: <HeaderCell title="Accounts" />,
+    dataIndex: "accounts",
+    key: "accounts",
+    width: 200,
+    render: (accounts: any[]) => (
+      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 pl-6">
+        {accounts?.length}
       </Text>
     ),
   },
@@ -60,7 +60,6 @@ export const getColumns = (changeStatus: (id: number, currentStatus: string) => 
     title: <HeaderCell title="Phone Number" />,
     dataIndex: "phone_number",
     key: "phone_number",
-    width: 120,
     render: (phone_number: string) => (
       <Text className="font-medium text-gray-700 tracking-wider">
         {phone_number}
@@ -71,7 +70,6 @@ export const getColumns = (changeStatus: (id: number, currentStatus: string) => 
     title: <HeaderCell title="Gender" />,
     dataIndex: "gender",
     key: "gender",
-    width: 100,
     render: (gender: string) => (
       <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 capitalize">
         {gender}
@@ -82,9 +80,8 @@ export const getColumns = (changeStatus: (id: number, currentStatus: string) => 
     title: <HeaderCell title="Account Status" />,
     dataIndex: "status",
     key: "status",
-    width: 100,
     render: (_: string, row: any) => (
-      <div className="flex items-center justify-start gap-3 pe-4 w-full  ">
+      <div className="flex items-center justify-start gap-3 pe-4 w-full pl-10">
         {permissions.includes("update:member") &&
           <Tooltip
             size="sm"
@@ -118,7 +115,6 @@ export const getColumns = (changeStatus: (id: number, currentStatus: string) => 
     title: <HeaderCell title="Actions" className="opacity-0" />,
     dataIndex: "status",
     key: "status",
-    width: 120,
     render: (_: string, row: any) => (
       <div className="flex items-center justify-end gap-3 pe-4">
         {permissions.includes("update:member") &&

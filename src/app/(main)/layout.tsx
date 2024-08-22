@@ -18,7 +18,6 @@ export default function DefaultLayout({
     return null;
   }
 
-  console.log(session);
 
   if (!session) {
     router.push(routes.signIn);

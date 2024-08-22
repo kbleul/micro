@@ -30,6 +30,8 @@ export const routes = {
       "add-member": "/home/members/add-member",
       "view-member": (employeeId: string) =>
         `/home/members/view-member/${employeeId}`,
+      "view-member-account": (employeeId: string, branchId: string) =>
+        `/home/members/view-member/${employeeId}/view-account/${branchId}`,
     },
     users: "/home/users",
   },

@@ -8,44 +8,27 @@ import PageHeader from "../../page-header";
 import { useFetchData } from "@/react-query/useFetchData";
 import { queryKeys } from "@/react-query/query-keys";
 import { handleFetchState } from "@/utils/fetch-state-handler";
-import ClientDetailsHeader from "./ClientDetailsHeader";
 import CustomCategoryButton from "@/components/ui/CustomCategoryButton";
-import ClientInfo from "./ClientInfo";
-import UpcommingAppointments from "./UpcommingAppointment";
 import TransactionsHistory from "./TransactionsHistory";
 import DepositForm from "./DepositForm";
-import WithdrawalForm from "./Withdrawal";
+import WithdrawalForm from "./Withdraw";
+import AccountInfo from "./AccountInfo";
+import { Title } from "rizzui";
+import { memberType } from "types/common_types";
+import Image from "next/image";
+import Logo from "@public/logo.png";
+import { usePathname } from "next/navigation";
 
-export type memberType = {
-  id: string;
-  full_name: string;
-  first_name: string;
-  last_name: string;
-  middle_name: string;
-  phone_number: string;
-  birth_date: string;
-  gender: string;
-  photo: string;
-  account: { number: string; status: string };
-  marriage_status: string;
-};
-export const CategoriesArr = [
-  "Personal Info",
-  // "Account Info",
-  "Transactions",
-  "Deposit",
-  // "Withdrawal",
-];
+export const CategoriesArr = ["Account Info", "Ledger", "Deposit", "Withdraw"];
 
-const ViewMember = ({
-  memberId,
-  className,
-}: {
-  memberId: string;
-  className?: string;
-}) => {
+const ViewMember = () => {
   const headers = useGetHeaders({ type: "Json" });
 
+  const pathname = usePathname().split("/");
+  const memberId = pathname[4]
+  const accountId = pathname[6]
+
+console.log({memberId, accountId})
   const [categoryLink, setCategoryLink] = useState(CategoriesArr[0]);
 
   const pageHeader = {
@@ -60,7 +43,7 @@ const ViewMember = ({
         name: "Members",
       },
       {
-        name: "VIew Member",
+        name: "View Account",
       },
     ],
   };
@@ -82,62 +65,82 @@ const ViewMember = ({
   if (fetchStateHandler) {
     return fetchStateHandler;
   }
+  const MemberInfo: memberType = clientData.data.data;
+  const currentAccount = MemberInfo?.accounts.find(
+    (account) => account.id === accountId
+  );
 
-  const MemberInfo = clientData.data.data;
+  const dispatchComponent = (categoryLink: string) => {
+    switch (categoryLink) {
+      case CategoriesArr[1]:
+        return (
+          <TransactionsHistory memberId={memberId} accountId={accountId} />
+        );
+
+      case CategoriesArr[2]:
+        return (
+          <DepositForm
+            memberId={memberId}
+            accountId={accountId}
+            accountNumber={currentAccount?.number ?? ""}
+            currentBalance={currentAccount?.balance ?? 0}
+            minimumThreshold={currentAccount?.account_type.minimum_threshold ?? 0}
+            setCategoryLink={setCategoryLink}
+          />
+        );
+
+      case CategoriesArr[3]:
+        return (
+          <WithdrawalForm
+            memberId={memberId}
+            accountId={accountId}
+            accountNumber={currentAccount?.number ?? ""}
+            currentBalance={currentAccount?.balance ?? 0}
+            setCategoryLink={setCategoryLink}
+          />
+        );
+
+      default:
+        return <AccountInfo userData={MemberInfo} accountId={accountId} />;
+    }
+  };
 
   return (
     <main className="">
       <PageHeader
         title={pageHeader.title ?? ""}
         breadcrumb={pageHeader.breadcrumb}
-      />
+      >
+        <div className="flex justify-end items-center gap-1">
+          <Image
+            src={Logo}
+            alt="profile"
+            width={100}
+            height={100}
+            className="w-14 h-14 rounded-full"
+          />
 
-      <div className="my-3 mb-6">
-        <ClientDetailsHeader userData={MemberInfo} />
+          <div className="pb-1">
+            <Title as="h5" className="px-5 font-medium text-base">
+              {MemberInfo.full_name}
+            </Title>
+            <Title as="h5" className="px-5 mt-1 font-normal text-sm">
+              Account No. - {currentAccount?.number}
+            </Title>
+          </div>
+        </div>
+      </PageHeader>
+
+      <div className="mt-10">
+        <CustomCategoryButton
+          categoryLink={categoryLink}
+          setCategoryLink={setCategoryLink}
+          categoriesArr={CategoriesArr}
+          labels={CategoriesArr}
+        />
       </div>
 
-      <CustomCategoryButton
-        categoryLink={categoryLink}
-        setCategoryLink={setCategoryLink}
-        categoriesArr={CategoriesArr}
-        labels={CategoriesArr}
-      />
-
-      <section className="my-2">
-        {categoryLink === CategoriesArr[0] && (
-          <ClientInfo userData={MemberInfo} />
-        )}
-
-        {/* {categoryLink === CategoriesArr[1] && (
-          <UpcommingAppointments clientId={memberId} />
-        )} */}
-
-        {categoryLink === CategoriesArr[1] && (
-          <TransactionsHistory
-            memberId={memberId}
-            accountId={MemberInfo?.account?.id}
-          />
-        )}
-
-        {categoryLink === CategoriesArr[2] && (
-          <DepositForm
-            memberId={memberId}
-            accountId={MemberInfo?.account?.id}
-            accountNumber={MemberInfo?.account?.number}
-            setCategoryLink={setCategoryLink}
-          />
-        )}
-
-        {/* {categoryLink === CategoriesArr[3] && (
-          <WithdrawalForm
-            memberId={memberId}
-            accountId={MemberInfo?.account?.id}
-            accountNumber={MemberInfo?.account?.number}
-            currentBalance={MemberInfo?.account?.balance}
-            setCategoryLink={setCategoryLink}
-          />
-        )} */}
-      </section>
+      <section className="">{dispatchComponent(categoryLink)}</section>
     </main>
   );
 };

@@ -4,11 +4,11 @@ import { NextResponse } from "next/server";
 import { Role } from "./constants/role.enum";
 export default withAuth(
   function middleware(req: NextRequestWithAuth) {
-
+console.log("=============>", req.nextauth.token?.user)
     if (
-      (req.nextauth.token?.roles?.length &&
-        req.nextauth.token?.roles.length < 1) ||
-      !req.nextauth.token?.roles?.map((item) => item.name).includes(Role.ADMIN)
+      (req.nextauth.token?.user?.roles?.length &&
+        req.nextauth.token?.user?.roles.length < 1) ||
+      !req.nextauth.token?.user?.roles?.map((item) => item.name).includes(Role.ADMIN)
     ) {
       return NextResponse.rewrite(new URL("/access-denied", req.url));
     }

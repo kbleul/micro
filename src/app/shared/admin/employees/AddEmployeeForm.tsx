@@ -22,7 +22,6 @@ import { DatePicker } from "@/components/ui/datepicker";
 import dynamic from "next/dynamic";
 import SelectLoader from "@/components/loader/select-loader";
 import { EmployeeSchema, EmployeeType } from "@/validations/employee.schema";
-import FormikPasswordInput from "@/components/ui/form/password-input";
 import appendAsterisk from "@/components/ui/form/asterrisk";
 import { handleErrorWithToast } from "@/utils/error-toast-handler";
 import { secondaryDateFormat } from "@/utils/format-date";
@@ -111,7 +110,6 @@ const AddEmployeeForm = ({
   };
 
   const createEmployeeSubmitHandler = async (values: EmployeeType) => {
-    console.log("object")
     if (
       !session?.user?.permissions.includes("create:manager") &&
       values.role === "manager"

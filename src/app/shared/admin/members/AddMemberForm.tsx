@@ -257,6 +257,7 @@ const AddMemberForm = ({
                       placeholder="Enter age"
                       color="primary"
                       className=""
+                      type="number"
                       isRequired
                     />
 

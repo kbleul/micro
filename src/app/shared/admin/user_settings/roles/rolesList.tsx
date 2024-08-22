@@ -40,6 +40,7 @@ const RolesList = () => {
       },
     ],
   };
+  
   const rolesData = useFetchData(
     [queryKeys.getAllRoles],
     `${process.env.NEXT_PUBLIC_BACKEND_URL}user-roles`,

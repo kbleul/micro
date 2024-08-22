@@ -111,6 +111,7 @@ const AddTermForm = ({
                 placeholder="Enter the term name"
                 color="primary"
                 className="mb-6"
+                labelClassName="text-xl poppins"
               />
               <FormikInput
                 name="grace_period"
@@ -120,6 +121,7 @@ const AddTermForm = ({
                 className="mb-6"
                 type="number"
                 suffix="days"
+                labelClassName="text-xl poppins"
               />
               <FormikInput
                 name="interest_rate"
@@ -129,6 +131,7 @@ const AddTermForm = ({
                 className="mb-6"
                 type="number"
                 suffix="%"
+                labelClassName="text-xl poppins"
               />
 
               <div className="mt-4 w-full flex flex-col gap-6 ">

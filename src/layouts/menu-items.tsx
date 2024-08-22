@@ -9,6 +9,7 @@ import { LuUsers2 } from "react-icons/lu";
 import { LiaMoneyBillWaveSolid } from "react-icons/lia";
 
 export const getMenuItems = (userPermissions: string[] | undefined | null) => {
+  console.log("=====", userPermissions);
   if (!userPermissions) {
     return [];
   }
@@ -88,16 +89,25 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   }
 
   if (userPermissions.includes("read:account")) {
+    const subItems: subMenuItemtype[] = [];
+
+    subItems.push({
+      name: "View Members",
+      href: routes.home.members.view_all,
+    });
+
+    subItems.push({
+      name: "Add Member",
+      href: routes.home.members["add-member"],
+    });
+
     menuItems.push({
       name: "Members",
       href: routes.home.members.view_all,
       icon: <LuUsers2 />,
-    },
-  
-  
-  );
+      dropdownItems: subItems,
+    });
   }
-
 
   // if (userPermissions.includes("read:branch")) {
   //   menuItems.push({
@@ -106,8 +116,6 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   //     icon: <LiaMoneyBillWaveSolid />,
   //   });
   // }
-
-
 
   return menuItems;
 };

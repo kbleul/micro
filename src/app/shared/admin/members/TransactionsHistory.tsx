@@ -30,34 +30,13 @@ const TransactionsHistory = ({
     headers
   );
 
-  const fetchStateHandler = handleFetchState(
-    transactionsData,
-    <div className="flex justify-center items-center">
-      <Loading />
-    </div>
-  );
+  const fetchStateHandler = handleFetchState(transactionsData);
 
   if (fetchStateHandler) {
     return fetchStateHandler;
   }
 
-  const Transactions = transactionsData.data.data;
-
-  const addSessionSummary = (appointmentId: string) => {
-    openModal({
-      view: <Sessionnotes appointmentId={appointmentId} />,
-      customSize: "600px",
-    });
-  };
-
-  const Sessionnotes = ({ appointmentId }: { appointmentId: string }) => {
-    return (
-      <div className="bg-[#FFF9F2] pb-4 pr-4">
-        <></>
-        {/* <SessionForm memberId={memberId} appointmentId={appointmentId} /> */}
-      </div>
-    );
-  };
+  const Transactions = transactionsData?.data?.data ?? [];
 
   return (
     <article className="">

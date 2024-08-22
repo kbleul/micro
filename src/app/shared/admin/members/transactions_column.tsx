@@ -33,7 +33,7 @@ export const getColumns = () => [
     key: "type",
     width: 120,
     render: (type: string) => (
-      <Text className={type === "deposit" ? "font-semibold text-green-400 tracking-wider capitalize" : "font-semibold tracking-wider capitalize text-red-400"}>
+      <Text className={type === "deposit" ? "font-semibold px-4 py-1 xl:ml-7 w-fit bg-green-200 text-green-600 tracking-wider capitalize text-xs" : "font-semibold px-4 py-1 w-fit tracking-wider capitalize bg-red-200 xl:ml-6 text-xs text-red-600"}>
         {type}
       </Text>
     ),

@@ -1,6 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import axios, { AxiosRequestConfig } from "axios";
+import { signOut } from "next-auth/react";
 
 interface Header extends AxiosRequestConfig {
   headers: {
@@ -23,8 +24,14 @@ export const useFetchData = (
         const response = await axios.get(`${url}`, { headers });
         return response.data;
       } catch (error: any) {
-        if (error.response.data.code === 401) {
+        
+        if (error.response.status === 404) {
           return { error: error.response.data };
+        }
+
+        if (error.response.status === 401) {
+          signOut();
+          return { error: "Token expired"};
         }
       }
     },
