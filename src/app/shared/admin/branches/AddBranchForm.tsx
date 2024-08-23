@@ -97,7 +97,7 @@ const AddBranchForm = ({
         headers,
         body: {
           ...newValues,
-          phone_number: "0" + newValues.phone_number,
+          phone_number: "251" + newValues.phone_number,
           status: true,
         },
         onSuccess: (res) => {
