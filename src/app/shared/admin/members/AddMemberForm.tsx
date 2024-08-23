@@ -322,7 +322,7 @@ const AddMemberForm = ({
                         label="Marriage Status"
                         options={MarriageStatusOptions}
                         onChange={(selectedOption: { value: string }) => {
-                          console.log(errors)
+                          console.log(errors);
                           setFieldValue(
                             "marriage_status",
                             selectedOption.value
@@ -753,8 +753,42 @@ const AddMemberForm = ({
                                 placeholder="9**********"
                                 prefix="+251"
                                 color="primary"
-                                className="col-span-2 xl:col-span-1"
+                                className=""
                               />
+
+                              <FormikInput
+                                name={`heirs.[${index}].occupation`}
+                                label="Occupation"
+                                placeholder="Enter Ocuppation"
+                                color="primary"
+                                className=""
+                              />
+
+                              <div className="mt-4 w-full flex flex-col gap-6 col-span-2">
+                                <CustomSelect
+                                  name="relationship"
+                                  label="Marriage Status"
+                                  options={MarriageStatusOptions}
+                                  onChange={(selectedOption: {
+                                    value: string;
+                                  }) => {
+                                    console.log(errors);
+                                    setFieldValue(
+                                      "relationship",
+                                      selectedOption.value
+                                    );
+                                  }}
+                                  placeholder="select relationship status type"
+                                  getOptionValue={(status: { value: string }) =>
+                                    status.value
+                                  }
+                                  getOptionLabel={(status: { name: string }) =>
+                                    status.name
+                                  }
+                                  noOptionsMessage={() => "Fetching status..."}
+                                  isRequired
+                                />
+                              </div>
 
                               <div className="mt-4 w-full flex flex-col gap-6 ">
                                 <CustomSelect
@@ -881,14 +915,6 @@ const AddMemberForm = ({
                       />
                     </div>
 
-                    <AvaterPicker
-                      name="photo"
-                      label="Photo"
-                      isMultiple={false}
-                      className="col-span-2"
-                      isRequired
-                    />
-
                     {values.method_of_identifcation === "digital_id" && (
                       <FormikInput
                         name={`identification_number`}
@@ -907,6 +933,14 @@ const AddMemberForm = ({
                         className="col-span-2"
                       />
                     )}
+
+                    <AvaterPicker
+                      name="photo"
+                      label="User Image / Photo(Profile picture)"
+                      isMultiple={false}
+                      className="col-span-2"
+                      isRequired
+                    />
                   </FormGroup>
 
                   <FormGroup
@@ -932,29 +966,8 @@ const AddMemberForm = ({
                         isRequired
                       />
                     </div>
-
-                    <FormikInput
-                      name={`term_grace_period`}
-                      label="Payment Grace Period duration(in days)"
-                      placeholder="Enter grace period"
-                      color="primary"
-                      className=""
-                      isRequired
-                      type="number"
-                    />
-
-                    <FormikInput
-                      name="term_amount"
-                      label="Term amount"
-                      placeholder="Enter amount"
-                      color="primary"
-                      className=""
-                      isRequired
-                      type="number"
-                    />
                   </FormGroup>
 
-                  
                   <FormGroup
                     title="Desposit and Payments"
                     description="Add amounts here..."
@@ -980,8 +993,6 @@ const AddMemberForm = ({
                       type="number"
                     />
                   </FormGroup>
-
-                  
                 </div>
 
                 {session?.user?.permissions &&

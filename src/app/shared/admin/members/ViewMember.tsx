@@ -16,7 +16,6 @@ import AccountInfo from "./AccountInfo";
 import { Title } from "rizzui";
 import { memberType } from "types/common_types";
 import Image from "next/image";
-import Logo from "@public/logo.png";
 import { usePathname } from "next/navigation";
 
 export const CategoriesArr = ["Account Info", "Ledger", "Deposit", "Withdraw"];
@@ -28,7 +27,6 @@ const ViewMember = () => {
   const memberId = pathname[4]
   const accountId = pathname[6]
 
-console.log({memberId, accountId})
   const [categoryLink, setCategoryLink] = useState(CategoriesArr[0]);
 
   const pageHeader = {
@@ -111,9 +109,9 @@ console.log({memberId, accountId})
         title={pageHeader.title ?? ""}
         breadcrumb={pageHeader.breadcrumb}
       >
-        <div className="flex justify-end items-center gap-1">
+        <div className="flex justify-end items-center">
           <Image
-            src={Logo}
+            src={MemberInfo?.photo}
             alt="profile"
             width={100}
             height={100}
@@ -125,7 +123,7 @@ console.log({memberId, accountId})
               {MemberInfo.full_name}
             </Title>
             <Title as="h5" className="px-5 mt-1 font-normal text-sm">
-              Account No. - {currentAccount?.number}
+              Account No. - <span className="underline">{currentAccount?.number}</span>
             </Title>
           </div>
         </div>

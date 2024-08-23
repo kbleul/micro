@@ -54,7 +54,7 @@ const LeftSectionProfile = ({ userData }: { userData: memberType }) => {
             >
               <div className="flex flex-col">
                 <p className="">{account.number}</p>
-                <p className="text-xs pl-1">{account?.account_type?.name}</p>
+                <p className="text-xs">{account?.account_type?.name}</p>
               </div>
 
               <div className="border rounded-lg px-4 py-1 bg-primary hover:bg-primary-dark text-white font-medium text-xs">

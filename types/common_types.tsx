@@ -48,6 +48,7 @@ export type memberType = {
   birth_date: string;
   gender: string;
   photo: string;
+  spouse_name: string | null;
   account: { id: string; number: string; status: string };
   accounts: {
     id: string;
@@ -61,7 +62,7 @@ export type memberType = {
       interest_period: string;
       penalty_rate: number;
       saving_period: string;
-      minimum_threshold: number
+      minimum_threshold: number;
     };
   }[];
   marriage_status: string;
@@ -78,4 +79,35 @@ export type memberType = {
   current_zone: string;
   current_subcity: string;
   current_house_number: string;
+  children: {
+    age: number;
+    gender: string;
+  }[] | null;
+  heirs: {
+    first_name: string;
+    last_name: string;
+    address: string;
+    city: string;
+    house_number: string;
+    occupation: string;
+    phone_number: string;
+    relationship: string;
+    subcity: string;
+    woreda: string;
+    zone: string;
+  }[] | null;
+  emergency_contacts: {
+    first_name: string;
+    last_name: string;
+    address: string;
+    city: string;
+    house_number: string;
+    occupation: string;
+    phone_number: string;
+    relationship: string;
+    subcity: string;
+    woreda: string;
+    zone: string;
+    kebele: string;
+  }[] | null;
 };

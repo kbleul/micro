@@ -57,10 +57,6 @@ export const MemberSchema = Yup.object().shape({
   current_region: Yup.string().required("Current region is required"),
 
   account_type_id: Yup.string().required("Account type is required"),
-  term_grace_period: Yup.number().required("Grace period is required"),
-  term_amount: Yup.number()
-    .min(0, "Amount is too small")
-    .required("Grace period is required"),
 });
 
 export type MemberType = {
