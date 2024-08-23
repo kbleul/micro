@@ -1,7 +1,7 @@
 import React from "react";
 import BgImage from "@public/bg.png";
 import Image from "next/image";
-import { memberType } from "./ViewMember";
+import { memberType } from "types/common_types";
 
 const ClientDetailsHeader = ({ userData }: { userData: memberType }) => {
   return (
