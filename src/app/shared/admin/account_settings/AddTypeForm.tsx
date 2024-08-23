@@ -4,7 +4,7 @@ import FormikInput from "@/components/ui/form/input";
 import { useGetHeaders } from "@/hooks/use-get-headers";
 import { queryKeys } from "@/react-query/query-keys";
 
-import { Formik, Form } from "formik";
+import { Formik, Form, FieldArray } from "formik";
 
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
@@ -55,15 +55,41 @@ const AddTypeForm = ({
     return <Loading />;
   }
 
-  const AccountTYpe:InterstTypeType = typesData?.data?.data
+  const AccountTYpe: InterstTypeType = typesData?.data?.data;
 
   const initialValues: InterstTypeType = {
     name: id ? AccountTYpe.name : "",
     minimum_threshold: id ? AccountTYpe.minimum_threshold : 0,
-    interest_period: id ? AccountTYpe.interest_period : "",
-    interest_rate: id ? AccountTYpe.interest_rate : 0,
     saving_period: id ? AccountTYpe.saving_period : "",
     penalty_rate: id ? AccountTYpe.penalty_rate : 0,
+    interest_tiers:
+      id && AccountTYpe.interest_tiers
+        ? AccountTYpe.interest_tiers.flatMap((trier) => {
+            return {
+              interest_rate: trier.interest_rate,
+              threshold: trier.threshold,
+            };
+          })
+        : [
+            {
+              interest_rate: 0,
+              threshold: 0,
+            },
+          ],
+    loan_tiers:
+      id && AccountTYpe.loan_tiers
+        ? AccountTYpe.loan_tiers.flatMap((trier) => {
+            return {
+              max_loan_amount: trier.max_loan_amount,
+              threshold: trier.threshold,
+            };
+          })
+        : [
+            {
+              max_loan_amount: 0,
+              threshold: 0,
+            },
+          ],
   };
 
   const createTermSubmitHandler = async (values: InterstTypeType) => {
@@ -76,7 +102,8 @@ const AddTypeForm = ({
         headers,
         body: {
           ...values,
-          minimumthreshold: values.minimum_threshold,
+          interest_period: "Monthly",
+          interest_rate: 75356583.19313674,
           _method: id ? "PATCH" : "POST",
         },
         onSuccess: (res: any) => {
@@ -114,7 +141,7 @@ const AddTypeForm = ({
         validationSchema={InterstTermSchema}
         onSubmit={(values: InterstTypeType) => createTermSubmitHandler(values)}
       >
-        {({ setFieldValue }) => {
+        {({ values, setFieldValue }) => {
           return (
             <Form className={"[&_label.block>span]:font-medium "}>
               <Title as="h4" className="border-b mb-4 pb-1">
@@ -139,36 +166,6 @@ const AddTypeForm = ({
                 type="number"
                 isRequired
               />
-              <div className="mt-6 w-full flex flex-col gap-6 ">
-                <CustomSelect
-                  isSearchable
-                  name="interest_period"
-                  label="Interest Period"
-                  options={periodOptions}
-                  onChange={(selectedOption: { value: string }) => {
-                    setFieldValue("interest_period", selectedOption.value);
-                  }}
-                  placeholder="select period"
-                  getOptionValue={(interest_period: any) => interest_period?.id}
-                  getOptionLabel={(interest_period: any) =>
-                    interest_period?.name
-                  }
-                  noOptionsMessage={() => "Fetching periods..."}
-                  defaultValue={id && periodOptions.find(p => p.name === AccountTYpe.interest_period)}
-                  isRequired
-                />
-              </div>
-
-              <FormikInput
-                name="interest_rate"
-                label="Interest Rate"
-                placeholder="Enter the intrest rate"
-                color="primary"
-                className="mt-6"
-                suffix="%"
-                type="number"
-                isRequired
-              />
 
               <div className="mt-8 w-full flex flex-col gap-6 ">
                 <CustomSelect
@@ -183,7 +180,12 @@ const AddTypeForm = ({
                   getOptionValue={(saving_period: any) => saving_period?.id}
                   getOptionLabel={(saving_period: any) => saving_period?.name}
                   noOptionsMessage={() => "Fetching periods..."}
-                  defaultValue={id && periodOptions.find(p => p.name === AccountTYpe.saving_period)}
+                  defaultValue={
+                    id &&
+                    periodOptions.find(
+                      (p) => p.name === AccountTYpe.saving_period
+                    )
+                  }
                   isRequired
                 />
 
@@ -198,6 +200,136 @@ const AddTypeForm = ({
                   suffix="%"
                 />
               </div>
+
+              <FieldArray name="interest_tiers">
+                {(data: any) => (
+                  <div className="col-span-2 mt-6">
+                    <Title
+                      as="h6"
+                      className="text-base font-normal poppins mb-2"
+                    >
+                      Interest Tiers
+                    </Title>
+
+                    {values.interest_tiers?.map((_: any, index: number) => (
+                      <div
+                        key={index + "interest_tiers"}
+                        className="grid grid-cols-2 gap-4 transition-opacity  duration-300 ease-in-out transform  mb-4 pb-6 border p-4 border-broken "
+                      >
+                        <FormikInput
+                          name={`interest_tiers[${index}].interest_rate`}
+                          label="Intrest Rate"
+                          placeholder="Enter the rate"
+                          suffix="%"
+                          color="primary"
+                          className="col-span-2"
+                          type="number"
+                          isRequired
+                        />
+                        <FormikInput
+                          name={`interest_tiers[${index}].threshold`}
+                          label="Threshold"
+                          placeholder="Enter the threshold"
+                          suffix="birr"
+                          color="primary"
+                          className="col-span-2"
+                          type="number"
+                          isRequired
+                        />
+                      </div>
+                    ))}
+
+                    <div className="flex justify-between mt-6">
+                      <Button
+                        onClick={() => {
+                          data.push({
+                            interest_rate: 0,
+                            threshold: 0,
+                          });
+                        }}
+                        className="w-fit bg-primary text-white font-semibold"
+                      >
+                        Add Tier
+                      </Button>
+                      {values.interest_tiers.length > 1 && (
+                        <Button
+                          onClick={() => {
+                            data.pop();
+                          }}
+                          className="w-fit bg-red-400 text-white font-semibold"
+                        >
+                          Remove Tier
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </FieldArray>
+
+              <FieldArray name="loan_tiers">
+                {(data: any) => (
+                  <div className="col-span-2 mt-6">
+                    <Title
+                      as="h6"
+                      className="text-base font-normal poppins mb-2"
+                    >
+                      Loan Tiers
+                    </Title>
+
+                    {values.loan_tiers?.map((_: any, index: number) => (
+                      <div
+                        key={index + "loan_tiers max_loan_amount"}
+                        className="grid grid-cols-2 gap-4 transition-opacity  duration-300 ease-in-out transform  mb-4 pb-6 border p-4 border-broken "
+                      >
+                        <FormikInput
+                          name={`loan_tiers[${index}].max_loan_amount`}
+                          label="Max loan amount"
+                          placeholder="Enter the max loan amount"
+                          color="primary"
+                          suffix="birr"
+                          className="col-span-2"
+                          type="number"
+                          isRequired
+                        />
+                        <FormikInput
+                          name={`loan_tiers[${index}].threshold`}
+                          label="Threshold"
+                          placeholder="Enter the threshold"
+                          color="primary"
+                          suffix="birr"
+                          className="col-span-2"
+                          type="number"
+                          isRequired
+                        />
+                      </div>
+                    ))}
+
+                    <div className="flex justify-between mt-6">
+                      <Button
+                        onClick={() => {
+                          data.push({
+                            max_loan_amount: 0,
+                            threshold: 0,
+                          });
+                        }}
+                        className="w-fit bg-primary text-white font-semibold"
+                      >
+                        Add Tier
+                      </Button>
+                      {values.loan_tiers.length > 1 && (
+                        <Button
+                          onClick={() => {
+                            data.pop();
+                          }}
+                          className="w-fit bg-red-400 text-white font-semibold"
+                        >
+                          Remove Tier
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </FieldArray>
 
               {(session?.user?.permissions.includes("update:account-type") ||
                 session?.user?.permissions.includes("update:account")) && (
