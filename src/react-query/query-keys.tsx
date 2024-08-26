@@ -9,4 +9,5 @@ export const queryKeys = {
   getAllMembers: "getAllMembers",
   getAllTransactions: "getAllTransactions",
   getWithdrawelStatus: "getWithdrawelStatus",
+  getLogs: "getLogs"
 };

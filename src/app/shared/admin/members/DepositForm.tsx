@@ -71,6 +71,7 @@ const DepositForm = ({
         headers,
         body: {
           amount: values.amount,
+          deposit_for: "savings"
         },
         onSuccess: (res: any) => {
           queryClient.invalidateQueries({

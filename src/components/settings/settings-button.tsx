@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import cn from '@/utils/class-names';
 import CogSolidIcon from '@/components/icons/cog-solid';

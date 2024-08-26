@@ -8,7 +8,7 @@ export const handleFetchState = (
     isFetching: boolean;
     data?: { error?: { code: number; message: string } };
   },
-  children?: React.ReactNode
+  children?: React.ReactNode,
 ) => {
   if (fetchState.isPending || fetchState.isFetching) {
     return (
@@ -20,7 +20,7 @@ export const handleFetchState = (
   }
 
   if (fetchState?.data?.error) {
-    return signOut();
+    return <p className=" text-center mt-[20vh] text-lg"> Unable to complete task ! </p>;
   }
 
   return null;

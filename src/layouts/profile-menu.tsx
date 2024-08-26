@@ -1,5 +1,6 @@
 "use client";
 
+import LogsButton from "@/components/settings/logs-button";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Popover } from "@/components/ui/popover";
@@ -15,16 +16,20 @@ function DropdownMenu() {
   const role = session?.user.user.roles?.map(
     (item: { name: string }) => item.name
   );
+  const [openLogsDrawer, setOpenLogsDrawer] = useState(false);
 
   const menuItems = [
     {
       name: "My Profile",
       href: "route",
+      isDrawer: false,
     },
 
-    {
+    session?.user?.permissions.includes("audit") && {
       name: "Activity Log",
-      href: "#",
+      href: null,
+      isDrawer: true,
+      action: () => setOpenLogsDrawer(true),
     },
   ];
 
@@ -46,15 +51,24 @@ function DropdownMenu() {
         </div>
       </div>
       <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
-        {menuItems.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className="group my-0.5 flex items-center rounded-md px-2.5 py-2 hover:bg-gray-100 focus:outline-none hover:dark:bg-gray-50/50"
-          >
-            {item.name}
-          </Link>
-        ))}
+        {menuItems.map((item) =>
+          item && item.href ? (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="group my-0.5 flex items-center rounded-md px-2.5 py-2 hover:bg-gray-100 focus:outline-none hover:dark:bg-gray-50/50"
+            >
+              {item.name}
+            </Link>
+          ) : (
+            item && (
+              <LogsButton
+                btnName={item.name}
+                onClose={() => setOpenLogsDrawer(false)}
+              />
+            )
+          )
+        )}
       </div>
       <div className="border-t border-gray-300 px-6 pb-6 pt-5">
         <Button
@@ -82,7 +96,6 @@ export default function ProfileMenu({
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
-
 
   return (
     <Popover

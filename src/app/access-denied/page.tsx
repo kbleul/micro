@@ -11,7 +11,6 @@ import { signOut } from "next-auth/react";
 
 export default function AccessDeniedPage() {
 // !
-  const { push } = useRouter();
 
   return (
     <div className="flex grow items-center px-6 xl:px-10">

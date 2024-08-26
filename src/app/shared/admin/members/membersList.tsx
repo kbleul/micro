@@ -21,8 +21,7 @@ import { CITIES, REGIONS } from "@/utils/dummy";
 import { toast } from "sonner";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 
-const firstBranch = { id: "001-branch", name: "All"};
-
+const firstBranch = { id: "001-branch", name: "All" };
 
 const MembersList = () => {
   const queryClient = useQueryClient();
@@ -34,10 +33,12 @@ const MembersList = () => {
 
   const [searchText, setSearchText] = useState("");
 
-  const [currentPage, setCurrentPage] = React.useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(firstBranch.id);
+  const [selectedBranchId, setSelectedBranchId] = useState<string | null>(
+    firstBranch.id
+  );
 
   const pageHeader = {
     title: "Members",
@@ -86,7 +87,6 @@ const MembersList = () => {
     return fetchStateHandler;
   }
 
-
   const changeStatus = async (id: string, currentStatus: string) => {
     try {
       await postMutation.mutateAsync({
@@ -114,8 +114,8 @@ const MembersList = () => {
     }
   };
 
-  const Branches: {id: string, name: string}[] = branchesData?.data?.data?.branches ?? [];
-
+  const Branches: { id: string; name: string }[] =
+    branchesData?.data?.data?.branches ?? [];
 
   return (
     <main>
@@ -146,10 +146,12 @@ const MembersList = () => {
               isSearchable={true}
               placeholder="All"
               onChange={(value: any) => {
-                setSelectedBranchId(value.id)
+                setSelectedBranchId(value.id);
               }}
-              getOptionLabel={(value: {id: string, name: string}) => value.name}
-              getOptionValue={(value: {id: string, name: string}) => value.id}
+              getOptionLabel={(value: { id: string; name: string }) =>
+                value.name
+              }
+              getOptionValue={(value: { id: string; name: string }) => value.id}
               className="font-medium z-[100] w-[180px]"
               classNamePrefix="react-select"
               isDisabled={false}

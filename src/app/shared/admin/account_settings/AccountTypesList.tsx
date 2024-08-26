@@ -6,7 +6,6 @@ import { useGetHeaders } from "@/hooks/use-get-headers";
 import { useFetchData } from "@/react-query/useFetchData";
 import { queryKeys } from "@/react-query/query-keys";
 
-
 import { routes } from "@/config/routes";
 import { useModal } from "@/app/shared/modal-views/use-modal";
 import PageHeader from "@/app/shared/page-header";
@@ -63,9 +62,8 @@ const AccountTypesList = () => {
         title={pageHeader.title ?? ""}
         breadcrumb={pageHeader.breadcrumb}
       />
-      
 
-{session?.user?.permissions &&
+      {session?.user?.permissions &&
         (session?.user?.permissions.includes("create:account-type") ||
           session?.user?.permissions.includes("create:account")) && (
           <AddBtnContainer
