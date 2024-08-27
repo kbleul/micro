@@ -36,31 +36,34 @@ const DepositForm = ({
   const queryClient = useQueryClient();
   const postMutation = useDynamicMutation();
 
-  const withdrawelStatusData = useFetchData(
+  const transactionStatusData = useFetchData(
     [queryKeys.getWithdrawelStatus, memberId],
     `${process.env.NEXT_PUBLIC_BACKEND_URL}transactions/status/${accountId}`,
     headers
   );
 
-  const fetchStateHandler = handleFetchState(withdrawelStatusData);
+  const fetchStateHandler = handleFetchState(transactionStatusData);
 
   if (fetchStateHandler) {
     return fetchStateHandler;
   }
 
-  const withdrawStatus = withdrawelStatusData.data.data;
+  const transactionStatus = transactionStatusData.data.data;
 
   const initialValues: DepositeType = {
     account_id: accountNumber,
     amount: 0,
     current_balance: currentBalance,
-    days_left: withdrawStatus?.days_left,
-    status_color: withdrawStatus?.status_color,
-    unpaid_penalties: withdrawStatus?.unpaid_penalties,
-    unpaid_penalty_amounts: withdrawStatus?.unpaid_penalty_amounts,
-    able_to_withdraw: withdrawStatus?.able_to_withdraw,
-    able_to_withdraw_amount: withdrawStatus?.able_to_withdraw_amount,
-    minimum_threshold: minimumThreshold
+    days_left: transactionStatus?.days_left,
+    status_color: transactionStatus?.status_color,
+    unpaid_penalties:
+      transactionStatus?.unpaid_penalty_amounts +
+      " * " +
+      transactionStatus?.period,
+    unpaid_penalty_amounts: transactionStatus?.unpaid_penalty_amounts,
+    able_to_withdraw: transactionStatus?.able_to_withdraw,
+    able_to_withdraw_amount: transactionStatus?.able_to_withdraw_amount,
+    minimum_threshold: minimumThreshold,
   };
 
   const handleDeposit = async (values: DepositeType) => {
@@ -71,7 +74,7 @@ const DepositForm = ({
         headers,
         body: {
           amount: values.amount,
-          deposit_for: "savings"
+          deposit_for: "savings",
         },
         onSuccess: (res: any) => {
           queryClient.invalidateQueries({
@@ -127,12 +130,21 @@ const DepositForm = ({
               />
               <FormikInput
                 name="days_left"
-                label="Available Payment Days Left"
+                label="Next Payment Day"
                 color="primary"
                 className="col-span-1 w-full"
                 disabled
                 suffix="days"
               />
+
+              <FormikInput
+                name="unpaid_penalties"
+                label="Unpaid Penality Periods"
+                color="primary"
+                className="col-span-1 w-full"
+                disabled
+              />
+
               <FormikInput
                 name="unpaid_penalty_amounts"
                 label="Penality"
@@ -149,28 +161,32 @@ const DepositForm = ({
                 disabled
                 suffix="birr"
               />
-              <FormikInput
-                name="amount"
-                label="Amount to deposit(Must be greater or equal to minimum deposit threshold plus penality"
-                color="primary"
-                className="col-span-1 w-full"
-                type="number"
-                suffix="birr"
-                isRequired
-              />
-              
-              {session?.user?.permissions.includes("update:account") && (
-                <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
-                  <Button
+              {transactionStatus?.days_left <= 0 ||
+                (transactionStatus?.unpaid_penalty_amounts > 0 && (
+                  <FormikInput
+                    name="amount"
+                    label="Amount to deposit(Must be greater or equal to minimum deposit threshold plus penality"
                     color="primary"
-                    className="px-10 text-white bg-primary-dark"
-                    type="submit"
-                    isLoading={postMutation.isPending}
-                  >
-                    Deposit
-                  </Button>
-                </div>
-              )}
+                    className="col-span-1 w-full"
+                    type="number"
+                    suffix="birr"
+                    isRequired
+                  />
+                ))}
+              {session?.user?.permissions.includes("update:account") &&
+                (transactionStatus?.days_left <= 0 ||
+                  transactionStatus?.unpaid_penalty_amounts > 0) && (
+                  <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
+                    <Button
+                      color="primary"
+                      className="px-10 text-white bg-primary-dark"
+                      type="submit"
+                      isLoading={postMutation.isPending}
+                    >
+                      Deposit
+                    </Button>
+                  </div>
+                )}
             </Form>
           );
         }}

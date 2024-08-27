@@ -17,8 +17,9 @@ import { Title } from "rizzui";
 import { memberType } from "types/common_types";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import LoanApplication from "./LoanApplication";
 
-export const CategoriesArr = ["Account Info", "Ledger", "Deposit", "Withdraw"];
+export const CategoriesArr = ["Account Info", "Ledger", "Deposit", "Withdraw", "Loan "];
 
 const ViewMember = () => {
   const headers = useGetHeaders({ type: "Json" });
@@ -90,6 +91,18 @@ const ViewMember = () => {
       case CategoriesArr[3]:
         return (
           <WithdrawalForm
+            memberId={memberId}
+            accountId={accountId}
+            accountNumber={currentAccount?.number ?? ""}
+            currentBalance={currentAccount?.balance ?? 0}
+            setCategoryLink={setCategoryLink}
+          />
+        );
+
+
+      case CategoriesArr[4]:
+        return (
+          <LoanApplication
             memberId={memberId}
             accountId={accountId}
             accountNumber={currentAccount?.number ?? ""}

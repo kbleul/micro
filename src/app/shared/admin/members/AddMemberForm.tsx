@@ -15,18 +15,16 @@ import {
   MarriageStatusOptions,
   REGIONS,
 } from "@/utils/dummy";
-import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
+import { Field, FieldArray, Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 import PageHeader from "../../page-header";
 import { useSession } from "next-auth/react";
-import { DatePicker } from "@/components/ui/datepicker";
 import dynamic from "next/dynamic";
 import SelectLoader from "@/components/loader/select-loader";
 import { Button } from "rizzui";
 import { MemberSchema, MemberType } from "@/validations/member.schema";
-import { secondaryDateFormat } from "@/utils/format-date";
 import AvaterPicker from "@/components/ui/form/avater-upload";
 import { handleErrorWithToast } from "@/utils/error-toast-handler";
 import { useFetchData } from "@/react-query/useFetchData";
@@ -93,6 +91,8 @@ const AddMemberForm = ({
     middle_name: "",
     gender: "",
     age: 18,
+
+    monthly_income: 0,
 
     birth_place: "",
     birth_district: "",
@@ -167,6 +167,22 @@ const AddMemberForm = ({
   };
 
   const createEmployeeSubmitHandler = async (values: MemberType) => {
+    console.log("member============>", {
+      ...values,
+      phone_number: "251" + values.phone_number,
+      gender: values.gender.toLowerCase(),
+      Status: true,
+      firstname: values.first_name,
+      lastname: values.last_name,
+      middlename: values.middle_name,
+      currentregion: values.current_region,
+      number_of_children_boys: values.children.filter(
+        (child) => child.gender === "Male"
+      ).length,
+      number_of_children_girls: values.children.filter(
+        (child) => child.gender === "Female"
+      ).length,
+    });
     try {
       await postMutation.mutateAsync({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}members`,
@@ -174,7 +190,7 @@ const AddMemberForm = ({
         headers,
         body: {
           ...values,
-          phone_number: "+251" + values.phone_number,
+          phone_number: "251" + values.phone_number,
           gender: values.gender.toLowerCase(),
           Status: true,
           firstname: values.first_name,
@@ -966,6 +982,17 @@ const AddMemberForm = ({
                         isRequired
                       />
                     </div>
+
+                    <FormikInput
+                      name={`monthly_income`}
+                      label="Member Monthly Income"
+                      placeholder="Enter member's monthly income"
+                      color="primary"
+                      className="col-span-2"
+                      isRequired
+                      type="number"
+                      suffix="birr"
+                    />
                   </FormGroup>
 
                   <FormGroup
@@ -981,6 +1008,7 @@ const AddMemberForm = ({
                       className=""
                       isRequired
                       type="number"
+                      suffix="birr"
                     />
 
                     <FormikInput
@@ -991,6 +1019,7 @@ const AddMemberForm = ({
                       className=""
                       isRequired
                       type="number"
+                      suffix="birr"
                     />
                   </FormGroup>
                 </div>

@@ -4,7 +4,7 @@ export const InterstTermSchema = Yup.object().shape({
   minimum_threshold: Yup.number()
     .min(0, "Minimum threshold has to be grater than or equal to 0")
     .required("Minimum threshold is required"),
-  saving_period: Yup.string().required("Intrest period is required"),
+  saving_period: Yup.string().required("Saving period is required"),
   penalty_rate: Yup.number()
     .min(0, "Amount is too small")
     .required("Penality rate is required"),

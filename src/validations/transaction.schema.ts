@@ -4,11 +4,13 @@ export const DepositeSchema = Yup.object().shape({
   amount: Yup.number()
     .min(0, "Amount is too small")
     .test(
-      'amount-greater-than-unpaid-penalty-and-minimum',
-      'Amount must be greater than or equal to the sum of unpaid penalty and minimum threshold',
+      "amount-greater-than-unpaid-penalty-and-minimum",
+      "Amount must be greater than or equal to the sum of unpaid penalty and minimum threshold",
       (amount, context) => {
         const { unpaid_penalty_amounts, minimum_threshold } = context.parent;
-        return amount ? amount >= (unpaid_penalty_amounts + minimum_threshold) : false;
+        return amount
+          ? amount >= unpaid_penalty_amounts + minimum_threshold
+          : false;
       }
     )
     .required("Amount is required"),
@@ -22,7 +24,7 @@ type DepositeType = {
   current_balance: number;
   days_left: number;
   status_color: string;
-  unpaid_penalties: number;
+  unpaid_penalties: string;
   unpaid_penalty_amounts: number;
   able_to_withdraw: boolean;
   able_to_withdraw_amount: string;
@@ -32,7 +34,7 @@ type DepositeType = {
 export const WithdrawSchema = Yup.object().shape({
   account_id: Yup.string().required("Name is required"),
   able_to_withdraw_amount: Yup.number().required(
-    "Abble to withdraw is required"
+    "Able to withdraw is required"
   ),
   amount: Yup.number()
     .min(0, "Amount is too small")
@@ -56,4 +58,66 @@ type WithdrawType = {
   able_to_withdraw_amount: string;
 };
 
-export type { DepositeType, WithdrawType };
+export const loanApplicationSchema = Yup.object().shape({
+  account_id: Yup.string().required("Account id is required"),
+  max_loan: Yup.number().required(
+    "Maximum amount able to get loan is required"
+  ),
+  amount: Yup.number()
+    .min(0, "Amount is too small")
+    .max(
+      Yup.ref("max_loan"),
+      "Amount cannot exceed the available max loan amount"
+    )
+    .required("Amount is required"),
+  grace_period: Yup.number().required("Grace period is required"),
+  purpose: Yup.string(),
+  repayment_period_frequency: Yup.string().required(
+    "Repayment_period_frequency is required"
+  ),
+  collaterals: Yup.array().of(
+    Yup.object().shape({
+      name: Yup.string().required("Name is required"),
+      attachment_photo: Yup.mixed(),
+    })
+  ),
+  guarantor: Yup.array().of(
+    Yup.object().shape({
+      name: Yup.string().required("Name is required"),
+      phone_number: Yup.string()
+        .min(1)
+        .required("Phone number is required")
+        .matches(/^\d{9}$/, "Phone number must be 9 digits long"),
+      occupation: Yup.string().required("Occupation is required"),
+    })
+  ),
+  validationSchema: Yup.object().test(
+    "collaterals-or-guarantors",
+    "Either one collateral or two guarantors are required",
+    (values: any) => {
+      const { collaterals, guarantor } = values;
+      return collaterals.length === 1 || guarantor.length >= 2;
+    }
+  ),
+});
+
+type loanApplicationType = {
+  account_id: string;
+  amount: number;
+  duration: number;
+  grace_period: number;
+  purpose: string;
+  max_loan: number;
+  repayment_period_frequency: string;
+  collaterals: {
+    name: string;
+    attachment_photo: File | undefined;
+  }[];
+  guarantor: {
+    name: string;
+    phone_number: string;
+    occupation: string;
+  }[];
+};
+
+export type { DepositeType, WithdrawType, loanApplicationType };

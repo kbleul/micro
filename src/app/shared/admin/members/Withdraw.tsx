@@ -39,29 +39,29 @@ const WithdrawalForm = ({
   const queryClient = useQueryClient();
   const postMutation = useDynamicMutation();
 
-  const withdrawelStatusData = useFetchData(
+  const transactionStatusData = useFetchData(
     [queryKeys.getWithdrawelStatus, memberId],
     `${process.env.NEXT_PUBLIC_BACKEND_URL}transactions/status/${accountId}`,
     headers
   );
 
-  const fetchStateHandler = handleFetchState(withdrawelStatusData);
+  const fetchStateHandler = handleFetchState(transactionStatusData);
 
   if (fetchStateHandler) {
     return fetchStateHandler;
   }
-  const withdrawStatus = withdrawelStatusData.data.data;
+  const transactionStatus = transactionStatusData.data.data;
 
   const initialValues: WithdrawType = {
     account_id: accountNumber,
     amount: 0,
     current_balance: currentBalance,
-    days_left: withdrawStatus?.days_left,
-    status_color: withdrawStatus?.status_color,
-    unpaid_penalties: withdrawStatus?.unpaid_penalties,
-    unpaid_penalty_amounts: withdrawStatus?.unpaid_penalty_amounts,
-    able_to_withdraw: withdrawStatus?.able_to_withdraw,
-    able_to_withdraw_amount: withdrawStatus?.able_to_withdraw_amount,
+    days_left: transactionStatus?.days_left,
+    status_color: transactionStatus?.status_color,
+    unpaid_penalties: transactionStatus?.unpaid_penalties,
+    unpaid_penalty_amounts: transactionStatus?.unpaid_penalty_amounts,
+    able_to_withdraw: transactionStatus?.able_to_withdraw,
+    able_to_withdraw_amount: transactionStatus?.able_to_withdraw_amount,
   };
 
   const handleWithdraw = async (values: WithdrawType) => {
@@ -143,12 +143,12 @@ const WithdrawalForm = ({
                 color="primary"
                 className="col-span-1 w-full"
                 type="number"
-                disabled={withdrawStatus.able_to_withdraw ? false : true}
+                disabled={transactionStatus.able_to_withdraw ? false : true}
                 suffix="birr"
                 isRequired
               />
 
-              {!withdrawStatus.able_to_withdraw && (
+              {!transactionStatus.able_to_withdraw && (
                 <div className="my-5 text-red-500 col-span-2 text-center font-medium flex justify-center items-center">
                   <p className="border border-black rounded-lg px-4 py-2 w-fit">
                     User is not able to withdraw right now
@@ -157,14 +157,14 @@ const WithdrawalForm = ({
               )}
 
               {session?.user?.permissions.includes("update:account") &&
-                withdrawStatus.able_to_withdraw && (
+                transactionStatus.able_to_withdraw && (
                   <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
                     <Button
                       color="primary"
                       className="px-10 text-white bg-primary-dark"
                       type="submit"
                       isLoading={postMutation.isPending}
-                      disabled={withdrawStatus.able_to_withdraw ? false : true}
+                      disabled={transactionStatus.able_to_withdraw ? false : true}
                     >
                       Withdraw
                     </Button>

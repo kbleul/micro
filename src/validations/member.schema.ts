@@ -10,6 +10,9 @@ export const MemberSchema = Yup.object().shape({
     .max(150, "Age is too large")
     .required("Age is required"),
 
+    monthly_income: Yup.number().min(1000, "Monthly income is too small")
+    .required("Monthly income is required"),
+
   phone_number: Yup.string()
     .min(1)
     .required("Phone number is required")
@@ -66,6 +69,8 @@ export type MemberType = {
   gender: string;
   phone_number: string;
   age: number;
+
+  monthly_income: number;
 
   birth_place: string | null;
   birth_district: string | null;
