@@ -95,18 +95,23 @@ const LoanApplication = ({
 
   return (
     <article className="poppins">
-      <div className="flex justify-between items-center border border-primary rounded-xl p-4 mb-8">
-        <Title as="h4" className="font-medium text-xl text-primary">
-          {"Loan Status"}
-        </Title>
+      <section className="flex justify-between items-center border border-primary rounded-xl p-4 mb-8">
+        <div className="flex justify-between items-center">
+          <Title as="h4" className="font-medium text-xl text-primary">
+            {"Loan Status"}
+          </Title>
+         {transactionStatus?.able_to_loan && <p className={`text-red-300 font-medium`}>You need to save for six concicative month </p>}
+        </div>
 
         <Title
           as="h4"
-          className="pb-1 border px-5 py-2 rounded-lg bg-primary-light text-black font-normal text-sm"
+          className={`pb-1 border px-5 py-2 rounded-lg ${transactionStatus?.able_to_loan ? "bg-primary-light" : "bg-primary-lighter"}  text-black font-normal text-sm`}
         >
-          {"Able to request"}
+          {transactionStatus?.able_to_loan
+            ? "Able to request"
+            : "Not Available"}
         </Title>
-      </div>
+      </section>
 
       <Formik
         initialValues={initialValues}
@@ -215,7 +220,6 @@ const LoanApplication = ({
                           className="col-span-2"
                           isRequired
                         />
-                       
                       </div>
                     ))}
 

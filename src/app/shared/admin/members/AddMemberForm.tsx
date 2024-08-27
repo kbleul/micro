@@ -24,7 +24,12 @@ import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import SelectLoader from "@/components/loader/select-loader";
 import { Button } from "rizzui";
-import { MemberSchema, MemberType } from "@/validations/member.schema";
+import {
+  emergencyContactType,
+  heirType,
+  MemberSchema,
+  MemberType,
+} from "@/validations/member.schema";
 import AvaterPicker from "@/components/ui/form/avater-upload";
 import { handleErrorWithToast } from "@/utils/error-toast-handler";
 import { useFetchData } from "@/react-query/useFetchData";
@@ -92,7 +97,7 @@ const AddMemberForm = ({
     gender: "",
     age: 18,
 
-    monthly_income: 0,
+    monthly_income: 1000,
 
     birth_place: "",
     birth_district: "",
@@ -131,8 +136,7 @@ const AddMemberForm = ({
       {
         address: "",
         city: "",
-        first_name: "",
-        last_name: "",
+        full_name: "",
         house_number: "",
         occupation: "",
         phone_number: "",
@@ -147,8 +151,7 @@ const AddMemberForm = ({
       {
         address: "",
         city: "",
-        first_name: "",
-        last_name: "",
+        full_name: "",
         house_number: "",
         occupation: "",
         phone_number: "",
@@ -183,6 +186,21 @@ const AddMemberForm = ({
         (child) => child.gender === "Female"
       ).length,
     });
+
+    const newHeirs: heirType[] = [];
+    const newContacts: emergencyContactType[] = [];
+
+    values.heirs.forEach((heir) => {
+      newHeirs.push({ ...heir, phone_number: "251" + heir.phone_number });
+    });
+
+    values.emergency_contacts.forEach((contact) => {
+      newContacts.push({
+        ...contact,
+        phone_number: "251" + contact.phone_number,
+      });
+    });
+
     try {
       await postMutation.mutateAsync({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}members`,
@@ -203,6 +221,8 @@ const AddMemberForm = ({
           number_of_children_girls: values.children.filter(
             (child) => child.gender === "Female"
           ).length,
+          heirs: newHeirs,
+          emergency_contacts: newContacts,
         },
         onSuccess: (res) => {
           toast.success("Member Created Successfully");
@@ -617,18 +637,12 @@ const AddMemberForm = ({
                             (_: any, index: number) => (
                               <div className="grid grid-cols-2 gap-4 my- 4 pt-4 pb-8 border-b border-broken">
                                 <FormikInput
-                                  name={`emergency_contacts.[${index}].first_name`}
-                                  label="First Name"
-                                  placeholder="Enter first name"
-                                  color="primary"
-                                  className=""
-                                />
-                                <FormikInput
-                                  name={`emergency_contacts.[${index}].last_name`}
+                                  name={`emergency_contacts.[${index}].full_name`}
                                   label="Last Name"
                                   placeholder="Enter last name"
                                   color="primary"
                                   className=""
+                                  isRequired
                                 />
                                 <FormikInput
                                   name={`emergency_contacts.[${index}].phone_number`}
@@ -637,6 +651,44 @@ const AddMemberForm = ({
                                   prefix="+251"
                                   color="primary"
                                   className="col-span-2 xl:col-span-1"
+                                  isRequired
+                                />
+
+                                <div className="mt-4 w-full flex flex-col gap-6 col-span-2">
+                                  <CustomSelect
+                                    name={`emergency_contacts.[${index}].relationship`}
+                                    label="Marriage Status"
+                                    options={MarriageStatusOptions}
+                                    onChange={(selectedOption: {
+                                      value: string;
+                                    }) => {
+                                      console.log(errors);
+                                      setFieldValue(
+                                        `emergency_contacts.[${index}].relationship`,
+                                        selectedOption.value
+                                      );
+                                    }}
+                                    placeholder="select marriage status type"
+                                    getOptionValue={(status: {
+                                      value: string;
+                                    }) => status.value}
+                                    getOptionLabel={(status: {
+                                      name: string;
+                                    }) => status.name}
+                                    noOptionsMessage={() =>
+                                      "Fetching status..."
+                                    }
+                                    isRequired
+                                  />
+                                </div>
+
+                                <FormikInput
+                                  name={`emergency_contacts.[${index}].occupation`}
+                                  label="Occupation"
+                                  placeholder="Enter Ocuppation"
+                                  color="primary"
+                                  className=""
+                                  isRequired
                                 />
 
                                 <div className="mt-4 w-full flex flex-col gap-6 ">
@@ -657,6 +709,7 @@ const AddMemberForm = ({
                                     noOptionsMessage={() =>
                                       "Fetching cities..."
                                     }
+                                    isRequired
                                   />
                                 </div>
 
@@ -707,8 +760,7 @@ const AddMemberForm = ({
                                 data.push({
                                   address: "",
                                   city: "",
-                                  first_name: "",
-                                  last_name: "",
+                                  full_name: "",
                                   house_number: "",
                                   occupation: "",
                                   phone_number: "",
@@ -750,18 +802,12 @@ const AddMemberForm = ({
                           {values.heirs?.map((_: any, index: number) => (
                             <div className="grid grid-cols-2 gap-4 my- 4 pt-4 pb-8 border-b border-broken">
                               <FormikInput
-                                name={`heirs.[${index}].first_name`}
-                                label="First Name"
-                                placeholder="Enter first name"
-                                color="primary"
-                                className=""
-                              />
-                              <FormikInput
-                                name={`heirs.[${index}].last_name`}
+                                name={`heirs.[${index}].full_name`}
                                 label="Last Name"
-                                placeholder="Enter last name"
+                                placeholder="Enter full name"
                                 color="primary"
                                 className=""
+                                isRequired
                               />
                               <FormikInput
                                 name={`heirs.[${index}].phone_number`}
@@ -770,19 +816,12 @@ const AddMemberForm = ({
                                 prefix="+251"
                                 color="primary"
                                 className=""
-                              />
-
-                              <FormikInput
-                                name={`heirs.[${index}].occupation`}
-                                label="Occupation"
-                                placeholder="Enter Ocuppation"
-                                color="primary"
-                                className=""
+                                isRequired
                               />
 
                               <div className="mt-4 w-full flex flex-col gap-6 col-span-2">
                                 <CustomSelect
-                                  name="relationship"
+                                  name={`heirs.[${index}].relationship`}
                                   label="Marriage Status"
                                   options={MarriageStatusOptions}
                                   onChange={(selectedOption: {
@@ -790,11 +829,11 @@ const AddMemberForm = ({
                                   }) => {
                                     console.log(errors);
                                     setFieldValue(
-                                      "relationship",
+                                      `heirs.[${index}].relationship`,
                                       selectedOption.value
                                     );
                                   }}
-                                  placeholder="select relationship status type"
+                                  placeholder="select marriage status type"
                                   getOptionValue={(status: { value: string }) =>
                                     status.value
                                   }
@@ -805,6 +844,15 @@ const AddMemberForm = ({
                                   isRequired
                                 />
                               </div>
+
+                              <FormikInput
+                                name={`heirs.[${index}].occupation`}
+                                label="Occupation"
+                                placeholder="Enter Ocuppation"
+                                color="primary"
+                                className=""
+                                isRequired
+                              />
 
                               <div className="mt-4 w-full flex flex-col gap-6 ">
                                 <CustomSelect
@@ -822,6 +870,7 @@ const AddMemberForm = ({
                                   getOptionValue={(city: any) => city?.name}
                                   getOptionLabel={(city: any) => city?.name}
                                   noOptionsMessage={() => "Fetching cities..."}
+                                  isRequired
                                 />
                               </div>
 
@@ -871,8 +920,7 @@ const AddMemberForm = ({
                                 data.push({
                                   address: "",
                                   city: "",
-                                  first_name: "",
-                                  last_name: "",
+                                  full_name: "",
                                   house_number: "",
                                   occupation: "",
                                   phone_number: "",

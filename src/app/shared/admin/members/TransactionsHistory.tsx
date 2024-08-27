@@ -4,13 +4,10 @@ import { useGetHeaders } from "@/hooks/use-get-headers";
 import React, { useState } from "react";
 import { useModal } from "../../modal-views/use-modal";
 import { useFetchData } from "@/react-query/useFetchData";
-// import { getColumns } from "./history_columns";
 import { queryKeys } from "@/react-query/query-keys";
 import { handleFetchState } from "@/utils/fetch-state-handler";
-import PageHeader from "../../page-header";
-import Loading from "@/components/ui/Loading";
 import { getColumns } from "./transactions_column";
-// import SessionForm from "../questionnairs/session-form";
+import ViewDepositInvoice from "./ViewDepositInvoice";
 
 const TransactionsHistory = ({
   memberId,
@@ -38,6 +35,14 @@ const TransactionsHistory = ({
 
   const Transactions = transactionsData?.data?.data ?? [];
 
+
+  const viewInvoice = () => {
+    openModal({
+      view: <ViewDepositInvoice />,
+      customSize: "900px",
+    })
+  }
+
   return (
     <article className="">
       <WidgetCard
@@ -49,7 +54,7 @@ const TransactionsHistory = ({
           <ControlledTable
             isLoading={transactionsData.isLoading}
             data={Transactions}
-            columns={getColumns()}
+            columns={getColumns(viewInvoice)}
             scroll={{ x: 400 }}
             variant={"modern"}
             className="mt-4"

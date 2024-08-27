@@ -10,7 +10,8 @@ export const MemberSchema = Yup.object().shape({
     .max(150, "Age is too large")
     .required("Age is required"),
 
-    monthly_income: Yup.number().min(1000, "Monthly income is too small")
+  monthly_income: Yup.number()
+    .min(1000, "Monthly income is too small")
     .required("Monthly income is required"),
 
   phone_number: Yup.string()
@@ -60,7 +61,70 @@ export const MemberSchema = Yup.object().shape({
   current_region: Yup.string().required("Current region is required"),
 
   account_type_id: Yup.string().required("Account type is required"),
+
+  heirs: Yup.array().of(Yup.object().shape({
+    address: Yup.string(),
+    city: Yup.string().required("City is required"),
+    full_name: Yup.string().required("Full name is required"),
+    house_number: Yup.string(),
+    occupation: Yup.string().required("Occupation is required"),
+    phone_number: Yup.string()
+     .min(1)
+     .required("Phone number is required")
+     .matches(/^\d{9}$/, "Phone number must be 9 digits long"),
+    relationship: Yup.string().required("Relationship is required"),
+    subcity: Yup.string(),
+    woreda: Yup.string(),
+    zone: Yup.string(),
+    kebele: Yup.string()
+  })).min(1, "Atleast one heir is required"),
+
+  emergency_contacts: Yup.array().of(Yup.object().shape({
+    address: Yup.string(),
+    city: Yup.string().required("City is required"),
+    full_name: Yup.string().required("Full name is required"),
+    house_number: Yup.string(),
+    occupation: Yup.string().required("Occupation is required"),
+    phone_number: Yup.string()
+     .min(1)
+     .required("Phone number is required")
+     .matches(/^\d{9}$/, "Phone number must be 9 digits long"),
+    relationship: Yup.string().required("Relationship is required"),
+    subcity: Yup.string(),
+    woreda: Yup.string(),
+    zone: Yup.string(),
+    kebele: Yup.string()
+  })).min(1, "Atleast one heir is required")
 });
+
+export type heirType = {
+  address: string;
+  city: string;
+  full_name: string;
+  house_number: string;
+  occupation: string;
+  phone_number: string;
+  relationship: string;
+  subcity: string;
+  woreda: string;
+  zone: string;
+  kebele: string;
+};
+
+export type emergencyContactType = {
+  address: string;
+  city: string;
+  full_name: string;
+  house_number: string;
+  occupation: string;
+  phone_number: string;
+  relationship: string;
+  subcity: string;
+  woreda: string;
+  zone: string;
+  kebele: string;
+  
+};
 
 export type MemberType = {
   first_name: string;
@@ -103,34 +167,8 @@ export type MemberType = {
     age: number;
     gender: string;
   }[];
-  heirs: {
-    address: string;
-    city: string;
-    first_name: string;
-    last_name: string;
-    house_number: string;
-    occupation: string;
-    phone_number: string;
-    relationship: string;
-    subcity: string;
-    woreda: string;
-    zone: string;
-    kebele: string;
-  }[];
-  emergency_contacts: {
-    address: string;
-    city: string;
-    first_name: string;
-    last_name: string;
-    house_number: string;
-    occupation: string;
-    phone_number: string;
-    relationship: string;
-    subcity: string;
-    woreda: string;
-    zone: string;
-    kebele: string;
-  }[];
+  heirs: heirType[];
+  emergency_contacts: emergencyContactType[];
 
   account_type_id: string;
   term_grace_period: number;
