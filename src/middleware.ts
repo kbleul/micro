@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 import { Role } from "./constants/role.enum";
 export default withAuth(
   function middleware(req: NextRequestWithAuth) {
-console.log("=============>", req.nextauth.token?.user)
     if (
       (req.nextauth.token?.user?.roles?.length &&
         req.nextauth.token?.user?.roles.length < 1) ||

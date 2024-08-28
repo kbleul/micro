@@ -60,7 +60,6 @@ const Logs = () => {
   if (fetchStateHandler) {
     return fetchStateHandler;
   }
-  console.log("Logs ---------------> ", logsData?.data);
 
   const Logs: any[] = logsData?.data ?? [];
 
