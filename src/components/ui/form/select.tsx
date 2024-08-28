@@ -101,7 +101,7 @@ const CustomSelect: React.FC<SelectProps> = ({
        font-medium
        leading-3
        capitalize
-       text-sm mb-1.5
+       text-sm mb-1.5 py-2
      `}
       >
        {appendAsterisk(label, isRequired)}

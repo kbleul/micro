@@ -170,23 +170,6 @@ const AddMemberForm = ({
   };
 
   const createEmployeeSubmitHandler = async (values: MemberType) => {
-    console.log("member============>", {
-      ...values,
-      phone_number: "251" + values.phone_number,
-      gender: values.gender.toLowerCase(),
-      Status: true,
-      firstname: values.first_name,
-      lastname: values.last_name,
-      middlename: values.middle_name,
-      currentregion: values.current_region,
-      number_of_children_boys: values.children.filter(
-        (child) => child.gender === "Male"
-      ).length,
-      number_of_children_girls: values.children.filter(
-        (child) => child.gender === "Female"
-      ).length,
-    });
-
     const newHeirs: heirType[] = [];
     const newContacts: emergencyContactType[] = [];
 
@@ -322,29 +305,6 @@ const AddMemberForm = ({
                       className="col-span-2 xl:col-span-1"
                       isRequired
                     />
-
-                    {/* <Field name="birth_date">
-                      {() => (
-                        <div>
-                          <DatePicker
-                            inputProps={{ label: "Birth Date" }}
-                            placeholderText="Select DOB"
-                            selected={values.birth_date}
-                            onChange={(date) =>
-                              setFieldValue("birth_date", date)
-                            }
-                            showYearDropdown
-                          />
-                          <ErrorMessage
-                            name={"birth_date"}
-                            component="div"
-                            className={
-                              "text-xs capitalize text-red-500 pt-1 font-medium"
-                            }
-                          />
-                        </div>
-                      )}
-                    </Field> */}
                   </FormGroup>
 
                   <FormGroup

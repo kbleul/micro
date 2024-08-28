@@ -15,7 +15,7 @@ const AccountInfo = ({
 
   return (
     <article>
-      <section className="grid grid-cols-3 gap-x-16">
+      <section className="grid md:grid-cols-3 gap-x-16 gap-y-4">
         <div className="">
           <p className=" font-medium text-base mb-1">Account Number</p>
           <p className="border rounded-md border-black p-3 capitalize font-medium">
@@ -36,7 +36,7 @@ const AccountInfo = ({
         </div>
       </section>
 
-      <section className="grid grid-cols-3 gap-x-16 mt-6">
+      <section className="grid md:grid-cols-3 gap-x-16 gap-y-4 mt-6">
         <div className="">
           <p className=" font-medium text-base mb-1">Penality Rate</p>
           <p className="border rounded-md border-black p-3 capitalize font-medium">
@@ -55,7 +55,7 @@ const AccountInfo = ({
             {currentAccount?.account_type?.interest_period}
           </p>
         </div>
-        <div className="mt-6">
+        <div className="md:mt-6">
           <p className=" font-medium text-base mb-1">Minimum deposit threshold(on each payment)</p>
           <p className="border rounded-md border-black p-3 capitalize font-medium">
             {currentAccount?.account_type?.minimum_threshold} birr

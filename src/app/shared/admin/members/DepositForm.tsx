@@ -117,14 +117,14 @@ const DepositForm = ({
                 name="account_id"
                 label="Account Number"
                 color="primary"
-                className="col-span-1 w-full"
+                className="col-span-2 md:col-span-1 w-full"
                 disabled
               />
               <FormikInput
                 name="current_balance"
                 label="Current Balance"
                 color="primary"
-                className="col-span-1 w-full"
+                className="col-span-2 md:col-span-1 w-full"
                 disabled
                 suffix="birr"
               />
@@ -132,7 +132,7 @@ const DepositForm = ({
                 name="days_left"
                 label="Next Payment Day"
                 color="primary"
-                className="col-span-1 w-full"
+                className="col-span-2 md:col-span-1 w-full"
                 disabled
                 suffix="days"
               />
@@ -141,7 +141,7 @@ const DepositForm = ({
                 name="unpaid_penalties"
                 label="Unpaid Penality Periods"
                 color="primary"
-                className="col-span-1 w-full"
+                className="col-span-2 md:col-span-1 w-full"
                 disabled
               />
 
@@ -149,7 +149,7 @@ const DepositForm = ({
                 name="unpaid_penalty_amounts"
                 label="Penality"
                 color="primary"
-                className="col-span-1 w-full"
+                className="col-span-2 md:col-span-1 w-full"
                 disabled
                 suffix="birr"
               />
@@ -157,7 +157,7 @@ const DepositForm = ({
                 name="minimum_threshold"
                 label="Minimum deposit threshold(on each payment)"
                 color="primary"
-                className="col-span-1 w-full"
+                className="col-span-2 md:col-span-1 w-full"
                 disabled
                 suffix="birr"
               />
@@ -167,7 +167,7 @@ const DepositForm = ({
                     name="amount"
                     label="Amount to deposit(Must be greater or equal to minimum deposit threshold plus penality"
                     color="primary"
-                    className="col-span-1 w-full"
+                    className="col-span-2 md:col-span-1 w-full"
                     type="number"
                     suffix="birr"
                     isRequired
