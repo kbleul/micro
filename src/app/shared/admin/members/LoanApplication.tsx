@@ -88,14 +88,14 @@ const LoanApplication = ({
         name: string;
         phone_number: string;
         occupation: string;
-        work_place: string;
+        workplace: string;
       }[] = [];
 
       values.guarantors.forEach((guarantor) => {
         newGuarantors.push({
           ...guarantor,
           phone_number: "251" + guarantor.phone_number,
-          work_place: guarantor.occupation,
+          workplace: guarantor.occupation,
         });
       });
       
@@ -109,6 +109,7 @@ const LoanApplication = ({
           guarantors: newGuarantors,
           repayment_period_frequency:
             values.repayment_period_frequency.toLocaleLowerCase(),
+            status: true
         },
         onSuccess: (res: any) => {
           queryClient.invalidateQueries({
