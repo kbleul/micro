@@ -79,35 +79,71 @@ export type memberType = {
   current_zone: string;
   current_subcity: string;
   current_house_number: string;
-  children: {
-    age: number;
-    gender: string;
-  }[] | null;
-  heirs: {
-    first_name: string;
-    last_name: string;
-    address: string;
-    city: string;
-    house_number: string;
-    occupation: string;
-    phone_number: string;
-    relationship: string;
-    subcity: string;
-    woreda: string;
-    zone: string;
-  }[] | null;
-  emergency_contacts: {
-    first_name: string;
-    last_name: string;
-    address: string;
-    city: string;
-    house_number: string;
-    occupation: string;
-    phone_number: string;
-    relationship: string;
-    subcity: string;
-    woreda: string;
-    zone: string;
-    kebele: string;
-  }[] | null;
+  children:
+    | {
+        age: number;
+        gender: string;
+      }[]
+    | null;
+  heirs:
+    | {
+        first_name: string;
+        last_name: string;
+        address: string;
+        city: string;
+        house_number: string;
+        occupation: string;
+        phone_number: string;
+        relationship: string;
+        subcity: string;
+        woreda: string;
+        zone: string;
+      }[]
+    | null;
+  emergency_contacts:
+    | {
+        first_name: string;
+        last_name: string;
+        address: string;
+        city: string;
+        house_number: string;
+        occupation: string;
+        phone_number: string;
+        relationship: string;
+        subcity: string;
+        woreda: string;
+        zone: string;
+        kebele: string;
+      }[]
+    | null;
+};
+
+export type ActivityLogsType = {
+  id: string;
+  user_id: string;
+  user_name: string;
+  action_type: string;
+  entity: string;
+  entity_id: string;
+  previous_state: {
+    id: string;
+    name: string;
+    slug: string;
+    created_at: string;
+    updated_at: string;
+    permissions: null;
+  };
+  new_state: {
+    id: string;
+    name: string;
+    slug: string;
+    created_at: string;
+    updated_at: string;
+    permissions: null;
+  };
+  ip_address: string;
+  user_agent: string;
+  location: string;
+  description: string;
+  timestamp: string;
 };

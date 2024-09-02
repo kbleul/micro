@@ -24,14 +24,13 @@ export const useFetchData = (
         const response = await axios.get(`${url}`, { headers });
         return response.data;
       } catch (error: any) {
-        
         if (error.response.status === 404) {
-          return { error: error.response.data };
+
+          return { error: "Token expired" };
         }
 
         if (error.response.status === 401) {
-          signOut();
-          return { error: "Token expired"};
+          return { error: error.response.data };
         }
       }
     },

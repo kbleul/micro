@@ -117,7 +117,7 @@ export const getColumns = (changeStatus: (id: number, currentStatus: string) => 
     key: "status",
     render: (_: string, row: any) => (
       <div className="flex items-center justify-end gap-3 pe-4">
-        {permissions.includes("update:member") &&
+        {permissions.includes("update:member") && row?.accounts.length > 0 &&
           <Tooltip
             size="sm"
             content={() => "View member info"}
@@ -132,7 +132,7 @@ export const getColumns = (changeStatus: (id: number, currentStatus: string) => 
               variant="outline"
               className="hover:text-gray-700"
             >
-             <TbEye size="25" />
+             <TbEye size="20" />
             
             </ActionIcon>
             </Link>

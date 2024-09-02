@@ -1,16 +1,14 @@
-import Dashboard from "@/app/shared/dashboard/dashboard";
 
+import LogsList from "@/app/shared/admin/logs/LogsList";
 import { metaObject } from "@/config/site.config";
 import React from "react";
 
 export const metadata = {
-  ...metaObject("Dashboard"),
+  ...metaObject("Activity Logs"),
 };
 
 const page = () => {
-  return (
-      <Dashboard />
-  );
+  return <LogsList />;
 };
 
 export default page;

@@ -2,8 +2,6 @@
 
 
 import { useGetHeaders } from "@/hooks/use-get-headers";
-import { queryKeys } from "@/react-query/query-keys";
-import { useFetchData } from "@/react-query/useFetchData";
 import LeedsCard from "./LeedsCard";
 import BoxHeader from "./BoxHeader";
 import { periodOptions } from "@/utils/dummy";
@@ -60,18 +58,9 @@ const SocialLeedsArr: SocialLeedsArrType = {
   },
 };
 
-const LeedsBox = ({ queryStr }: { queryStr: string }) => {
+const LeedsBox = ({ analytics }: { analytics: any }) => {
   const headers = useGetHeaders({ type: "Json" });
 
-  // const leadsData = useFetchData(
-  //   [queryKeys.getAccountTypes],
-  //   `${process.env.NEXT_PUBLIC_SERVICE_BACKEND_URL}${queryStr}/dashboard/leads-graph`,
-  //   headers
-  // );
-
-  // if (leadsData.isPending || leadsData.isFetching) {
-  //   return <></>;
-  // }
 
   const leadsDataobj: {
     phone_click: number;

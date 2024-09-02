@@ -124,7 +124,7 @@ const RolesList = () => {
 const SideMenu = ({ role }: { role: any }) => {
   const router = useRouter();
 
-  const { openModal, closeModal } = useModal();
+  const { openModal } = useModal();
 
   const [showMenu, setShowMenu] = useState(false);
 

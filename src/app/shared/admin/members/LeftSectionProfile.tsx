@@ -1,12 +1,18 @@
+"use client";
+
 import { routes } from "@/config/routes";
 import Image from "next/image";
 import Link from "next/link";
-import { Title } from "rizzui";
+import { Button, Title } from "rizzui";
 import { memberType } from "types/common_types";
+import { useModal } from "../../modal-views/use-modal";
+import AddAccountForm from "./AddAccountForm";
 
 const LeftSectionProfile = ({ userData }: { userData: memberType }) => {
+  const { openModal } = useModal();
+
   return (
-    <article className="col-span-1 border-r">
+    <article className="col-span-1 border-r relative">
       <section className="flex flex-col justify-center items-center gap-2 py-8">
         <section
           className="w-16 h-16 md:w-28 md:h-28 gap-x-4 border border-white  bg-[#e1f7e6] rounded-full shadow-sm overflow-hidden  z-10"
@@ -62,6 +68,21 @@ const LeftSectionProfile = ({ userData }: { userData: memberType }) => {
               </div>
             </Link>
           ))}
+        </div>
+
+        <div className="w-full flex justify-center items-center">
+          <Button
+            color="primary"
+            size="xl"
+            className="absolute bottom-4 w-3/5 py-1"
+            onClick={() => {
+              openModal({
+                view: <AddAccountForm memberId={userData.id} />,
+              });
+            }}
+          >
+            Add New Account
+          </Button>
         </div>
       </section>
     </article>

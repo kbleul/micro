@@ -5,6 +5,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Popover } from "@/components/ui/popover";
 import { Title, Text } from "@/components/ui/text";
+import { routes } from "@/config/routes";
 import cn from "@/utils/class-names";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
@@ -16,7 +17,7 @@ function DropdownMenu() {
   const role = session?.user.user.roles?.map(
     (item: { name: string }) => item.name
   );
-  const [openLogsDrawer, setOpenLogsDrawer] = useState(false);
+  const [, setOpenLogsDrawer] = useState(false);
 
   const menuItems = [
     {
@@ -27,9 +28,8 @@ function DropdownMenu() {
 
     session?.user?.permissions.includes("audit") && {
       name: "Activity Log",
-      href: null,
+      href: routes.home.activityLogs,
       isDrawer: true,
-      action: () => setOpenLogsDrawer(true),
     },
   ];
 

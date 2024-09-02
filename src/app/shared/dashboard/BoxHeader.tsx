@@ -25,13 +25,13 @@ const BoxHeader = ({
           {title}
         </TitleRiz>
       </div>
-      <Select
+      {optionsList && optionsList.length > 0 && <Select
         options={optionsList}
         value={optionsList[0].value}
         onChange={() => {}}
         getOptionValue={(option) => option.name}
         color="primary"
-      />
+      />}
     </section>
   );
 };

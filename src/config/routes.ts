@@ -34,5 +34,6 @@ export const routes = {
         `/home/members/view-member/${employeeId}/view-account/${branchId}`,
     },
     users: "/home/users",
+    activityLogs: "/home/activity_log"
   },
 };

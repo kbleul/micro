@@ -35,7 +35,7 @@ const LoanApplication = ({
 }) => {
   const { data: session } = useSession();
 
-  const headers = useGetHeaders({ type: "FormData" });
+  const headers = useGetHeaders({ type: "Json" });
 
   const queryClient = useQueryClient();
   const postMutation = useDynamicMutation();
@@ -99,6 +99,20 @@ const LoanApplication = ({
         });
       });
       
+
+      const newCollateral: {
+        name: string;
+        attachment_photo: string,
+      }[] = [];
+
+      values.collaterals.forEach((collateral) => {
+        newCollateral.push({
+          ...collateral,
+          attachment_photo: "asdsadsa"
+        });
+      });
+
+
       await postMutation.mutateAsync({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}loan-applications`,
         method: "POST",
@@ -107,6 +121,7 @@ const LoanApplication = ({
           ...values,
           account_id: accountId,
           guarantors: newGuarantors,
+          collaterals: newCollateral,
           repayment_period_frequency:
             values.repayment_period_frequency.toLocaleLowerCase(),
             status: true
