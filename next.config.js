@@ -28,7 +28,6 @@ const nextConfig = {
 
 
   webpack(config, { webpack, isServer }) {
-    //console.log(webpack.version); // Check webpack version (should be v5+)
     if (!isServer) {
       config.resolve.fallback = { fs: false, path: false, os: false };
     }

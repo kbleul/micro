@@ -122,13 +122,13 @@ const ViewMember = () => {
         title={pageHeader.title ?? ""}
         breadcrumb={pageHeader.breadcrumb}
       >
-        <div className="flex justify-end items-center">
+        <div className="md:justify-end items-center mt-8 md:mt-0 hidden md:flex">
           <Image
             src={MemberInfo?.photo}
             alt="profile"
             width={100}
             height={100}
-            className="w-14 h-14 rounded-full"
+            className="w-14 h-14 rounded-full "
           />
 
           <div className="pb-1">
@@ -150,6 +150,25 @@ const ViewMember = () => {
           labels={CategoriesArr}
         />
       </div>
+
+      <div className="md:justify-end items-center my-8 flex md:hidden">
+          <Image
+            src={MemberInfo?.photo}
+            alt="profile"
+            width={100}
+            height={100}
+            className="w-14 h-14 rounded-full "
+          />
+
+          <div className="pb-1">
+            <Title as="h5" className="px-5 font-medium text-base">
+              {MemberInfo.full_name}
+            </Title>
+            <Title as="h5" className="px-5 mt-1 font-normal text-sm">
+              Account No. - <span className="underline">{currentAccount?.number}</span>
+            </Title>
+          </div>
+        </div>
 
       <section className="">{dispatchComponent(categoryLink)}</section>
     </main>

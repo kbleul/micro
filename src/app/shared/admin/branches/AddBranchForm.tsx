@@ -116,7 +116,6 @@ const AddBranchForm = ({
     }
   };
 
-  console.log({ Branch });
 
   return (
     <article>

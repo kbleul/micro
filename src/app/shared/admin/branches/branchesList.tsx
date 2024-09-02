@@ -48,7 +48,6 @@ const BranchesList = () => {
   if (fetchStateHandler) {
     return fetchStateHandler;
   }
-  console.log(branchesData);
   const Branches = branchesData?.data?.data?.branches ?? [];
 
   return (

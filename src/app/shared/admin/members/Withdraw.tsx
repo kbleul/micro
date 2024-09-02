@@ -115,7 +115,7 @@ const WithdrawalForm = ({
                 label="Account Number"
                 placeholder="Enter the term name"
                 color="primary"
-                className="col-span-1 w-full"
+                className="col-span-2 md:col-span-1 w-full"
                 disabled
               />
 
@@ -123,7 +123,7 @@ const WithdrawalForm = ({
                 name="current_balance"
                 label="Current Balance"
                 color="primary"
-                className="col-span-1 w-full"
+                className="col-span-2 md:col-span-1 w-full"
                 disabled
                 suffix="birr"
               />
@@ -132,7 +132,7 @@ const WithdrawalForm = ({
                 name="able_to_withdraw_amount"
                 label="Maxiumum amount that can be withdrawn from the account"
                 color="primary"
-                className="col-span-1 w-full"
+                className="col-span-2 md:col-span-1 w-full"
                 disabled
                 suffix="birr"
               />
@@ -141,7 +141,7 @@ const WithdrawalForm = ({
                 name="amount"
                 label="Amount to withdraw(must be less than zero able to withdraw amount"
                 color="primary"
-                className="col-span-1 w-full"
+                className="col-span-2 md:col-span-1 w-full"
                 type="number"
                 disabled={transactionStatus.able_to_withdraw ? false : true}
                 suffix="birr"

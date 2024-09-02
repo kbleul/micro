@@ -31,7 +31,6 @@ const isFutureDate = (dateString: string ): boolean => {
   
   export const validateDate = (dateString: string): { isFuture: boolean; isAbove18: boolean } => {
    
-   console.log(isFutureDate(dateString))
     return {
       isFuture: isFutureDate(dateString),
       isAbove18: isAbove18YearsOld(dateString),

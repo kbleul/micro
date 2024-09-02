@@ -121,12 +121,10 @@ const AddEmployeeForm = ({
 
 
     const isValidDate = validateDate(secondaryDateFormat(values.date_of_birth))
-    console.log({isValidDate})
     if (!isValidDate.isAbove18 || isValidDate.isFuture) {
       toast.error("Invalid Date of Birth. Date must be a valide date and above 18 years old");
       return;
     }
-    console.log("objectxxx", isValidDate)
 
     const roles: any[] = rolesData.data.data;
 

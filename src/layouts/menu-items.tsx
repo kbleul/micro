@@ -9,7 +9,6 @@ import { LuUsers2 } from "react-icons/lu";
 import { LiaMoneyBillWaveSolid } from "react-icons/lia";
 
 export const getMenuItems = (userPermissions: string[] | undefined | null) => {
-  console.log("=====", userPermissions);
   if (!userPermissions) {
     return [];
   }
@@ -28,11 +27,6 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   ) {
     const subItems: subMenuItemtype[] = [];
 
-    // userPermissions.includes("read:permission") &&
-    //   subItems.push({
-    //     name: "Permissions",
-    //     href: routes.home.userSettings.permissions,
-    //   });
 
     userPermissions.includes("read:role") &&
       subItems.push({

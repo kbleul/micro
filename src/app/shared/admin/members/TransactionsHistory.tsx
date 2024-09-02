@@ -1,7 +1,7 @@
 import WidgetCard from "@/components/cards/widget-card";
 import ControlledTable from "@/components/controlled-table";
 import { useGetHeaders } from "@/hooks/use-get-headers";
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import { useModal } from "../../modal-views/use-modal";
 import { useFetchData } from "@/react-query/useFetchData";
 import { queryKeys } from "@/react-query/query-keys";
@@ -35,13 +35,12 @@ const TransactionsHistory = ({
 
   const Transactions = transactionsData?.data?.data ?? [];
 
-
   const viewInvoice = () => {
     openModal({
       view: <ViewDepositInvoice />,
-      customSize: "900px",
-    })
-  }
+      customSize: "1200px",
+    });
+  };
 
   return (
     <article className="">

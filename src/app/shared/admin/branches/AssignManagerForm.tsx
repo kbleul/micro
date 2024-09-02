@@ -52,7 +52,6 @@ const AssignManagerForm = ({
     return <Loading />;
   }
 
-  console.log(managersData?.data?.data)
 
   const managersList:any[] = managersData?.data?.data?.users ?? []
 
