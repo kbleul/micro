@@ -1,4 +1,3 @@
-import { signOut } from "next-auth/react";
 import Loading from "../components/ui/Loading";
 import React from "react";
 

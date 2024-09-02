@@ -1,9 +1,8 @@
 "use client";
-import { routes } from "@/config/routes";
 import { useIsMounted } from "@/hooks/use-is-mounted";
 import MainLayout from "@/layouts/layout";
-import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 export default function DefaultLayout({
   children,
@@ -12,15 +11,16 @@ export default function DefaultLayout({
 }) {
   const isMounted = useIsMounted();
   const { data: session } = useSession();
-  const router = useRouter();
+
+  useEffect(() => {
+    if (isMounted && !session) {
+      window.location.href = "/";
+    }
+  }, [isMounted, session]);
+
 
   if (!isMounted) {
     return null;
-  }
-
-
-  if (!session) {
-    router.push(routes.signIn);
   }
 
   return <MainLayout>{children}</MainLayout>;

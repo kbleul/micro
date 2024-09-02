@@ -72,6 +72,8 @@ const WithdrawalForm = ({
         headers,
         body: {
           amount: values.amount,
+          payment_channel: "bank",
+          purpose: "cillum n",
         },
         onSuccess: (res: any) => {
           queryClient.invalidateQueries({
@@ -164,7 +166,9 @@ const WithdrawalForm = ({
                       className="px-10 text-white bg-primary-dark"
                       type="submit"
                       isLoading={postMutation.isPending}
-                      disabled={transactionStatus.able_to_withdraw ? false : true}
+                      disabled={
+                        transactionStatus.able_to_withdraw ? false : true
+                      }
                     >
                       Withdraw
                     </Button>
