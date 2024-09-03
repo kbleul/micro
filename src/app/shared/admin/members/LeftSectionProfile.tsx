@@ -74,7 +74,7 @@ const LeftSectionProfile = ({ userData }: { userData: memberType }) => {
           <Button
             color="primary"
             size="xl"
-            className="absolute bottom-4 w-3/5 py-1"
+            className="mt-10 xl:mt-0 xl:absolute bottom-4 w-3/5 py-1"
             onClick={() => {
               openModal({
                 view: <AddAccountForm memberId={userData.id} />,

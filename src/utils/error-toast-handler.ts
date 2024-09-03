@@ -25,9 +25,14 @@
 //   }
 // };
 
-
 // Helper function to extract error messages
 const getErrorMessage = (err: any): string => {
+  console.log(err?.response?.data?.message);
+
+  if (err?.response?.data?.message) {
+    return err?.response?.data?.message;
+  }
+
   if (!err?.response?.data?.error) {
     return "An unknown error occurred";
   }
@@ -43,7 +48,10 @@ const getErrorMessage = (err: any): string => {
   }
 
   if (Array.isArray(error.details)) {
-    return error.details.map((detail: any) => detail?.message).filter(Boolean).join(", ");
+    return error.details
+      .map((detail: any) => detail?.message)
+      .filter(Boolean)
+      .join(", ");
   }
 
   return "An unknown error occurred";

@@ -18,6 +18,7 @@ import { useModal } from "@/app/shared/modal-views/use-modal";
 import { PiXBold } from "react-icons/pi";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 import CustomSelect from "@/components/ui/form/select";
+import { handleErrorWithToast } from "@/utils/error-toast-handler";
 type AccountType = {
   balance: number;
   type_id: string;
@@ -28,9 +29,8 @@ export const AccountSchema = Yup.object().shape({
   type_id: Yup.string().required("Account type is required"),
 });
 
-
 const AddAccountForm = ({ memberId }: { memberId?: string }) => {
-  const headers = useGetHeaders({ type: "FormData" });
+  const headers = useGetHeaders({ type: "Json" });
   const queryClient = useQueryClient();
   const postMutation = useDynamicMutation();
   const { closeModal } = useModal();
@@ -67,7 +67,7 @@ const AddAccountForm = ({ memberId }: { memberId?: string }) => {
           closeModal();
         },
         onError: (err: any) => {
-          toast.error(err?.response?.data?.data);
+          handleErrorWithToast(err, toast);
         },
       });
     } catch (err) {
@@ -99,16 +99,6 @@ const AddAccountForm = ({ memberId }: { memberId?: string }) => {
                 {"Add account"}
               </Title>
 
-              <FormikInput
-                name="balance"
-                label="Initail Deposit"
-                placeholder="Enter the initail  deposit"
-                color="primary"
-                className=""
-                type="number"
-                isRequired
-              />
-
               <div className="mt-4 w-full flex flex-col gap-6 col-span-2">
                 <CustomSelect
                   name="type_id"
@@ -125,6 +115,16 @@ const AddAccountForm = ({ memberId }: { memberId?: string }) => {
                   isRequired
                 />
               </div>
+
+              <FormikInput
+                name="balance"
+                label="Initail Deposit"
+                placeholder="Enter the initail  deposit"
+                color="primary"
+                className="mt-5"
+                type="number"
+                isRequired
+              />
 
               <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
                 <Button

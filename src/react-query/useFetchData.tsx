@@ -26,10 +26,11 @@ export const useFetchData = (
       } catch (error: any) {
         if (error.response.status === 404) {
 
-          return { error: "Token expired" };
+          return { error: "Page not found" };
         }
 
         if (error.response.status === 401) {
+          signOut()
           return { error: error.response.data };
         }
       }
