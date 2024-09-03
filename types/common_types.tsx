@@ -147,3 +147,24 @@ export type ActivityLogsType = {
   description: string;
   timestamp: string;
 };
+
+export type workflowStepType = {
+  created_at: string;
+  id: string;
+  name: string;
+  roles: {
+    id: string;
+    role_name: string;
+    role_id: string;
+  }[] | null;
+  step_number: number;
+};
+export type workflowType = {
+  application_id: string;
+  created_at: string;
+  description: string;
+  id: string;
+  name: string;
+  steps: workflowStepType[];
+  updated_at: string;
+};

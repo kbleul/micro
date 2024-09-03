@@ -22,3 +22,12 @@ export const useGetHeaders = ({ type }: Props) => {
     };
   }
 };
+
+export const useGetHeadersApproval = () => {
+  return {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: process.env.NEXT_PUBLIC_APPROVAL_API_KEY,
+
+  };
+};

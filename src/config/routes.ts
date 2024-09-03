@@ -8,6 +8,7 @@ export const routes = {
     userSettings: {
       permissions: "/home/user_settings/permissions",
       roles: "/home/user_settings/roles",
+      "approval-setup": "/home/user_settings/approval"
     },
     accountSettings: {
       interst_terms: "/home/account_settings/interst_terms",

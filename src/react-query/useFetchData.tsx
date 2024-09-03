@@ -7,8 +7,8 @@ interface Header extends AxiosRequestConfig {
   headers: {
     "Content-Type": string;
     Accept: string;
-    Authorization: string;
-  };
+    Authorization: string | undefined;
+  } 
 }
 export const useFetchData = (
   queryKey: (string | number | boolean | undefined | null | any)[],

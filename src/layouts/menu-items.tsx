@@ -34,6 +34,12 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
         href: routes.home.userSettings.roles,
       });
 
+      userPermissions.includes("manage:settings") &&
+      subItems.push({
+        name: "Approval PreSetup",
+        href: routes.home.userSettings["approval-setup"],
+      });
+
     menuItems.push({
       name: "User Settings",
       href: "#",
