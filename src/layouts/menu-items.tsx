@@ -1,7 +1,7 @@
 import { routes } from "@/config/routes";
-import { PiFileImageDuotone } from "react-icons/pi";
+import { PiFileImageDuotone, PiQueue } from "react-icons/pi";
 import { IoSettingsOutline } from "react-icons/io5";
-import { MdOutlinePlace } from "react-icons/md";
+import { MdOutlineApproval, MdOutlinePlace } from "react-icons/md";
 import { menuItemtype, subMenuItemtype } from "types/common_types";
 import { FaUsers } from "react-icons/fa";
 import { RiMailSettingsLine } from "react-icons/ri";
@@ -27,16 +27,15 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   ) {
     const subItems: subMenuItemtype[] = [];
 
-
     userPermissions.includes("read:role") &&
       subItems.push({
         name: "Roles",
         href: routes.home.userSettings.roles,
       });
 
-      userPermissions.includes("manage:settings") &&
+    userPermissions.includes("manage:settings") &&
       subItems.push({
-        name: "Approval PreSetup",
+        name: "Approval Setup",
         href: routes.home.userSettings["approval-setup"],
       });
 
@@ -70,11 +69,6 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   ) {
     const subItems: subMenuItemtype[] = [];
 
-    // subItems.push({
-    //   name: "Interest Terms",
-    //   href: routes.home.accountSettings.interst_terms,
-    // });
-
     subItems.push({
       name: "Saving Types",
       href: routes.home.accountSettings.account_types,
@@ -107,6 +101,22 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
       icon: <LuUsers2 />,
       dropdownItems: subItems,
     });
+  }
+
+  if (userPermissions.includes("manage:settings")) {
+    const subItems: subMenuItemtype[] = [];
+
+    menuItems.push({
+      name: "Approval Requests",
+      href: routes.home.approvalRequests,
+      icon: <MdOutlineApproval />,
+    });
+
+    // menuItems.push({
+    //   name: "Loan Que",
+    //   href: routes.home.approvalRequests,
+    //   icon: <PiQueue />,
+    // });
   }
 
   // if (userPermissions.includes("read:branch")) {

@@ -142,50 +142,52 @@ export const periodOptions = [
   },
 ];
 
-export const MarriageStatusOptions = [ 
+export const MarriageStatusOptions = [
   {
     name: "Married",
     value: "married",
-  }, 
+  },
   {
     name: "Unmarried",
     value: "unmarried",
-  }, 
+  },
   {
     name: "Divorced",
     value: "divorced",
-  }, 
+  },
   {
     name: "Widowed",
     value: "widowed",
-  }, 
+  },
 ];
 
 export const IdentificationTypeOptions = [
   {
     name: "National Id",
     value: "national_id",
-  }, 
+  },
   {
     name: "Digital Id",
     value: "digital_id",
-  }, 
+  },
   {
     name: "Driver License",
     value: "driver_license",
-  }, 
+  },
   {
     name: "Passport",
     value: "passport",
-  }, 
+  },
 ];
 
-
-
-
-
 export const StatusToColor = {
-  "green": "Able to deposit",
-  "yellow": "In grace period",
-  "red": "Not able to deposit"
-}
+  green: "Able to deposit",
+  yellow: "In grace period",
+  red: "Not able to deposit",
+};
+
+export const paymentChannels = {
+  bank: "bank",
+  cheque: "cheque",
+  cash: "cash",
+};

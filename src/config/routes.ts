@@ -8,7 +8,7 @@ export const routes = {
     userSettings: {
       permissions: "/home/user_settings/permissions",
       roles: "/home/user_settings/roles",
-      "approval-setup": "/home/user_settings/approval"
+      "approval-setup": "/home/user_settings/approval",
     },
     accountSettings: {
       interst_terms: "/home/account_settings/interst_terms",
@@ -35,6 +35,8 @@ export const routes = {
         `/home/members/view-member/${employeeId}/view-account/${branchId}`,
     },
     users: "/home/users",
-    activityLogs: "/home/activity_log"
+    activityLogs: "/home/activity_log",
+    approvalRequests: "/home/approval_requests",
+    loanQueue: "/home/loan_queue",
   },
 };

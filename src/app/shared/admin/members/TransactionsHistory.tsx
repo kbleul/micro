@@ -12,7 +12,9 @@ import ViewDepositInvoice from "./ViewDepositInvoice";
 const TransactionsHistory = ({
   memberId,
   accountId,
+  accountNumber
 }: {
+  accountNumber: string;
   memberId: string;
   accountId: string;
 }) => {
@@ -21,23 +23,22 @@ const TransactionsHistory = ({
   const [currentPage, setCurrentPage] = React.useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  const transactionsData = useFetchData(
+  const ledgerData = useFetchData(
     [queryKeys.getAllTransactions + memberId, memberId, currentPage, pageSize],
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}accounts/transactions/${accountId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}accounts/ledger/${accountId}`,
     headers
   );
 
-  const fetchStateHandler = handleFetchState(transactionsData);
+  const fetchStateHandler = handleFetchState(ledgerData);
 
   if (fetchStateHandler) {
     return fetchStateHandler;
   }
+  const Transactions = ledgerData?.data?.data?.ledger ?? [];
 
-  const Transactions = transactionsData?.data?.data ?? [];
-
-  const viewInvoice = () => {
+  const viewInvoice = (row: any) => {
     openModal({
-      view: <ViewDepositInvoice />,
+      view: <ViewDepositInvoice ledgerData={row} memberId={memberId} accountNumber={accountNumber} />,
       customSize: "1200px",
     });
   };
@@ -51,16 +52,16 @@ const TransactionsHistory = ({
       >
         <div className={"table-wrapper flex-grow"}>
           <ControlledTable
-            isLoading={transactionsData.isLoading}
+            isLoading={ledgerData.isLoading}
             data={Transactions}
             columns={getColumns(viewInvoice)}
-            scroll={{ x: 400 }}
+            scroll={{ x: 1800 }}
             variant={"modern"}
             className="mt-4"
             paginatorOptions={{
               pageSize,
               setPageSize,
-              total: transactionsData?.data?.data?.total,
+              total: ledgerData?.data?.data?.total,
               current: currentPage,
               onChange: (page: number) => setCurrentPage(page),
             }}

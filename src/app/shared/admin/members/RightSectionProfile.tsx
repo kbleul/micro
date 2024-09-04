@@ -5,7 +5,7 @@ import { memberType } from "types/common_types";
 
 const RightSectionProfile = ({ userData }: { userData: memberType }) => {
   return (
-    <article className="col-span-2 px-5 py-8">
+    <article className="col-span-2 px-5 py-8 hover:overflow-y-scroll">
       <Title as="h5" className="text-lg text-black font-medium">
         Personal Info
       </Title>

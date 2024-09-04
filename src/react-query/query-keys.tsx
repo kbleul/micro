@@ -11,5 +11,7 @@ export const queryKeys = {
   getWithdrawelStatus: "getWithdrawelStatus",
   getLogs: "getLogs",
   getAnalytics: "getAnalytics",
-  getWorkflows: "getWorkflows"
+  getWorkflows: "getWorkflows",
+  getLoanRequests: "getLoanRequests",
+
 };

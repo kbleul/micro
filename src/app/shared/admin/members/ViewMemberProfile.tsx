@@ -60,7 +60,7 @@ const ViewMemberProfile = ({ memberId }: { memberId: string }) => {
         breadcrumb={pageHeader.breadcrumb}
       />
 
-      <article className="grid grid-cols-1 md:grid-cols-3 border rounded-lg min-h-[80vh]">
+      <article className="grid grid-cols-1 md:grid-cols-3 border rounded-lg h-[80vh] overflow-hidden">
         <LeftSectionProfile userData={MemberInfo} />
 
         <RightSectionProfile userData={MemberInfo} />

@@ -49,7 +49,7 @@ const AddMemberForm = ({
   className?: string;
 }) => {
   const postMutation = useDynamicMutation();
-  const headers = useGetHeaders({ type: "FormData" });
+  const headers = useGetHeaders({ type: "Json" });
   const router = useRouter();
   const { data: session } = useSession();
 

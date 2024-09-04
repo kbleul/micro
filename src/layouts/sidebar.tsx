@@ -58,9 +58,9 @@ export default function Sidebar({ className }: { className?: string }) {
         className
       )}
     >
-      <div className="sticky top-0 z-40 bg-gray-0/10 px-6 pb-5 pt-5 dark:bg-gray-100/5 2xl:px-8 2xl:pt-6">
+      <div className="sticky top-0 z-40 bg-gray-0/10 px-6 pb-5 pt-5 dark:bg-gray-100/5 2xl:px-8 2xl:pt-2 2xl:pb-0 flex justify-center">
         <Link href={"/"} aria-label="Site Logo">
-          <Logo className="" />
+          <Logo className="w-32 h-32" />
         </Link>
       </div>
  

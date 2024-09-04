@@ -59,7 +59,7 @@ const RolesList = () => {
     return fetchStateHandler;
   }
 
-  const Roles = rolesData?.data?.data ?? [];
+  const Roles:any =rolesData ?? [];
 
   return (
     <article>

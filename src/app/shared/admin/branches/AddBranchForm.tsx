@@ -99,6 +99,7 @@ const AddBranchForm = ({
           ...newValues,
           phone_number: "251" + newValues.phone_number,
           status: true,
+          _method: branchId ? "PATCH" : "POST",
         },
         onSuccess: (res) => {
           toast.success("Branch Created Successfully");

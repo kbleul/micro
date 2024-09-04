@@ -13,6 +13,7 @@ import { CategoriesArr } from "./ViewMember";
 import { handleErrorWithToast } from "@/utils/error-toast-handler";
 import { useFetchData } from "@/react-query/useFetchData";
 import { handleFetchState } from "@/utils/fetch-state-handler";
+import { paymentChannels } from "@/utils/dummy";
 
 const DepositForm = ({
   memberId,
@@ -75,6 +76,7 @@ const DepositForm = ({
         body: {
           amount: values.amount,
           deposit_for: "savings",
+          payment_channel: paymentChannels.bank
         },
         onSuccess: (res: any) => {
           queryClient.invalidateQueries({
@@ -161,7 +163,30 @@ const DepositForm = ({
                 disabled
                 suffix="birr"
               />
-              {transactionStatus?.days_left <= 0 ||
+
+<FormikInput
+                    name="amount"
+                    label="Amount to deposit(Must be greater or equal to minimum deposit threshold plus penality"
+                    color="primary"
+                    className="col-span-2 md:col-span-1 w-full"
+                    type="number"
+                    suffix="birr"
+                    isRequired
+                  />
+
+<div className="col-span-2 flex items-end justify-end gap-4 mt-10">
+                    <Button
+                      color="primary"
+                      className="px-10 text-white bg-primary-dark"
+                      type="submit"
+                      isLoading={postMutation.isPending}
+                    >
+                      Deposit
+                    </Button>
+                  </div>
+
+
+              {/* {transactionStatus?.days_left <= 0 ||
                 (transactionStatus?.unpaid_penalty_amounts > 0 && (
                   <FormikInput
                     name="amount"
@@ -186,7 +211,7 @@ const DepositForm = ({
                       Deposit
                     </Button>
                   </div>
-                )}
+                )} */}
             </Form>
           );
         }}

@@ -133,7 +133,6 @@ const LoanApplication = ({
 
           toast.success("Withdraw made Successfully");
 
-          setCategoryLink(CategoriesArr[1]);
         },
         onError: (err: any) => {
           toast.error(err?.response?.data?.data);

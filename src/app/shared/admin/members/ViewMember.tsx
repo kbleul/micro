@@ -73,7 +73,7 @@ const ViewMember = () => {
     switch (categoryLink) {
       case CategoriesArr[1]:
         return (
-          <TransactionsHistory memberId={memberId} accountId={accountId} />
+          <TransactionsHistory memberId={memberId} accountId={accountId}  accountNumber={currentAccount?.number ?? ""} />
         );
 
       case CategoriesArr[2]:

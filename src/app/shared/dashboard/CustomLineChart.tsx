@@ -59,7 +59,7 @@ const CustomLineChart = ({
   return (
     <article className=" rounded-lg px-4 py-6 max-h-[50vh] border w-full">
       <section className="flex justify-start items-center gap-4 pb-6 ">
-        <BoxHeader title="Account Types" optionsList={[]} />
+        <BoxHeader title="Saving By Account Type" optionsList={[]} />
       </section>
 
       <section className="w-full h-full ">

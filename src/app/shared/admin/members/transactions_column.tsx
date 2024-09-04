@@ -2,70 +2,143 @@
 
 import { HeaderCell } from "@/components/ui/table";
 import { Text } from "@/components/ui/text";
+import { convertDateTimeFormate } from "@/utils/time_manuplation";
 import { TbEye } from "react-icons/tb";
 import { ActionIcon, Tooltip } from "rizzui";
 
-
-export const getColumns = (viewInvoice: () => void) => [
+export const getColumns = (viewInvoice: (row: any) => void) => [
   {
-    title: <HeaderCell title="Account Number" />,
-    dataIndex: "account",
-    key: "account",
+    title: <HeaderCell title="Invoice Number" />,
+    dataIndex: "voucher_number",
+    key: "voucher_number",
     width: 130,
-    render: (account: { number: string }) => (
+    render: (voucher_number: string) => (
       <Text className="font-medium text-gray-700 line-clamp-1 capitalize">
-        {account.number}
+        {voucher_number}
       </Text>
     ),
   },
   {
-    title: <HeaderCell title="Amount" />,
-    dataIndex: "amount",
-    key: "amount",
+    title: <HeaderCell title="Regular Saving" />,
+    dataIndex: "regular_saving",
+    key: "regular_saving",
     width: 150,
-    render: (amount: string) => (
+    render: (regular_saving: number) => (
       <Text className="font-medium text-gray-700 tracking-wider line-clamp-1">
-        {amount + " Birr"}
+        {regular_saving > 0 ? regular_saving + " Birr" : " "}
       </Text>
     ),
   },
   {
-    title: <HeaderCell title="Transaction Type" />,
-    dataIndex: "type",
-    key: "type",
-    width: 120,
-    render: (type: string) => (
-      <Text
-        className={
-          type === "deposit"
-            ? "font-semibold px-4 py-1 xl:ml-7 w-fit bg-green-200 text-green-600 tracking-wider capitalize text-xs"
-            : "font-semibold px-4 py-1 w-fit tracking-wider capitalize bg-red-200 xl:ml-6 text-xs text-red-600"
-        }
-      >
-        {type}
+    title: <HeaderCell title="Compulsory Saving" />,
+    dataIndex: "compulsory_saving",
+    key: "compulsory_saving",
+    width: 150,
+    render: (compulsory_saving: number) => (
+      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1">
+        {compulsory_saving > 0 ? compulsory_saving + " Birr" : " "}
+      </Text>
+    ),
+  },
+  {
+    title: <HeaderCell title="Loan Repayment" />,
+    dataIndex: "paid",
+    key: "paid",
+    width: 150,
+    render: (paid: number) => (
+      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 text-center">
+        {paid > 0 ? paid + " Birr" : " "}
+      </Text>
+    ),
+  },
+  {
+    title: <HeaderCell title="Withdrawal" />,
+    dataIndex: "withdrawal",
+    key: "withdrawal",
+    width: 150,
+    render: (withdrawal: number) => (
+      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 text-center">
+        {withdrawal > 0 ? withdrawal + " Birr" : " "}
+      </Text>
+    ),
+  },
+  {
+    title: <HeaderCell title="Saving Interest" />,
+    dataIndex: "saving_interest",
+    key: "saving_interest",
+    width: 150,
+    render: (saving_interest: number) => (
+      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 text-center">
+        {saving_interest > 0 ? saving_interest + " Birr" : " "}
+      </Text>
+    ),
+  },
+  {
+    title: <HeaderCell title="Loan Interest" />,
+    dataIndex: "loan_interest",
+    key: "loan_interest",
+    width: 150,
+    render: (loan_interest: number) => (
+      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 text-center">
+        {loan_interest > 0 ? loan_interest + " Birr" : " "}
+      </Text>
+    ),
+  },
+  
+  {
+    title: <HeaderCell title="Penalty" />,
+    dataIndex: "penalty",
+    key: "penalty",
+    width: 150,
+    render: (penalty: number) => (
+      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 text-center">
+        {penalty > 0 ? penalty + " Birr" : " "}
+      </Text>
+    ),
+  },
+  {
+    title: <HeaderCell title="Payment Channel" />,
+    dataIndex: "payment_channel",
+    key: "payment_channel",
+    width: 150,
+    render: (payment_channel: number) => (
+      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 text-center">
+        {payment_channel > 0 ? payment_channel : " "}
+      </Text>
+    ),
+  },
+
+  
+  {
+    title: <HeaderCell title="Date " />,
+    dataIndex: "date",
+    key: "date",
+    width: 10,
+    render: (date: string) => (
+      <Text className="text-sm text-gray-700 text-center">
+        {convertDateTimeFormate(date)}
       </Text>
     ),
   },
   {
     title: <HeaderCell title="Current Balance" />,
-    dataIndex: "account",
-    key: "account",
+    dataIndex: "remaining_principal",
+    key: "remaining_principal",
     width: 100,
-    render: (account: { balance: string }) => (
-      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 capitalize">
-        {account.balance + " Birr"}
+    render: (remaining_principal: string) => (
+      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 capitalize text-center">
+        {remaining_principal + " Birr"}
       </Text>
     ),
   },
 
   {
-    // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
     title: <HeaderCell title="Actions" className="opacity-0" />,
     dataIndex: "status",
     key: "status",
     width: 120,
     render: (_: string, row: any) => (
-      <div className="flex items-center justify-end gap-3 pe-4">
+      <div className="flex items-center justify-end gap-3 pe-4 text-center">
         {
           <Tooltip
             size="sm"
@@ -78,7 +151,7 @@ export const getColumns = (viewInvoice: () => void) => [
               size="lg"
               variant="outline"
               className="hover:text-gray-700"
-              onClick={() => viewInvoice()}
+              onClick={() => viewInvoice(row)}
             >
               <TbEye size="25" />
             </ActionIcon>

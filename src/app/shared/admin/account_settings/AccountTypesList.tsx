@@ -72,6 +72,7 @@ const AccountTypesList = () => {
             onClick={() =>
               openModal({
                 view: <AddTypeForm />,
+                customSize: "1550px",
               })
             }
             btntext="Add type"
@@ -101,6 +102,7 @@ const AccountTypesList = () => {
                   onClick={() => {
                     openModal({
                       view: <AddTypeForm id={term.id} />,
+                      customSize: "1550px",
                     });
                   }}
                 >
@@ -114,44 +116,5 @@ const AccountTypesList = () => {
   );
 };
 
-// const SideMenu = ({ term }: { role: any }) => {
-//   const router = useRouter();
-
-//   const { openModal, closeModal } = useModal();
-
-//   const [showMenu, setShowMenu] = useState(false);
-
-//   return (
-//     <section className=" w-full">
-//       <Button
-//         color="primary"
-//         variant="outline"
-//         onClick={() => setShowMenu((prev) => !prev)}
-//         className="text-black bg-white z-50  rounded-full  absolute top-3 right-3 py-1 px-[0.6rem] flex justify-center items-center border border-gray-200"
-//       >
-//         <BsThreeDots size={20} />
-//       </Button>
-//       {showMenu && (
-//         <div
-//           className="absolute top-12 right-10 border bg-white flex flex-col"
-//           onMouseEnter={() => setShowMenu(true)}
-//         >
-//           <button
-//             type="button"
-//             className="py-2 hover:bg-gray-100 px-6 border-b"
-//             onClick={() => {
-//               setShowMenu(false);
-//               openModal({
-//                 view: <AddTypeForm id={role.id} />,
-//               });
-//             }}
-//           >
-//             Edit role
-//           </button>
-//         </div>
-//       )}
-//     </section>
-//   );
-// };
 
 export default AccountTypesList;

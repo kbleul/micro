@@ -12,7 +12,9 @@ const LeftSectionProfile = ({ userData }: { userData: memberType }) => {
   const { openModal } = useModal();
 
   return (
-    <article className="col-span-1 border-r relative">
+    <article
+      className={`col-span-1 border-r relative h-[80vh] ${userData.accounts.length > 3 && "hover:overflow-y-scroll"} `}
+    >
       <section className="flex flex-col justify-center items-center gap-2 py-8">
         <section
           className="w-16 h-16 md:w-28 md:h-28 gap-x-4 border border-white  bg-[#e1f7e6] rounded-full shadow-sm overflow-hidden  z-10"
@@ -74,7 +76,7 @@ const LeftSectionProfile = ({ userData }: { userData: memberType }) => {
           <Button
             color="primary"
             size="xl"
-            className="mt-10 xl:mt-0 xl:absolute bottom-4 w-3/5 py-1"
+            className={`mt-10 xl:mt-0 ${userData.accounts.length < 3 && "xl:absolute bottom-4"}  w-3/5 py-1`}
             onClick={() => {
               openModal({
                 view: <AddAccountForm memberId={userData.id} />,
