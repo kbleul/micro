@@ -130,7 +130,7 @@ export default function SignInForm() {
                       href={routes.forgotPassword}
                       className="font-medium text-primary-dark hover:text-primary"
                     >
-                      Forgot Password?
+                      Forgot Password ?
                     </Link>
                   </div>
                   <Button
