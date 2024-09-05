@@ -132,9 +132,9 @@ export type MemberType = {
   middle_name: string;
   gender: string;
   phone_number: string;
-  age: number;
+  age: number | null;
 
-  monthly_income: number;
+  monthly_income: number | null;
 
   birth_place: string | null;
   birth_district: string | null;

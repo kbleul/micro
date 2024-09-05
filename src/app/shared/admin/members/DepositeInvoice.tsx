@@ -38,7 +38,6 @@ const DepositeInvoice = forwardRef<HTMLDivElement, DepositeInvoiceProps>(
       );
     }
 
-    console.log(ledgerData);
     const Member = memberData?.data?.data;
 
     return (
@@ -183,7 +182,7 @@ const DepositeInvoice = forwardRef<HTMLDivElement, DepositeInvoiceProps>(
           </section>
         </article>
 
-        <article className="grid grid-cols-7 justify-start items-center my-3 text-center">
+     {ledgerData?.withdrawal === 0 &&   <article className="grid grid-cols-7 justify-start items-center my-3 text-center">
           <section className="border border-gray-700">
             <div className="py-2">
               <p className="">መመዝዝቢያ</p>
@@ -279,7 +278,7 @@ const DepositeInvoice = forwardRef<HTMLDivElement, DepositeInvoiceProps>(
               <p className="col-span-2 text-sm py-2">-</p>
             </div>
           </section>
-        </article>
+        </article>}
 
         <article className="grid grid-cols-2 gap-20 mb-2">
           <section className="flex justify-start items-center gap-2 text-base">

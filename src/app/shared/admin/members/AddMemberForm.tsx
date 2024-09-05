@@ -95,9 +95,9 @@ const AddMemberForm = ({
     phone_number: "",
     middle_name: "",
     gender: "",
-    age: 18,
+    age: null,
 
-    monthly_income: 1000,
+    monthly_income: null,
 
     birth_place: "",
     birth_district: "",
@@ -647,7 +647,7 @@ const AddMemberForm = ({
                                   label="Occupation"
                                   placeholder="Enter Ocuppation"
                                   color="primary"
-                                  className=""
+                                  className="mt-3"
                                   isRequired
                                 />
 
@@ -763,7 +763,7 @@ const AddMemberForm = ({
                             <div className="grid grid-cols-2 gap-4 my- 4 pt-4 pb-8 border-b border-broken">
                               <FormikInput
                                 name={`heirs.[${index}].full_name`}
-                                label="Last Name"
+                                label="Full Name"
                                 placeholder="Enter full name"
                                 color="primary"
                                 className=""
@@ -810,7 +810,7 @@ const AddMemberForm = ({
                                 label="Occupation"
                                 placeholder="Enter Ocuppation"
                                 color="primary"
-                                className=""
+                                className="mt-3"
                                 isRequired
                               />
 

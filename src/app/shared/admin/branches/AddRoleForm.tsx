@@ -15,6 +15,7 @@ import { useModal } from "@/app/shared/modal-views/use-modal";
 import Loading from "@/components/ui/Loading";
 import { RoleType, RoleSchema } from "@/validations/role.schema";
 import { PiXBold } from "react-icons/pi";
+import { handleErrorWithToast } from "@/utils/error-toast-handler";
 
 const AddRoleForm = ({
   id,
@@ -67,7 +68,7 @@ const AddRoleForm = ({
           closeModal();
         },
         onError: (err: any) => {
-          toast.error(err?.response?.data?.data);
+          handleErrorWithToast(err, toast);
         },
       });
     } catch (err) {

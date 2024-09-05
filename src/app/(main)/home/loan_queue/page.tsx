@@ -3,7 +3,7 @@ import { metaObject } from "@/config/site.config";
 import React from "react";
 
 export const metadata = {
-  ...metaObject("LOan Queue"),
+  ...metaObject("Loan Queue"),
 };
 
 const page = () => {

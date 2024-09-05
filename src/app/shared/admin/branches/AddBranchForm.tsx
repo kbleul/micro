@@ -79,7 +79,7 @@ const AddBranchForm = ({
 
   const initialValues: BranchType = {
     name: branchId ? Branch?.name : "",
-    phone_number: branchId ? Branch?.phone_number : "",
+    phone_number: branchId ? Branch?.phone_number?.slice(1) : "",
     email: branchId ? Branch?.email : "",
     city: branchId ? Branch?.city : "",
     region: branchId ? Branch?.region : "",
@@ -108,8 +108,6 @@ const AddBranchForm = ({
         },
         onError: (err) => {
           handleErrorWithToast(err, toast);
-
-          // toast.error(err?.response?.data?.data);
         },
       });
     } catch (err) {

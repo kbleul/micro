@@ -63,6 +63,22 @@ export type memberType = {
       penalty_rate: number;
       saving_period: string;
       minimum_threshold: number;
+      interest_tiers: {
+        id: string;
+        account_type_id: string;
+        threshold: 200000;
+        interest_rate: 5.5;
+      }[];
+      loan_tiers: {
+        id: string;
+        account_type_id: string;
+        threshold: 100000;
+        max_loan_amount: 400000;
+        interest_rate: 7;
+        penalty_rate: 5;
+        required_months: 6;
+        max_loan_multiplier: 4;
+      }[];
     };
   }[];
   marriage_status: string;
@@ -152,11 +168,13 @@ export type workflowStepType = {
   created_at: string;
   id: string;
   name: string;
-  roles: {
-    id: string;
-    role_name: string;
-    role_id: string;
-  }[] | null;
+  roles:
+    | {
+        id: string;
+        role_name: string;
+        role_id: string;
+      }[]
+    | null;
   step_number: number;
 };
 export type workflowType = {

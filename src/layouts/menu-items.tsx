@@ -112,11 +112,11 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
       icon: <MdOutlineApproval />,
     });
 
-    // menuItems.push({
-    //   name: "Loan Que",
-    //   href: routes.home.approvalRequests,
-    //   icon: <PiQueue />,
-    // });
+    menuItems.push({
+      name: "Loan Que",
+      href: routes.home.loanQueue,
+      icon: <PiQueue size="25" />,
+    });
   }
 
   // if (userPermissions.includes("read:branch")) {
