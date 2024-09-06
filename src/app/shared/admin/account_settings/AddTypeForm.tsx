@@ -54,6 +54,9 @@ const AddTypeForm = ({ id }: { id?: string }) => {
   const initialValues: InterstTypeType = {
     name: id ? AccountTYpe.name : "",
     minimum_threshold: id ? AccountTYpe.minimum_threshold : 0,
+    interest_period: id ? AccountTYpe.interest_period : "",
+    interest_rate: id ? AccountTYpe.interest_rate : 0,
+
     saving_period: id ? AccountTYpe.saving_period : "",
     penalty_rate: id ? AccountTYpe.penalty_rate : 0,
     interest_tiers:
@@ -101,13 +104,10 @@ const AddTypeForm = ({ id }: { id?: string }) => {
         url: id
           ? `${process.env.NEXT_PUBLIC_BACKEND_URL}account-types/${id}`
           : `${process.env.NEXT_PUBLIC_BACKEND_URL}account-types`,
-        method: "POST",
+        method: id ? "PUT" : "POST",
         headers,
         body: {
           ...values,
-          interest_period: "Monthly",
-          interest_rate: 75356583.19313674,
-          _method: id ? "PATCH" : "POST",
         },
         onSuccess: (res: any) => {
           queryClient.invalidateQueries({
@@ -171,39 +171,69 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                   isRequired
                 />
 
-                  <CustomSelect
-                    isSearchable
-                    name="saving_period"
-                    label="Saving Period"
-                    options={periodOptions}
-                    onChange={(selectedOption: { value: string }) => {
-                      setFieldValue("saving_period", selectedOption.value);
-                    }}
-                    placeholder="select period"
-                    getOptionValue={(saving_period: any) => saving_period?.id}
-                    getOptionLabel={(saving_period: any) => saving_period?.name}
-                    noOptionsMessage={() => "Fetching periods..."}
-                    defaultValue={
-                      id &&
-                      periodOptions.find(
-                        (p) => p.name === AccountTYpe.saving_period
-                      )
-                    }
-                    isRequired
-                  />
+                <CustomSelect
+                  isSearchable
+                  name="saving_period"
+                  label="Saving Period"
+                  options={periodOptions}
+                  onChange={(selectedOption: { value: string }) => {
+                    setFieldValue("saving_period", selectedOption.value);
+                  }}
+                  placeholder="select period"
+                  getOptionValue={(saving_period: any) => saving_period?.id}
+                  getOptionLabel={(saving_period: any) => saving_period?.name}
+                  noOptionsMessage={() => "Fetching periods..."}
+                  defaultValue={
+                    id &&
+                    periodOptions.find(
+                      (p) => p.name === AccountTYpe.saving_period
+                    )
+                  }
+                  isRequired
+                />
 
-                  <FormikInput
-                    name="penalty_rate"
-                    label="Penality Rate"
-                    placeholder="Enter the penality rate"
-                    color="primary"
-                    className="col-span-1"
-                    type="number"
-                    isRequired
-                    suffix="%"
-                  />
+                <FormikInput
+                  name="penalty_rate"
+                  label="Penality Rate"
+                  placeholder="Enter the penality rate"
+                  color="primary"
+                  className="col-span-1"
+                  type="number"
+                  isRequired
+                  suffix="%"
+                />
 
-              
+                <CustomSelect
+                  isSearchable
+                  name="interest_period"
+                  label="Default Interest Period (will be used if teir is not defined)"
+                  options={periodOptions}
+                  onChange={(selectedOption: { value: string }) => {
+                    setFieldValue("interest_period", selectedOption.value);
+                  }}
+                  placeholder="select period"
+                  getOptionValue={(interest_period: any) => interest_period?.id}
+                  getOptionLabel={(interest_period: any) =>
+                    interest_period?.name
+                  }
+                  noOptionsMessage={() => "Fetching periods..."}
+                  defaultValue={
+                    id &&
+                    periodOptions.find(
+                      (p) => p.name === AccountTYpe.interest_period
+                    )
+                  }
+                />
+
+                <FormikInput
+                  name={`interest_rate`}
+                  label="Default Intrest Rate (will be used if teir is not defined)"
+                  placeholder="Enter the rate"
+                  suffix="%"
+                  color="primary"
+                  className="col-span-1"
+                  type="number"
+                />
 
                 <FieldArray name="interest_tiers">
                   {(data: any) => (
@@ -340,7 +370,7 @@ const AddTypeForm = ({ id }: { id?: string }) => {
 
                           <FormikInput
                             name={`loan_tiers[${index}].interest_rate`}
-                            label="interest Rate"
+                            label="Interest Rate"
                             placeholder="Enter the interest_rate"
                             suffix="%"
                             color="primary"
