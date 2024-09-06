@@ -125,13 +125,7 @@ const AddMemberForm = ({
     method_of_identifcation: "",
     identification_number: "",
 
-    children: [
-      {
-        name: "",
-        age: 0,
-        gender: "",
-      },
-    ],
+    children: [],
     heirs: [
       {
         address: "",
@@ -360,6 +354,7 @@ const AddMemberForm = ({
                                 placeholder="Enter full name"
                                 color="primary"
                                 className="col-span-2"
+                                isRequired
                               />
 
                               <FormikInput
@@ -369,6 +364,7 @@ const AddMemberForm = ({
                                 color="primary"
                                 className=""
                                 type="number"
+                                isRequired
                               />
 
                               <Field name={`children.${index}.gender`}>
@@ -386,6 +382,7 @@ const AddMemberForm = ({
                                     getOptionValue={(option) => option.value}
                                     color="primary"
                                     placeholder="Select gender"
+                                    isRequired
                                   />
                                 )}
                               </Field>
@@ -405,7 +402,7 @@ const AddMemberForm = ({
                             >
                               Add Children
                             </Button>
-                            {values.children.length > 1 && (
+                            {values.children.length > 0 && (
                               <Button
                                 onClick={() => {
                                   data.pop();
@@ -990,6 +987,23 @@ const AddMemberForm = ({
                         isRequired
                       />
                     </div>
+
+                    {values.account_type_id && (
+                      <div className="col-span-2">
+                        <p className="font-medium mb-1">Minimum Initial Deposite</p>
+                        <div className="flex justify-between items-center py-3 px-4 rounded-md border-2 border-primary font-medium">
+                        <p className="">
+                          {
+                            Types.find(
+                              (type) => type.id === values.account_type_id
+                            ).minimum_threshold
+                          }
+                        </p>
+                        <p>birr</p>
+                        </div>
+                       
+                      </div>
+                    )}
 
                     <FormikInput
                       name={`monthly_income`}

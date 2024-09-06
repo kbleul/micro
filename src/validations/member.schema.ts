@@ -1,3 +1,4 @@
+import { Children } from "react";
 import * as Yup from "yup";
 export const MemberSchema = Yup.object().shape({
   first_name: Yup.string().required("First name name is required"),
@@ -62,6 +63,14 @@ export const MemberSchema = Yup.object().shape({
 
   account_type_id: Yup.string().required("Account type is required"),
 
+  children: Yup.array().of(Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    age: Yup.number()
+    .min(0, "Age is too small")
+    .max(150, "Age is too large")
+    .required("Age is required"),
+    gender: Yup.string().required("Gender is required"),
+  })),
   heirs: Yup.array().of(Yup.object().shape({
     address: Yup.string(),
     city: Yup.string().required("City is required"),
