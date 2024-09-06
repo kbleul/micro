@@ -92,14 +92,15 @@ const AddBranchForm = ({
     };
     try {
       await postMutation.mutateAsync({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}branches`,
-        method: "POST",
+        url: branchId
+          ? `${process.env.NEXT_PUBLIC_BACKEND_URL}branches/${branchId}`
+          : `${process.env.NEXT_PUBLIC_BACKEND_URL}branches`,
+        method: branchId ? "PUT" : "POST",
         headers,
         body: {
           ...newValues,
           phone_number: "251" + newValues.phone_number,
           status: true,
-          _method: branchId ? "PATCH" : "POST",
         },
         onSuccess: (res) => {
           toast.success("Branch Created Successfully");
@@ -114,7 +115,6 @@ const AddBranchForm = ({
       console.log(err);
     }
   };
-
 
   return (
     <article>
