@@ -446,6 +446,7 @@ const AddMemberForm = ({
                         getOptionValue={(region: any) => region?.name}
                         getOptionLabel={(region: any) => region?.name}
                         noOptionsMessage={() => "Fetching regions..."}
+                        isRequired
                       />
                     </div>
                     <div className="mt-4 w-full flex flex-col gap-6 ">
@@ -461,6 +462,7 @@ const AddMemberForm = ({
                         getOptionValue={(birth_place: any) => birth_place?.name}
                         getOptionLabel={(birth_place: any) => birth_place?.name}
                         noOptionsMessage={() => "Fetching cities..."}
+                        isRequired
                       />
                     </div>
 
