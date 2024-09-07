@@ -30,6 +30,9 @@ const ViewMember = () => {
 
   const [categoryLink, setCategoryLink] = useState(CategoriesArr[0]);
 
+  const [refetchAccount, setRefetchAccount] = useState(false);
+
+
   const pageHeader = {
     title: "View Member",
     breadcrumb: [
@@ -48,7 +51,7 @@ const ViewMember = () => {
   };
 
   const clientData = useFetchData(
-    [queryKeys.getAllUsers + memberId, memberId],
+    [queryKeys.getAllUsers + memberId, memberId, refetchAccount],
     `${process.env.NEXT_PUBLIC_BACKEND_URL}members/${memberId}`,
     headers
   );
@@ -85,6 +88,7 @@ const ViewMember = () => {
             currentBalance={currentAccount?.balance ?? 0}
             minimumThreshold={currentAccount?.account_type.minimum_threshold ?? 0}
             setCategoryLink={setCategoryLink}
+            setRefetchAccount={setRefetchAccount}
           />
         );
 
@@ -96,6 +100,7 @@ const ViewMember = () => {
             accountNumber={currentAccount?.number ?? ""}
             currentBalance={currentAccount?.balance ?? 0}
             setCategoryLink={setCategoryLink}
+            setRefetchAccount={setRefetchAccount}
           />
         );
 
@@ -108,6 +113,7 @@ const ViewMember = () => {
             accountNumber={currentAccount?.number ?? ""}
             currentBalance={currentAccount?.balance ?? 0}
             setCategoryLink={setCategoryLink}
+            setRefetchAccount={setRefetchAccount}
           />
         );
 

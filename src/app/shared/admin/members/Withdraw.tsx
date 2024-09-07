@@ -2,11 +2,7 @@ import FormikInput from "@/components/ui/form/input";
 import { useGetHeaders } from "@/hooks/use-get-headers";
 import { queryKeys } from "@/react-query/query-keys";
 import useDynamicMutation from "@/react-query/usePostData";
-import {
-  DepositeSchema,
-  WithdrawSchema,
-  WithdrawType,
-} from "@/validations/transaction.schema";
+import { WithdrawSchema, WithdrawType } from "@/validations/transaction.schema";
 import { useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { useSession } from "next-auth/react";
@@ -17,7 +13,6 @@ import { CategoriesArr } from "./ViewMember";
 import { handleErrorWithToast } from "@/utils/error-toast-handler";
 import { useFetchData } from "@/react-query/useFetchData";
 import { handleFetchState } from "@/utils/fetch-state-handler";
-import Loading from "@/components/ui/Loading";
 
 const WithdrawalForm = ({
   memberId,
@@ -25,12 +20,14 @@ const WithdrawalForm = ({
   accountNumber,
   currentBalance,
   setCategoryLink,
+  setRefetchAccount,
 }: {
   memberId: string;
   accountId: string;
   accountNumber: string;
   currentBalance: number;
   setCategoryLink: React.Dispatch<React.SetStateAction<string>>;
+  setRefetchAccount: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { data: session } = useSession();
 
@@ -83,6 +80,7 @@ const WithdrawalForm = ({
           toast.success("Withdraw made Successfully");
 
           setCategoryLink(CategoriesArr[1]);
+          setRefetchAccount((prev) => !prev);
         },
         onError: (err: any) => {
           toast.error(err?.response?.data?.data);

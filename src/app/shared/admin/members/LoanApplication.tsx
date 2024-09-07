@@ -26,12 +26,14 @@ const LoanApplication = ({
   accountNumber,
   currentBalance,
   setCategoryLink,
+  setRefetchAccount
 }: {
   memberId: string;
   accountId: string;
   accountNumber: string;
   currentBalance: number;
   setCategoryLink: React.Dispatch<React.SetStateAction<string>>;
+  setRefetchAccount: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { data: session } = useSession();
 
@@ -131,7 +133,10 @@ const LoanApplication = ({
             queryKey: [queryKeys.getAllTransactions + memberId],
           });
 
-          toast.success("Withdraw made Successfully");
+          toast.success("Loan application successfull");
+
+          setCategoryLink(CategoriesArr[1]);
+          setRefetchAccount((prev) => !prev);
 
         },
         onError: (err: any) => {
