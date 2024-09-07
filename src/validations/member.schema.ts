@@ -12,7 +12,7 @@ export const MemberSchema = Yup.object().shape({
     .required("Age is required"),
 
   monthly_income: Yup.number()
-    .min(1000, "Monthly income is too small")
+    .min(1000, "Monthly income has to be above 1000 birr")
     .required("Monthly income is required"),
 
   phone_number: Yup.string()
@@ -21,6 +21,9 @@ export const MemberSchema = Yup.object().shape({
     .matches(/^\d{9}$/, "Phone number must be 9 digits long"),
 
   birth_house_number: Yup.string().required("House number is required"),
+  birth_place: Yup.string().required("City is required"),
+  birth_region: Yup.string().required("Region is required"),
+
   current_house_number: Yup.string().required("House number is required"),
 
   registration_fee: Yup.number()

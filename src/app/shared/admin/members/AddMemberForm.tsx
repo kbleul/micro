@@ -15,7 +15,7 @@ import {
   MarriageStatusOptions,
   REGIONS,
 } from "@/utils/dummy";
-import { Field, FieldArray, Form, Formik } from "formik";
+import { ErrorMessage, Field, FieldArray, Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
@@ -367,25 +367,35 @@ const AddMemberForm = ({
                                 isRequired
                               />
 
-                              <Field name={`children.${index}.gender`}>
-                                {() => (
-                                  <Select
-                                    options={genderOptions}
-                                    value={values.children[index].gender}
-                                    onChange={(value) =>
-                                      setFieldValue(
-                                        `children.${index}.gender`,
-                                        value
-                                      )
-                                    }
-                                    label="Gender"
-                                    getOptionValue={(option) => option.value}
-                                    color="primary"
-                                    placeholder="Select gender"
-                                    isRequired
-                                  />
-                                )}
-                              </Field>
+                              <div className="">
+                                <Field name={`children.${index}.gender`}>
+                                  {() => (
+                                    <Select
+                                      options={genderOptions}
+                                      value={values.children[index].gender}
+                                      onChange={(value) => {
+                                        setFieldValue(
+                                          `children.${index}.gender`,
+                                          value
+                                        );
+                                      }}
+                                      label="Gender"
+                                      getOptionValue={(option) => option.value}
+                                      color="primary"
+                                      placeholder="Select gender"
+                                      isRequired
+                                    />
+                                  )}
+                                </Field>
+
+                                <ErrorMessage
+                                  name={`children.${index}.gender`}
+                                  component="div"
+                                  className={
+                                    "text-xs capitalize text-red-500 pt-1 font-medium"
+                                  }
+                                />
+                              </div>
                             </div>
                           ))}
 
@@ -595,8 +605,8 @@ const AddMemberForm = ({
                               <div className="grid grid-cols-2 gap-4 my- 4 pt-4 pb-8 border-b border-broken">
                                 <FormikInput
                                   name={`emergency_contacts.[${index}].full_name`}
-                                  label="Last Name"
-                                  placeholder="Enter last name"
+                                  label="Full Name"
+                                  placeholder="Enter full name"
                                   color="primary"
                                   className=""
                                   isRequired
@@ -990,18 +1000,19 @@ const AddMemberForm = ({
 
                     {values.account_type_id && (
                       <div className="col-span-2">
-                        <p className="font-medium mb-1">Minimum Initial Deposite</p>
-                        <div className="flex justify-between items-center py-3 px-4 rounded-md border-2 border-primary font-medium">
-                        <p className="">
-                          {
-                            Types.find(
-                              (type) => type.id === values.account_type_id
-                            ).minimum_threshold
-                          }
+                        <p className="font-medium mb-1">
+                          Minimum Initial Deposite
                         </p>
-                        <p>birr</p>
+                        <div className="flex justify-between items-center py-3 px-4 rounded-md border-2 border-primary font-medium">
+                          <p className="">
+                            {
+                              Types.find(
+                                (type) => type.id === values.account_type_id
+                              ).minimum_threshold
+                            }
+                          </p>
+                          <p>birr</p>
                         </div>
-                       
                       </div>
                     )}
 

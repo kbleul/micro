@@ -24,6 +24,7 @@ import { useModal } from "../../modal-views/use-modal";
 import AssignManagerForm from "./AssignManagerForm";
 import { branchType } from "types/common_types";
 import { handleErrorWithToast } from "@/utils/error-toast-handler";
+import { parsePhoneNumber } from "@/utils/parse-phone";
 
 const AddBranchForm = ({
   branchId,
@@ -79,7 +80,7 @@ const AddBranchForm = ({
 
   const initialValues: BranchType = {
     name: branchId ? Branch?.name : "",
-    phone_number: branchId ? Branch?.phone_number?.slice(1) : "",
+    phone_number: branchId ? parsePhoneNumber(Branch?.phone_number)  : "",
     email: branchId ? Branch?.email : "",
     city: branchId ? Branch?.city : "",
     region: branchId ? Branch?.region : "",
@@ -103,7 +104,7 @@ const AddBranchForm = ({
           status: true,
         },
         onSuccess: (res) => {
-          toast.success("Branch Created Successfully");
+          toast.success(branchId ? "Branch updated Successfully" : "Branch Created Successfully");
 
           router.push(routes.home.branches.view_all);
         },
