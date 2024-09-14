@@ -1,3 +1,4 @@
+import { paymentChannels } from "@/utils/dummy";
 import * as Yup from "yup";
 export const DepositeSchema = Yup.object().shape({
   account_id: Yup.string().required("Name is required"),
@@ -16,6 +17,14 @@ export const DepositeSchema = Yup.object().shape({
     .required("Amount is required"),
   unpaid_penalty_amounts: Yup.number().min(0, "Amount is too small"),
   minimum_threshold: Yup.number().min(0, "Amount is too small"),
+  payment_channel: Yup.string().required("Payment channel is required"),
+  cheque_number: Yup.string()
+    .typeError("Invalid cheque number.")
+    .when("payment_channel", {
+      is: paymentChannels.cheque,
+      then: (schema) => schema.required("Cheque number is required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
 });
 
 type DepositeType = {
@@ -29,6 +38,8 @@ type DepositeType = {
   able_to_withdraw: boolean;
   able_to_withdraw_amount: string;
   minimum_threshold: number;
+  payment_channel: string | null;
+  cheque_number: string | null;
 };
 
 export const WithdrawSchema = Yup.object().shape({

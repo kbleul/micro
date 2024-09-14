@@ -35,12 +35,9 @@ interface FormikInputProps {
     | "success"
     | "warning"
     | undefined;
-    isRequired?: boolean;
-    labelClassName?: string
+  isRequired?: boolean;
+  labelClassName?: string;
 }
-
-
-
 
 const FormikInput: React.FC<FormikInputProps> = ({
   label,
@@ -53,9 +50,8 @@ const FormikInput: React.FC<FormikInputProps> = ({
   inputClassName,
   color,
   disabled = false,
-  isRequired = false, 
-  labelClassName
-
+  isRequired = false,
+  labelClassName,
 }) => {
   const [field] = useField(name);
   return (
@@ -75,7 +71,7 @@ const FormikInput: React.FC<FormikInputProps> = ({
           inputClassName={cn("text-sm ", inputClassName)}
           color={color}
           disabled={disabled}
-          labelClassName={cn()}
+          labelClassName={cn(labelClassName)}
         />
         <ErrorMessage
           name={name}

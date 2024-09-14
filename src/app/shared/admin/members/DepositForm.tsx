@@ -14,7 +14,22 @@ import { handleErrorWithToast } from "@/utils/error-toast-handler";
 import { useFetchData } from "@/react-query/useFetchData";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 import { paymentChannels } from "@/utils/dummy";
+import CustomSelect from "@/components/ui/form/select";
 
+const paymentChannelsOptions = [
+  {
+    name: paymentChannels.bank,
+    value: paymentChannels.bank,
+  },
+  {
+    name: paymentChannels.cash,
+    value: paymentChannels.cash,
+  },
+  {
+    name: paymentChannels.cheque,
+    value: paymentChannels.cheque,
+  },
+];
 const DepositForm = ({
   memberId,
   accountId,
@@ -65,6 +80,8 @@ const DepositForm = ({
     able_to_withdraw: transactionStatus?.able_to_withdraw,
     able_to_withdraw_amount: transactionStatus?.able_to_withdraw_amount,
     minimum_threshold: minimumThreshold,
+    payment_channel: null,
+    cheque_number: null,
   };
 
   const handleDeposit = async (values: DepositeType) => {
@@ -75,7 +92,7 @@ const DepositForm = ({
         headers,
         body: {
           amount: values.amount,
-          deposit_for: "savings",
+          type: "savings",
           payment_channel: paymentChannels.bank,
         },
         onSuccess: (res: any) => {
@@ -109,7 +126,7 @@ const DepositForm = ({
         validationSchema={DepositeSchema}
         onSubmit={(values: DepositeType) => handleDeposit(values)}
       >
-        {({}) => {
+        {({ values, setFieldValue }) => {
           return (
             <Form
               className={
@@ -165,11 +182,40 @@ const DepositForm = ({
                 suffix="birr"
               />
 
+              <div className="mt-4 w-full flex flex-col gap-6 ">
+                <CustomSelect
+                  isSearchable
+                  name="payment_channel"
+                  label="Payment Channel"
+                  options={paymentChannelsOptions}
+                  onChange={(selectedOption: { value: string }) => {
+                    setFieldValue("payment_channel", selectedOption.value);
+                  }}
+                  placeholder="select payment channels"
+                  getOptionValue={(period: { value: string }) => period.value}
+                  getOptionLabel={(period: { value: string }) => period.value}
+                  noOptionsMessage={() => "Fetching payment channels..."}
+                  isRequired
+                />
+              </div>
+
+              {values.payment_channel === paymentChannels.cheque && (
+                <FormikInput
+                  name="cheque_number"
+                  label="Cheque Number"
+                  color="primary"
+                  className="col-span-2 md:col-span-1 w-full mt-2"
+                  labelClassName="pb-2"
+                  isRequired
+                />
+              )}
+
               <FormikInput
                 name="amount"
                 label="Amount to deposit(Must be greater or equal to minimum deposit threshold plus penality"
                 color="primary"
-                className="col-span-2 md:col-span-1 w-full"
+                className="col-span-2 md:col-span-1 w-full mt-2"
+                labelClassName="pb-2"
                 type="number"
                 suffix="birr"
                 isRequired
