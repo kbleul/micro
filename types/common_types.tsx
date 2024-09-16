@@ -37,6 +37,39 @@ export type roleTypes = {
   slug: string;
 };
 
+export type accountType = {
+  id: string;
+  number: string;
+  status: string;
+  balance: number;
+  member_id: string;
+  account_type: {
+    id: string;
+    name: string;
+    interest_rate: number;
+    interest_period: string;
+    penalty_rate: number;
+    saving_period: string;
+    minimum_threshold: number;
+    interest_tiers: {
+      id: string;
+      account_type_id: string;
+      threshold: number;
+      interest_rate: number;
+    }[];
+    loan_tiers: {
+      id: string;
+      account_type_id: string;
+      threshold: number;
+      max_loan_amount: number;
+      interest_rate: number;
+      penalty_rate: number;
+      required_months: number;
+      max_loan_multiplier: number;
+    }[];
+  };
+}
+
 export type memberType = {
   id: string;
   full_name: string;
@@ -50,37 +83,7 @@ export type memberType = {
   photo: string;
   spouse_name: string | null;
   account: { id: string; number: string; status: string };
-  accounts: {
-    id: string;
-    number: string;
-    status: string;
-    balance: number;
-    account_type: {
-      id: string;
-      name: string;
-      interest_rate: number;
-      interest_period: string;
-      penalty_rate: number;
-      saving_period: string;
-      minimum_threshold: number;
-      interest_tiers: {
-        id: string;
-        account_type_id: string;
-        threshold: 200000;
-        interest_rate: 5.5;
-      }[];
-      loan_tiers: {
-        id: string;
-        account_type_id: string;
-        threshold: 100000;
-        max_loan_amount: 400000;
-        interest_rate: 7;
-        penalty_rate: 5;
-        required_months: 6;
-        max_loan_multiplier: 4;
-      }[];
-    };
-  }[];
+  accounts: accountType[];
   marriage_status: string;
   birth_place: string;
   birth_district: string;

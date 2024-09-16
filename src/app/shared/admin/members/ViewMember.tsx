@@ -18,20 +18,37 @@ import { memberType } from "types/common_types";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import LoanApplication from "./LoanApplication";
+import { useLocation } from "react-use";
 
-export const CategoriesArr = ["Account Info", "Ledger", "Deposit", "Withdraw", "Loan "];
+export const CategoriesArr = [
+  "Account Info",
+  "Ledger",
+  "Deposit",
+  "Withdraw",
+  "Loan ",
+];
 
 const ViewMember = () => {
   const headers = useGetHeaders({ type: "Json" });
+  const location = useLocation();
+
+  // Extract the query params from the URL
+  const queryParams = new URLSearchParams(location.search);
+  const actionParam = queryParams.get("action");
 
   const pathname = usePathname().split("/");
-  const memberId = pathname[4]
-  const accountId = pathname[6]
+  const memberId = pathname[4];
+  const accountId = pathname[6];
 
-  const [categoryLink, setCategoryLink] = useState(CategoriesArr[0]);
+  const [categoryLink, setCategoryLink] = useState(
+    actionParam
+      ? actionParam === "deposit"
+        ? CategoriesArr[2]
+        : CategoriesArr[3]
+      : CategoriesArr[0]
+  );
 
   const [refetchAccount, setRefetchAccount] = useState(false);
-
 
   const pageHeader = {
     title: "View Member",
@@ -76,7 +93,11 @@ const ViewMember = () => {
     switch (categoryLink) {
       case CategoriesArr[1]:
         return (
-          <TransactionsHistory memberId={memberId} accountId={accountId}  accountNumber={currentAccount?.number ?? ""} />
+          <TransactionsHistory
+            memberId={memberId}
+            accountId={accountId}
+            accountNumber={currentAccount?.number ?? ""}
+          />
         );
 
       case CategoriesArr[2]:
@@ -86,7 +107,9 @@ const ViewMember = () => {
             accountId={accountId}
             accountNumber={currentAccount?.number ?? ""}
             currentBalance={currentAccount?.balance ?? 0}
-            minimumThreshold={currentAccount?.account_type.minimum_threshold ?? 0}
+            minimumThreshold={
+              currentAccount?.account_type.minimum_threshold ?? 0
+            }
             setCategoryLink={setCategoryLink}
             setRefetchAccount={setRefetchAccount}
           />
@@ -103,7 +126,6 @@ const ViewMember = () => {
             setRefetchAccount={setRefetchAccount}
           />
         );
-
 
       case CategoriesArr[4]:
         return (
@@ -142,7 +164,8 @@ const ViewMember = () => {
               {MemberInfo.full_name}
             </Title>
             <Title as="h5" className="px-5 mt-1 font-normal text-sm">
-              Account No. - <span className="underline">{currentAccount?.number}</span>
+              Account No. -{" "}
+              <span className="underline">{currentAccount?.number}</span>
             </Title>
           </div>
         </div>
@@ -158,23 +181,24 @@ const ViewMember = () => {
       </div>
 
       <div className="md:justify-end items-center my-8 flex md:hidden">
-          <Image
-            src={MemberInfo?.photo}
-            alt="profile"
-            width={100}
-            height={100}
-            className="w-14 h-14 rounded-full "
-          />
+        <Image
+          src={MemberInfo?.photo}
+          alt="profile"
+          width={100}
+          height={100}
+          className="w-14 h-14 rounded-full "
+        />
 
-          <div className="pb-1">
-            <Title as="h5" className="px-5 font-medium text-base">
-              {MemberInfo.full_name}
-            </Title>
-            <Title as="h5" className="px-5 mt-1 font-normal text-sm">
-              Account No. - <span className="underline">{currentAccount?.number}</span>
-            </Title>
-          </div>
+        <div className="pb-1">
+          <Title as="h5" className="px-5 font-medium text-base">
+            {MemberInfo.full_name}
+          </Title>
+          <Title as="h5" className="px-5 mt-1 font-normal text-sm">
+            Account No. -{" "}
+            <span className="underline">{currentAccount?.number}</span>
+          </Title>
         </div>
+      </div>
 
       <section className="">{dispatchComponent(categoryLink)}</section>
     </main>

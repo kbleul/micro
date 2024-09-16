@@ -164,14 +164,14 @@ const DepositForm = ({
                 disabled
                 suffix="birr"
               />
-              <FormikInput
+              {/* <FormikInput
                 name="days_left"
                 label="Next Payment Day"
                 color="primary"
                 className="col-span-2 md:col-span-1 w-full"
                 disabled
                 suffix="days"
-              />
+              /> */}
 
               <FormikInput
                 name="unpaid_penalties"

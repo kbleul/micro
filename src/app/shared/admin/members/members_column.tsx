@@ -11,6 +11,7 @@ import Link from "next/link";
 import { routes } from "@/config/routes";
 import { Dropdown, Button, cn, ActionIcon, Popover } from "rizzui";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
+import DropDown from "./DropDown";
 // import { DropdownMenu } from "@/layouts/profile-menu";
 // import DropDown from "./DropDown";
 
@@ -114,39 +115,31 @@ export const getColumns = (
     ),
   },
 
-  // {
-  //   // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
-  //   title: <HeaderCell title="Actions" className="opacity-0" />,
-  //   dataIndex: "status",
-  //   key: "status",
-  //   render: (_: string, row: any) => (
-  //     <div className="flex items-center justify-end gap-3 pe-4">
-  //       <DropDown />
-  //       {/* {permissions.includes("update:member") && row?.accounts.length > 0 &&
-      
-
-
-  //         // <Tooltip
-  //         //   size="sm"
-  //         //   content={() => "View member info"}
-  //         //   placement="top"
-  //         //   color="invert"
-  //         // >
-  //         // <Link href={routes.home.members["view-member"](row.id)}>
-
-  //         //   <ActionIcon
-  //         //     tag="span"
-  //         //     size="lg"
-  //         //     variant="outline"
-  //         //     className="hover:text-gray-700"
-  //         //   >
-  //         //    <TbEye size="20" />
-            
-  //         //   </ActionIcon>
-  //         //   </Link>
-  //         // </Tooltip>
-  //       } */}
-  //     </div>
-  //   ),
-  // },
+  {
+    // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
+    title: <HeaderCell title="Actions" className="opacity-0" />,
+    dataIndex: "status",
+    key: "status",
+    render: (_: string, row: any) => (
+      <div className="flex items-center justify-end gap-3 pe-4">
+        {permissions.includes("update:member") && row?.accounts.length > 0 && (
+          <DropDown
+            viewHref={routes.home.members["view-member"](row.id)}
+            depositHref={routes.home.members["view-member"](row.id)}
+            withdrawHref={routes.home.members["view-member"](row.id)}
+            accounts={row?.accounts}
+          />
+        )}
+      </div>
+    ),
+  },
 ];
+//         // <Link href={routes.home.members["view-member"](row.id)}>
+
+
+
+
+
+
+
+
