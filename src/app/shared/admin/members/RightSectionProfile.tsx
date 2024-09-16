@@ -77,7 +77,7 @@ const RightSectionProfile = ({ userData }: { userData: memberType }) => {
 };
 
 const LocationDetails = ({ userData }: { userData: memberType }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <article className={`mt-5 ${isOpen && "border rounded-xl"}  p-3 `}>
@@ -237,6 +237,12 @@ const ChildrenList = ({ userData }: { userData: memberType }) => {
             key={child.age + index + " " + index + child.gender}
             className="grid grid-col-1 md:grid-col-2 xl:grid-cols-3 mt-6 gap-6 capitalize"
           >
+             <div>
+              <p className="text-xs pl-1 text-black font-medium mb-1">Name</p>
+              <p className="border rounded-lg p-2 px-4 text-sm">
+                {child.name ?? ""}
+              </p>
+            </div>
             <div>
               <p className="text-xs pl-1 text-black font-medium mb-1">Age</p>
               <p className="border rounded-lg p-2 px-4 text-sm">
@@ -244,12 +250,7 @@ const ChildrenList = ({ userData }: { userData: memberType }) => {
               </p>
             </div>
 
-            <div>
-              <p className="text-xs pl-1 text-black font-medium mb-1">Gender</p>
-              <p className="border rounded-lg p-2 px-4 text-sm">
-                {child.gender ?? "Unknown"}
-              </p>
-            </div>
+           
           </section>
         ))}
     </article>
@@ -283,7 +284,7 @@ const EmergencyContacts = ({ userData }: { userData: memberType }) => {
                 Full Name
               </p>
               <p className="border rounded-lg p-2 px-4 text-sm">
-                {contact.first_name + " " + contact.last_name ?? "Unknown"}
+                {contact.full_name ?? "Unknown"}
               </p>
             </div>
 
@@ -323,7 +324,7 @@ const EmergencyContacts = ({ userData }: { userData: memberType }) => {
 
             <div>
               <p className="text-xs pl-1 text-black font-medium mb-1">Woreda</p>
-              <p className="birth_zone rounded-lg p-2 px-4 text-sm">
+              <p className="border rounded-lg p-2 px-4 text-sm">
                 {contact?.woreda ?? "Unknown"}
               </p>
             </div>
@@ -385,7 +386,7 @@ const Heirs = ({ userData }: { userData: memberType }) => {
                 Full Name
               </p>
               <p className="border rounded-lg p-2 px-4 text-sm">
-                {heir.first_name + " " + heir.last_name ?? "Unknown"}
+                {heir.full_name ?? "Unknown"}
               </p>
             </div>
 
@@ -425,7 +426,7 @@ const Heirs = ({ userData }: { userData: memberType }) => {
 
             <div>
               <p className="text-xs pl-1 text-black font-medium mb-1">Woreda</p>
-              <p className="birth_zone rounded-lg p-2 px-4 text-sm">
+              <p className="border rounded-lg p-2 px-4 text-sm">
                 {heir?.woreda ?? "Unknown"}
               </p>
             </div>

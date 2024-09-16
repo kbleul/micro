@@ -12,7 +12,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-function DropdownMenu() {
+ function DropdownMenu() {
   const { data: session } = useSession();
   const role = session?.user.user.roles?.map(
     (item: { name: string }) => item.name

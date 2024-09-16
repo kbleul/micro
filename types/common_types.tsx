@@ -99,12 +99,14 @@ export type memberType = {
     | {
         age: number;
         gender: string;
+        name: string;
       }[]
     | null;
   heirs:
     | {
         first_name: string;
         last_name: string;
+        full_name: string;
         address: string;
         city: string;
         house_number: string;
@@ -120,6 +122,7 @@ export type memberType = {
     | {
         first_name: string;
         last_name: string;
+        full_name: string;
         address: string;
         city: string;
         house_number: string;

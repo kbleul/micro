@@ -3,15 +3,21 @@
 import { HeaderCell } from "@/components/ui/table";
 import { Text } from "@/components/ui/text";
 import { Tooltip } from "@/components/ui/tooltip";
-import { ActionIcon } from "@/components/ui/action-icon";
 import Image from "next/image";
 import { IoToggleSharp } from "react-icons/io5";
 import { RiToggleLine } from "react-icons/ri";
 import { TbEye } from "react-icons/tb";
 import Link from "next/link";
 import { routes } from "@/config/routes";
+import { Dropdown, Button, cn, ActionIcon, Popover } from "rizzui";
+import { HiAdjustmentsHorizontal } from "react-icons/hi2";
+// import { DropdownMenu } from "@/layouts/profile-menu";
+// import DropDown from "./DropDown";
 
-export const getColumns = (changeStatus: (id: number, currentStatus: string) => void, permissions: string[]) => [
+export const getColumns = (
+  changeStatus: (id: number, currentStatus: string) => void,
+  permissions: string[]
+) => [
   {
     title: <HeaderCell title="Photo" />,
     dataIndex: "photo",
@@ -82,7 +88,7 @@ export const getColumns = (changeStatus: (id: number, currentStatus: string) => 
     key: "status",
     render: (_: string, row: any) => (
       <div className="flex items-center justify-start gap-3 pe-4 w-full pl-10">
-        {permissions.includes("update:member") &&
+        {permissions.includes("update:member") && (
           <Tooltip
             size="sm"
             content={() => "Accept/Reject Account Creation"}
@@ -96,49 +102,51 @@ export const getColumns = (changeStatus: (id: number, currentStatus: string) => 
               className="hover:text-gray-700"
               onClick={() => changeStatus(row.id, row.status)}
             >
-              {row.status === "pending" || row.status === "rejected"  ? (
-                 <RiToggleLine size={30} color="gray" />
-
-                ) : (
-                  <IoToggleSharp size={30} color="green" />
-
+              {row.status === "pending" || row.status === "rejected" ? (
+                <RiToggleLine size={30} color="gray" />
+              ) : (
+                <IoToggleSharp size={30} color="green" />
               )}
             </ActionIcon>
           </Tooltip>
-        }
+        )}
       </div>
     ),
   },
 
-  {
-    // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
-    title: <HeaderCell title="Actions" className="opacity-0" />,
-    dataIndex: "status",
-    key: "status",
-    render: (_: string, row: any) => (
-      <div className="flex items-center justify-end gap-3 pe-4">
-        {permissions.includes("update:member") && row?.accounts.length > 0 &&
-          <Tooltip
-            size="sm"
-            content={() => "View member info"}
-            placement="top"
-            color="invert"
-          >
-          <Link href={routes.home.members["view-member"](row.id)}>
+  // {
+  //   // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
+  //   title: <HeaderCell title="Actions" className="opacity-0" />,
+  //   dataIndex: "status",
+  //   key: "status",
+  //   render: (_: string, row: any) => (
+  //     <div className="flex items-center justify-end gap-3 pe-4">
+  //       <DropDown />
+  //       {/* {permissions.includes("update:member") && row?.accounts.length > 0 &&
+      
 
-            <ActionIcon
-              tag="span"
-              size="lg"
-              variant="outline"
-              className="hover:text-gray-700"
-            >
-             <TbEye size="20" />
+
+  //         // <Tooltip
+  //         //   size="sm"
+  //         //   content={() => "View member info"}
+  //         //   placement="top"
+  //         //   color="invert"
+  //         // >
+  //         // <Link href={routes.home.members["view-member"](row.id)}>
+
+  //         //   <ActionIcon
+  //         //     tag="span"
+  //         //     size="lg"
+  //         //     variant="outline"
+  //         //     className="hover:text-gray-700"
+  //         //   >
+  //         //    <TbEye size="20" />
             
-            </ActionIcon>
-            </Link>
-          </Tooltip>
-        }
-      </div>
-    ),
-  },
+  //         //   </ActionIcon>
+  //         //   </Link>
+  //         // </Tooltip>
+  //       } */}
+  //     </div>
+  //   ),
+  // },
 ];

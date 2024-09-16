@@ -166,7 +166,7 @@ const LoanApplication = ({
 
         <Title
           as="h4"
-          className={`pb-1 border px-5 py-2 rounded-lgtext-black  ${transactionStatus?.able_to_loan ? "bg-primary-light" : "bg-primary-lighter text-gray-400"} font-normal text-sm`}
+          className={`pb-1 border px-5 py-2 rounded-lg text-black  ${transactionStatus?.able_to_loan ? "bg-primary-light" : "bg-primary-lighter"} font-normal text-sm`}
         >
           {transactionStatus?.able_to_loan
             ? "Able to request"

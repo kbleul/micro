@@ -25,6 +25,7 @@ export const DepositeSchema = Yup.object().shape({
       then: (schema) => schema.required("Cheque number is required"),
       otherwise: (schema) => schema.nullable(),
     }),
+    deposit_for: Yup.string().required("Payment for is required"),
 });
 
 type DepositeType = {
@@ -40,6 +41,7 @@ type DepositeType = {
   minimum_threshold: number;
   payment_channel: string | null;
   cheque_number: string | null;
+  deposit_for: string;
 };
 
 export const WithdrawSchema = Yup.object().shape({
