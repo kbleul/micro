@@ -31,7 +31,7 @@ const RequestsList = () => {
       },
     ],
   };
-
+console.log("----------", session?.user?.user?.roles)
   const fetchTasks = async () => {
     try {
       await postMutation.mutateAsync({
@@ -41,11 +41,11 @@ const RequestsList = () => {
         body: {
           roles: [
             {
-              role_id: "string",
-              role_name: "string",
+              role_id: session?.user?.user?.roles[0].id,
+              role_name: session?.user?.user?.roles[0].name,
             },
           ],
-          user_id: "9ca540fa-c357-4256-9cfd-2d7d6d9466f4",
+          user_id: session?.user?.user?.id,
         },
         onSuccess: (res: any) => {
           setTasks(res?.data?.tasks);

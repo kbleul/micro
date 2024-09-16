@@ -85,7 +85,7 @@ const DepositeInvoice = forwardRef<HTMLDivElement, DepositeInvoiceProps>(
 
             <p className="mt-6">
               <Title as="h6" className="text-base text-red-700">
-                No. 0099900989
+                No. {ledgerData.voucher_number}
               </Title>
             </p>
           </div>

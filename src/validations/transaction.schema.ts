@@ -77,13 +77,13 @@ export const loanApplicationSchema = Yup.object()
     max_loan: Yup.number().required(
       "Maximum amount able to get loan is required"
     ),
-    amount: Yup.number()
-      .min(0, "Amount is too small")
-      .max(
-        Yup.ref("max_loan"),
-        "Amount cannot exceed the available max loan amount"
-      )
-      .required("Amount is required"),
+    amount: Yup.number(),
+      // .min(0, "Amount is too small")
+      // .max(
+      //   Yup.ref("max_loan"),
+      //   "Amount cannot exceed the available max loan amount"
+      // )
+      // .required("Amount is required"),
     duration: Yup.number()
       .min(1, "Duration should be in valid month")
       .required("Payment duration is required"),

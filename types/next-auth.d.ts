@@ -20,10 +20,11 @@ declare module "next-auth" {
         roles: {
           uuid: string;
           name: string;
+          id: string;
         }[];
       };
       token: string;
-      permissions: string[]
+      permissions: string[];
     } & DefaultSession["user"];
   }
 }
@@ -51,6 +52,7 @@ declare module "next-auth/jwt" {
       roles: {
         uuid: string;
         name: string;
+        id: string;
       }[];
       token: string;
     } & DefaultSession["user"];

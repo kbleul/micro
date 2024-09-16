@@ -25,9 +25,6 @@ import { handleErrorWithToast } from "@/utils/error-toast-handler";
 export default function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const searchURL = searchParams.get("callbackUrl");
 
   const { data: session, status } = useSession();
   const postMutation = useDynamicMutation();

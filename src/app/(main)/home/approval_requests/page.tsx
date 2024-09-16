@@ -1,6 +1,5 @@
 
 import RequestsList from "@/app/shared/admin/approval_requests/requestsList";
-import LogsList from "@/app/shared/admin/logs/LogsList";
 import { metaObject } from "@/config/site.config";
 import React from "react";
 
