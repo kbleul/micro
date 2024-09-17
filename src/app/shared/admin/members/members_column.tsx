@@ -89,28 +89,18 @@ export const getColumns = (
     key: "status",
     render: (_: string, row: any) => (
       <div className="flex items-center justify-start gap-3 pe-4 w-full pl-10">
-        {permissions.includes("update:member") && (
-          <Tooltip
-            size="sm"
-            content={() => "Accept/Reject Account Creation"}
-            placement="top"
-            color="invert"
-          >
-            <ActionIcon
-              tag="span"
-              size="lg"
-              variant="outline"
-              className="hover:text-gray-700"
-              onClick={() => changeStatus(row.id, row.status)}
-            >
-              {row.status === "pending" || row.status === "rejected" ? (
-                <RiToggleLine size={30} color="gray" />
-              ) : (
-                <IoToggleSharp size={30} color="green" />
-              )}
-            </ActionIcon>
-          </Tooltip>
-        )}
+        <ActionIcon
+          tag="span"
+          size="lg"
+          variant="outline"
+          className="hover:text-gray-700"
+        >
+          {row.status === "pending" || row.status === "rejected" ? (
+            <RiToggleLine size={30} color="gray" />
+          ) : (
+            <IoToggleSharp size={30} color="green" />
+          )}
+        </ActionIcon>
       </div>
     ),
   },
@@ -135,11 +125,3 @@ export const getColumns = (
   },
 ];
 //         // <Link href={routes.home.members["view-member"](row.id)}>
-
-
-
-
-
-
-
-

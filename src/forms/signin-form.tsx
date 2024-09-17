@@ -113,7 +113,7 @@ console.log(responseData?.data?.roles, responseData?.data?.access_token, respons
                     type="text"
                     label="Email"
                     name="email"
-                    placeholder="Jon Doe"
+                    placeholder="example@gmail.com"
                     color="primary"
                   />
                   <FormikPasswordInput

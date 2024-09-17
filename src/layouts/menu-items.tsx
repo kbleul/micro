@@ -13,6 +13,9 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
     return [];
   }
 
+  console.log("user permissions----------", userPermissions);
+
+
   const menuItems: menuItemtype[] = [
     {
       name: "Dashboard",

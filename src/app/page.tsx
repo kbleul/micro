@@ -9,13 +9,9 @@ import React from "react";
 const Home = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
-
+console.log(session)
   if (status === "loading") return <PageLoader />;
-  if (
-    session?.user?.user?.roles
-      ?.map((item: {name: string }) => item.name)
-      .includes(Role.ADMIN)
-  ) {
+  if (session?.user?.user?.roles && session?.user?.user?.roles.length > 0) {
     return router.push(routes.home.dashboard);
   }
 
@@ -23,3 +19,6 @@ const Home = () => {
 };
 
 export default Home;
+
+
+//	 bob.williams@branch4.com

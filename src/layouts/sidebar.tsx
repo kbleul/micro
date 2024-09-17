@@ -28,9 +28,9 @@ export default function Sidebar({ className }: { className?: string }) {
   const roles = session?.user?.user.roles;
 
 
-  const roleMenuItems: any = {
-    [Role.ADMIN]: getMenuItems(session?.user?.permissions),
-  };
+  // const roleMenuItems: any = {
+  //   [Role.ADMIN]: getMenuItems(session?.user?.permissions),
+  // };
 
   const determineMenuItems = () => {
 
@@ -40,7 +40,7 @@ export default function Sidebar({ className }: { className?: string }) {
     }
 
     const sidenav = roles.reduce((acc: any[], role) => {
-      const roleItems: any = roleMenuItems[role.name];
+      const roleItems: any = getMenuItems(session?.user?.permissions);
       if (roleItems) {
         acc.push(...roleItems);
       }
