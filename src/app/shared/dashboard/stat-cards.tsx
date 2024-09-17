@@ -36,7 +36,7 @@ export default function StatCards({
     {
       id: 3,
       icon: <MdAccountBalance className="text-blue-400" size={24} />,
-      title: "total Branches",
+      title: "Total Branches",
       metric: analytics?.total_number_of_branches,
     },
     {

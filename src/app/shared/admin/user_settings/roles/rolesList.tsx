@@ -33,10 +33,10 @@ const RolesList = () => {
       },
 
       {
-        name: "Account Settings",
+        name: "User Settings",
       },
       {
-        name: "Interst Terms",
+        name: "Roles",
       },
     ],
   };

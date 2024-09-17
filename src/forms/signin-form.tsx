@@ -48,12 +48,12 @@ export default function SignInForm() {
             (item: { name: string }) => item.name
           );
 
-          if (!role.includes(Role.ADMIN)) {
-            toast.info("Unknown account role.");
-            return;
-          }
+          // if (!role.includes(Role.ADMIN)) {
+          //   toast.info("Unknown account role.");
+          //   return;
+          // }
           setIsLoading(true);
-
+console.log(responseData?.data?.roles, responseData?.data?.access_token, responseData?.data?.permissions)
           signIn("credentials", {
             data: JSON.stringify({
               ...responseData?.data,
@@ -131,7 +131,7 @@ export default function SignInForm() {
                     </Link>
                   </div>
                   <Button
-                    className="w-full bg-primary-dark hover:opacity-90 focus-hover:opacity-90"
+                    className="w-full bg-primary-dark text-white hover:opacity-90 focus-hover:opacity-90"
                     type="submit"
                     size="lg"
                     color="primary"

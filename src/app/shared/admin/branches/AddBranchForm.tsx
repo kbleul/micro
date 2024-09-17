@@ -208,7 +208,7 @@ const AddBranchForm = ({
                 <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
                   <FormGroup
                     title="Branch Info."
-                    description="Add branch information from here..."
+                    description="Add branch information here..."
                     className={cn(className)}
                   >
                     <FormikInput

@@ -179,7 +179,7 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                   onChange={(selectedOption: { value: string }) => {
                     setFieldValue("saving_period", selectedOption.value);
                   }}
-                  placeholder="select period"
+                  placeholder="select saving period"
                   getOptionValue={(saving_period: any) => saving_period?.id}
                   getOptionLabel={(saving_period: any) => saving_period?.name}
                   noOptionsMessage={() => "Fetching periods..."}
@@ -206,12 +206,12 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                 <CustomSelect
                   isSearchable
                   name="interest_period"
-                  label="Default Interest Period (will be used if teir is not defined)"
+                  label="Default Interest Period (will be used if tier is not defined)"
                   options={periodOptions}
                   onChange={(selectedOption: { value: string }) => {
                     setFieldValue("interest_period", selectedOption.value);
                   }}
-                  placeholder="select period"
+                  placeholder="select interest period"
                   getOptionValue={(interest_period: any) => interest_period?.id}
                   getOptionLabel={(interest_period: any) =>
                     interest_period?.name
@@ -227,7 +227,7 @@ const AddTypeForm = ({ id }: { id?: string }) => {
 
                 <FormikInput
                   name={`interest_rate`}
-                  label="Default Intrest Rate (will be used if teir is not defined)"
+                  label="Default Interest Rate (will be used if tier is not defined)"
                   placeholder="Enter the rate"
                   suffix="%"
                   color="primary"
@@ -252,7 +252,7 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                         >
                           <FormikInput
                             name={`interest_tiers[${index}].interest_rate`}
-                            label="Intrest Rate"
+                            label="Interest Rate"
                             placeholder="Enter the rate"
                             suffix="%"
                             color="primary"

@@ -159,7 +159,7 @@ const LoanApplication = ({
           </Title>
           {!transactionStatus?.able_to_loan && (
             <p className={`text-red-400 font-medium`}>
-              You need to save for six concicative month!{" "}
+              You need to save for six consecutive month!{" "}
             </p>
           )}
         </div>
@@ -205,7 +205,7 @@ const LoanApplication = ({
 
               <FormikInput
                 name="max_loan"
-                label="Maximum amount that can be granted (Based On Loan Teir)"
+                label="Maximum amount that can be granted (Based On Loan Tier)"
                 color="primary"
                 className="col-span-2 md:col-span-1 w-full"
                 disabled

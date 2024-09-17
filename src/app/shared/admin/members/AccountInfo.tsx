@@ -66,25 +66,25 @@ const AccountInfo = ({
 
         <div className="px-4 py-4 rounded-xl shadow-md border-t col-span-3 grid md:grid-cols-3">
           <h6 className="col-span-3 text-left font-medium mb-5">
-            Interest Teirs
+            Interest Tiers
           </h6>
           {currentAccount?.account_type?.interest_tiers &&
-            currentAccount?.account_type?.interest_tiers.map((teir) => (
+            currentAccount?.account_type?.interest_tiers.map((tier) => (
               <section
                 className="grid md:grid-cols-3 gap-x-16 gap-y-4 col-span-3 border-b pb-4 mb-4"
-                key={teir?.id}
+                key={tier?.id}
               >
                 <div className="">
                   <p className=" font-medium text-base mb-1">Interest Rate</p>
                   <p className="border rounded-md border-black p-3 capitalize font-medium">
-                    {teir?.interest_rate} %
+                    {tier?.interest_rate} %
                   </p>
                 </div>
 
                 <div className="">
                   <p className=" font-medium text-base mb-1">Threshold</p>
                   <p className="border rounded-md border-black p-3 capitalize font-medium">
-                    {teir?.threshold} birr
+                    {tier?.threshold} birr
                   </p>
                 </div>
               </section>
@@ -92,7 +92,7 @@ const AccountInfo = ({
         </div>
 
         <div className="px-4 py-4 rounded-xl shadow-md border-t col-span-3 grid md:grid-cols-3">
-          <h6 className="col-span-3 text-left font-medium mb-5">Loan Teirs</h6>
+          <h6 className="col-span-3 text-left font-medium mb-5">Loan Tiers</h6>
 
           {currentAccount?.account_type?.loan_tiers &&
             currentAccount?.account_type?.loan_tiers.map((teir) => (
@@ -129,7 +129,7 @@ const AccountInfo = ({
                 </div>
 
                 <div className="">
-                  <p className=" font-medium text-base mb-1">Multiplier</p>
+                  <p className=" font-medium text-base mb-1">Loan Multiplier</p>
                   <p className="border rounded-md border-black p-3 capitalize font-medium">
                     {teir?.max_loan_multiplier} times
                   </p>

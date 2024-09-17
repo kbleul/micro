@@ -762,7 +762,7 @@ const AddMemberForm = ({
 
                   <FormGroup
                     title="Heir Info"
-                    description="Add hair information here..."
+                    description="Add heir information here..."
                     className={cn(className, "")}
                   >
                     <FieldArray name={`heirs`}>
@@ -1031,7 +1031,7 @@ const AddMemberForm = ({
                   </FormGroup>
 
                   <FormGroup
-                    title="Desposit and Payments"
+                    title="Deposit and Payments"
                     description="Add amounts here..."
                     className={cn(className, "")}
                   >

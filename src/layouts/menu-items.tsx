@@ -113,7 +113,7 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
     });
 
     menuItems.push({
-      name: "Loan Que",
+      name: "Loan Queue",
       href: routes.home.loanQueue,
       icon: <PiQueue size="25" />,
     });

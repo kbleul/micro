@@ -92,7 +92,7 @@ const EmployeesList = () => {
         action={
           session?.user?.permissions.includes("create:employee") && (
             <Link href={routes.home.employees["add-employee"]}>
-              <Button size="lg" color="primary" className="bg-primary-dark">
+              <Button size="lg" color="primary" className="bg-primary-dark  text-white">
                 Add Employee
               </Button>
             </Link>

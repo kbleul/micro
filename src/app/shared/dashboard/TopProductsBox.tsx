@@ -23,7 +23,7 @@ type productDataType = {
 
 const productData: productDataType[] = [
   {
-    productName: "Childrens Saving",
+    productName: "Children Saving",
     price: 19.99,
     rate: { average: 4.5, users_count: 100 },
     product_image: {

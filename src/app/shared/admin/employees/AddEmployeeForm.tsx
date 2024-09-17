@@ -173,7 +173,7 @@ const AddEmployeeForm = ({
                 <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
                   <FormGroup
                     title="Employee Info."
-                    description="Add employee information from here..."
+                    description="Add employee information here..."
                     className={cn(className)}
                   >
                     <FormikInput

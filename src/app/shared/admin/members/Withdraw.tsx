@@ -139,7 +139,7 @@ const WithdrawalForm = ({
 
               <FormikInput
                 name="amount"
-                label="Amount to withdraw(must be less than zero able to withdraw amount"
+                label="Amount to withdraw(must be less than zero able to withdraw amount)"
                 color="primary"
                 className="col-span-2 md:col-span-1 w-full"
                 type="number"
