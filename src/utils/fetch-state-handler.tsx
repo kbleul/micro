@@ -7,11 +7,12 @@ export const handleFetchState = (
     isFetching: boolean;
     data?: { error?: { code: number; message: string } };
   },
-  children?: React.ReactNode
+  children?: React.ReactNode,
+  className?: string
 ) => {
   if (fetchState.isPending || fetchState.isFetching) {
     return (
-      <main>
+      <main className={className}>
         {children}
         <div className=" flex justify-center items-center py-20">
           <Loading />

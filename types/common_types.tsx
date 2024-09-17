@@ -82,6 +82,7 @@ export type memberType = {
   gender: string;
   photo: string;
   spouse_name: string | null;
+  monthly_income: number;
   account: { id: string; number: string; status: string };
   accounts: accountType[];
   marriage_status: string;
