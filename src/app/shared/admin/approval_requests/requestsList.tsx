@@ -261,7 +261,7 @@ const ApprovalDetails = ({
             <span className="font-bold">{task?.workflow?.steps.length}</span>
           </p>
 
-          <Stepper currentIndex={currentStep} direction="vertical">
+          {/* <Stepper currentIndex={currentStep} direction="vertical">
             {task?.workflow?.steps.map((step: any, index: number) => (
               <Stepper.Step
                 key={step.id}
@@ -271,7 +271,7 @@ const ApprovalDetails = ({
                 dot={false}
               />
             ))}
-          </Stepper>
+          </Stepper> */}
         </div>
         <div className="col-span-2">
           {categoryLink === CategoriesArr[0] ? (

@@ -22,6 +22,7 @@ declare module "next-auth" {
           name: string;
           id: string;
         }[];
+        branch: any
       };
       token: string;
       permissions: string[];

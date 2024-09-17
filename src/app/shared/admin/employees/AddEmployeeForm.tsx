@@ -42,8 +42,11 @@ const AddEmployeeForm = ({
   const postMutation = useDynamicMutation();
   const headers = useGetHeaders({ type: "Json" });
   const router = useRouter();
+
   const { data: session } = useSession();
 
+
+  console.log("mysession", session)
   const pageHeader = {
     title: employeeId ? "View Employee" : "Add New Employee",
     breadcrumb: [
@@ -107,6 +110,7 @@ const AddEmployeeForm = ({
     role: "",
     date_of_birth: undefined,
     gender: "",
+    branch_name: session?.user?.user?.branch?.name
   };
 
   const createEmployeeSubmitHandler = async (values: EmployeeType) => {
@@ -118,11 +122,11 @@ const AddEmployeeForm = ({
       return;
     }
 
-
-
-    const isValidDate = validateDate(secondaryDateFormat(values.date_of_birth))
+    const isValidDate = validateDate(secondaryDateFormat(values.date_of_birth));
     if (!isValidDate.isAbove18 || isValidDate.isFuture) {
-      toast.error("Invalid Date of Birth. Date must be a valide date and above 18 years old");
+      toast.error(
+        "Invalid Date of Birth. Date must be a valide date and above 18 years old"
+      );
       return;
     }
 
@@ -257,6 +261,15 @@ const AddEmployeeForm = ({
                       placeholder=""
                       color="primary"
                       className=""
+                    />
+
+                    <FormikInput
+                      name="branch_name"
+                      label="Branch Name"
+                      placeholder=""
+                      color="primary"
+                      className=""
+                      disabled
                     />
                   </FormGroup>
                   <FormGroup

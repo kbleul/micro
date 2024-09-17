@@ -24,6 +24,7 @@ export type EmployeeType = {
   email: string;
   tin_number: string;
   role: string;
+  branch_name: string
 };
 
 

@@ -155,7 +155,7 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                 <FormikInput
                   name="name"
                   label="Account type"
-                  placeholder="Enter the term name"
+                  placeholder="Enter the type name"
                   color="primary"
                   className="mt-6"
                   isRequired
