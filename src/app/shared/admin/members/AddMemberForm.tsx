@@ -454,6 +454,7 @@ const AddMemberForm = ({
                         isSearchable
                         name="birth_place"
                         label="City"
+                        labelClassName="mb-0 py-0"
                         options={CITIES}
                         onChange={(selectedOption: any) => {
                           setFieldValue("birth_place", selectedOption.name);
@@ -534,6 +535,8 @@ const AddMemberForm = ({
                         isSearchable
                         name="current_place"
                         label="City"
+                  labelClassName="mb-0 py-0"
+
                         options={CITIES}
                         onChange={(selectedOption: any) => {
                           setFieldValue("current_place", selectedOption.name);
@@ -665,6 +668,8 @@ const AddMemberForm = ({
                                     isSearchable
                                     name={`emergency_contacts.[${index}].city`}
                                     label="City"
+                  labelClassName="mb-0 py-0"
+
                                     options={CITIES}
                                     onChange={(selectedOption: any) => {
                                       setFieldValue(
@@ -828,6 +833,8 @@ const AddMemberForm = ({
                                   isSearchable
                                   name={`heirs.[${index}].city`}
                                   label="City"
+                  labelClassName="mb-0 py-0"
+
                                   options={CITIES}
                                   onChange={(selectedOption: any) => {
                                     setFieldValue(

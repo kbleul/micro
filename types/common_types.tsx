@@ -68,7 +68,7 @@ export type accountType = {
       max_loan_multiplier: number;
     }[];
   };
-}
+};
 
 export type memberType = {
   id: string;
@@ -139,6 +139,7 @@ export type memberType = {
         kebele: string;
       }[]
     | null;
+  share: number;
 };
 
 export type ActivityLogsType = {

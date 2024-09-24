@@ -57,14 +57,14 @@ const BranchesList = () => {
         breadcrumb={pageHeader.breadcrumb}
       />
    
-      {/* {session?.user?.permissions &&
+      {session?.user?.permissions &&
         session?.user?.permissions.includes("create:branch") && (
           <AddBtnContainer
             items={Branches}
             actionName="branch"
             route_address={routes.home.branches["add-branch"]}
           />
-        )} */}
+        )}
 
       <article className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 items-stretch justify-start gap-x-[2.6%] gap-y-10 flex-wrap mt-10">
         {Branches &&

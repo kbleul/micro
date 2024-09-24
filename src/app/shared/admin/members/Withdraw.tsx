@@ -13,6 +13,8 @@ import { CategoriesArr } from "./ViewMember";
 import { handleErrorWithToast } from "@/utils/error-toast-handler";
 import { useFetchData } from "@/react-query/useFetchData";
 import { handleFetchState } from "@/utils/fetch-state-handler";
+import CustomSelect from "@/components/ui/form/select";
+import { paymentChannels, paymentChannelsOptions } from "@/utils/dummy";
 
 const WithdrawalForm = ({
   memberId,
@@ -59,6 +61,8 @@ const WithdrawalForm = ({
     unpaid_penalty_amounts: transactionStatus?.unpaid_penalty_amounts,
     able_to_withdraw: transactionStatus?.able_to_withdraw,
     able_to_withdraw_amount: transactionStatus?.able_to_withdraw_amount,
+    payment_channel: null,
+    cheque_number: null,
   };
 
   const handleWithdraw = async (values: WithdrawType) => {
@@ -69,8 +73,9 @@ const WithdrawalForm = ({
         headers,
         body: {
           amount: values.amount,
-          payment_channel: "bank",
-          purpose: "cillum n",
+          payment_channel: values.payment_channel,
+          cheque_number: values.cheque_number,
+          purpose: "",
         },
         onSuccess: (res: any) => {
           queryClient.invalidateQueries({
@@ -103,7 +108,7 @@ const WithdrawalForm = ({
         validationSchema={WithdrawSchema}
         onSubmit={(values: WithdrawType) => handleWithdraw(values)}
       >
-        {({}) => {
+        {({ values, setFieldValue }) => {
           return (
             <Form
               className={
@@ -136,6 +141,36 @@ const WithdrawalForm = ({
                 disabled
                 suffix="birr"
               />
+
+              <div className="mt-4 w-full flex flex-col gap-6 ">
+                <CustomSelect
+                  isSearchable
+                  name="payment_channel"
+                  label="Payment Channel"
+                  options={paymentChannelsOptions}
+                  onChange={(selectedOption: { value: string }) => {
+                    setFieldValue("payment_channel", selectedOption.value);
+                  }}
+                  placeholder="select payment channels"
+                  getOptionValue={(period: { value: string }) => period.value}
+                  getOptionLabel={(period: { value: string }) => period.value}
+                  noOptionsMessage={() => "Fetching payment channels..."}
+                  isRequired
+                  disabled={transactionStatus.able_to_withdraw ? false : true}
+                  labelClassName="mb-0 py-0"
+                />
+              </div>
+
+              {values.payment_channel === paymentChannels.cheque && (
+                <FormikInput
+                  name="cheque_number"
+                  label="Cheque Number"
+                  color="primary"
+                  className="col-span-2 md:col-span-1 w-full mt-2"
+                  labelClassName="pb-2"
+                  isRequired
+                />
+              )}
 
               <FormikInput
                 name="amount"

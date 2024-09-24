@@ -57,6 +57,14 @@ export const WithdrawSchema = Yup.object().shape({
     )
     .required("Amount is required"),
   current_balance: Yup.number(),
+  payment_channel: Yup.string().required("Payment channel is required"),
+  cheque_number: Yup.string()
+    .typeError("Invalid cheque number.")
+    .when("payment_channel", {
+      is: paymentChannels.cheque,
+      then: (schema) => schema.required("Cheque number is required"),
+      otherwise: (schema) => schema.nullable(),
+    }),
 });
 
 type WithdrawType = {
@@ -69,6 +77,8 @@ type WithdrawType = {
   unpaid_penalty_amounts: number;
   able_to_withdraw: boolean;
   able_to_withdraw_amount: string;
+  payment_channel: string | null;
+  cheque_number: string | null;
 };
 
 export const loanApplicationSchema = Yup.object()

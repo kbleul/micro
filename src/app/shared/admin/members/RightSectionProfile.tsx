@@ -77,7 +77,7 @@ const RightSectionProfile = ({ userData }: { userData: memberType }) => {
 };
 
 const LocationDetails = ({ userData }: { userData: memberType }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   return (
     <article className={`mt-5 ${isOpen && "border rounded-xl"}  p-3 `}>

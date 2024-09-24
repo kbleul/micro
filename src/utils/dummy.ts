@@ -191,3 +191,19 @@ export const paymentChannels = {
   cheque: "cheque",
   cash: "cash",
 };
+
+
+export const paymentChannelsOptions = [
+  {
+    name: paymentChannels.bank,
+    value: paymentChannels.bank,
+  },
+  {
+    name: paymentChannels.cash,
+    value: paymentChannels.cash,
+  },
+  {
+    name: paymentChannels.cheque,
+    value: paymentChannels.cheque,
+  },
+];

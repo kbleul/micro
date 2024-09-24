@@ -13,23 +13,10 @@ import { CategoriesArr } from "./ViewMember";
 import { handleErrorWithToast } from "@/utils/error-toast-handler";
 import { useFetchData } from "@/react-query/useFetchData";
 import { handleFetchState } from "@/utils/fetch-state-handler";
-import { paymentChannels } from "@/utils/dummy";
+import { paymentChannels, paymentChannelsOptions } from "@/utils/dummy";
 import CustomSelect from "@/components/ui/form/select";
 
-const paymentChannelsOptions = [
-  {
-    name: paymentChannels.bank,
-    value: paymentChannels.bank,
-  },
-  {
-    name: paymentChannels.cash,
-    value: paymentChannels.cash,
-  },
-  {
-    name: paymentChannels.cheque,
-    value: paymentChannels.cheque,
-  },
-];
+
 
 const paymentForOptions = [
   {
@@ -203,6 +190,8 @@ const DepositForm = ({
                   isSearchable
                   name="payment_channel"
                   label="Payment Channel"
+                  labelClassName="mb-0 py-0"
+
                   options={paymentChannelsOptions}
                   onChange={(selectedOption: { value: string }) => {
                     setFieldValue("payment_channel", selectedOption.value);

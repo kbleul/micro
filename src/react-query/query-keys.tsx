@@ -13,5 +13,5 @@ export const queryKeys = {
   getAnalytics: "getAnalytics",
   getWorkflows: "getWorkflows",
   getLoanRequests: "getLoanRequests",
-
+  getShare: "getShare",
 };

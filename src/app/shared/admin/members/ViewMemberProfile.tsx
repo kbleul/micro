@@ -28,7 +28,7 @@ const ViewMemberProfile = ({ memberId }: { memberId: string }) => {
         name: "Members",
       },
       {
-        name: "VIew Member",
+        name: "View Member",
       },
     ],
   };

@@ -21,6 +21,7 @@ interface SelectProps {
   isMulti?: boolean;
   setSearchQuery?: Dispatch<SetStateAction<string>>;
   className?: string;
+  labelClassName?: string;
   isRequired?: boolean;
 }
 
@@ -42,6 +43,7 @@ const CustomSelect: React.FC<SelectProps> = ({
   isMulti = false,
   setSearchQuery,
   className,
+  labelClassName,
   isRequired= false
 }) => {
   const [, , helpers] = useField(name);
@@ -97,12 +99,12 @@ const CustomSelect: React.FC<SelectProps> = ({
   return (
     <div className={cn("w-full", className)}>
       <label
-        className={` block 
+        className={cn(` block 
        font-medium
        leading-3
        capitalize
        text-sm mb-1.5 py-2
-     `}
+     `, labelClassName)}
       >
        {appendAsterisk(label, isRequired)}
       </label>
