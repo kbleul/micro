@@ -129,7 +129,7 @@ const QueueList = () => {
         headerClassName="widget-card-header flex-col sm:flex-row [&>.ps-2]:ps-0 [&>.ps-2]:w-full sm:[&>.ps-2]:w-auto [&>.ps-2]:mt-3 sm:[&>.ps-2]:mt-0"
         action={<></>}
       >
-        <div className=" flex items-center justify-end  px-5 py-4 w-1/2 ml-[50%]">
+        {/* <div className=" flex items-center justify-end  px-5 py-4 w-1/2 ml-[50%]">
           <Input
             variant="flat"
             value={searchText}
@@ -163,7 +163,7 @@ const QueueList = () => {
           >
             <PiXBold className="h-5 w-5" />
           </ActionIcon>
-        </div>
+        </div> */}
 
         <div className={"table-wrapper flex-grow"}>
           <ControlledTable

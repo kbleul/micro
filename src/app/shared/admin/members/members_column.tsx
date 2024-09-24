@@ -59,7 +59,7 @@ export const getColumns = (
     width: 200,
     render: (accounts: any[]) => (
       <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 pl-6">
-        {accounts?.length}
+        {accounts?.length ?? 0}
       </Text>
     ),
   },
@@ -88,20 +88,23 @@ export const getColumns = (
     dataIndex: "status",
     key: "status",
     render: (_: string, row: any) => (
-      <div className="flex items-center justify-start gap-3 pe-4 w-full pl-10">
-        <ActionIcon
-          tag="span"
-          size="lg"
-          variant="outline"
-          className="hover:text-gray-700"
-        >
-          {row.status === "pending" || row.status === "rejected" ? (
-            <RiToggleLine size={30} color="gray" />
-          ) : (
-            <IoToggleSharp size={30} color="green" />
-          )}
-        </ActionIcon>
-      </div>
+      <Tooltip size="sm" content={() => "Change Status"} placement="top" color="invert">
+        <div className="flex items-center justify-start gap-3 pe-4 w-full pl-10">
+          <ActionIcon
+            tag="span"
+            size="lg"
+            variant="outline"
+            className="hover:text-gray-700"
+            onClick={() => changeStatus(row.id, row.status)}
+          >
+            {row.status === "pending" || row.status === "rejected" ? (
+              <RiToggleLine size={30} color="gray" />
+            ) : (
+              <IoToggleSharp size={30} color="green" />
+            )}
+          </ActionIcon>
+        </div>
+      </Tooltip>
     ),
   },
 
@@ -112,14 +115,16 @@ export const getColumns = (
     key: "status",
     render: (_: string, row: any) => (
       <div className="flex items-center justify-end gap-3 pe-4">
-        {permissions.includes("update:member") && row?.accounts.length > 0 && (
-          <DropDown
-            viewHref={routes.home.members["view-member"](row.id)}
-            depositHref={routes.home.members["view-member"](row.id)}
-            withdrawHref={routes.home.members["view-member"](row.id)}
-            accounts={row?.accounts}
-          />
-        )}
+        {permissions.includes("update:member") &&
+          row?.accounts &&
+          row?.accounts.length > 0 && (
+            <DropDown
+              viewHref={routes.home.members["view-member"](row.id)}
+              depositHref={routes.home.members["view-member"](row.id)}
+              withdrawHref={routes.home.members["view-member"](row.id)}
+              accounts={row?.accounts}
+            />
+          )}
       </div>
     ),
   },

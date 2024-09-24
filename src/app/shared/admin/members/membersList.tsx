@@ -17,7 +17,6 @@ import WidgetCard from "@/components/cards/widget-card";
 import ControlledTable from "@/components/controlled-table";
 import { PiMagnifyingGlassBold, PiXBold } from "react-icons/pi";
 import { getColumns } from "./members_column";
-import { CITIES, REGIONS } from "@/utils/dummy";
 import { toast } from "sonner";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 

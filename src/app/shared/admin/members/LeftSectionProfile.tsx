@@ -50,7 +50,7 @@ const LeftSectionProfile = ({ userData }: { userData: memberType }) => {
         </p>
       </section>
 
-      <ShareBox memberId={userData.id} share={1000} />
+      <ShareBox memberId={userData.id}/>
 
       <section className="px-4 border-t pt-10 pb-4 my-5">
         <Title as="h5" className="text-xl font-medium ml-2">
