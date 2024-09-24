@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 const page = () => {
-  return <ViewMember  />;
+  return <>ghgfgfhgfgh</>
 };
 
 export default page;

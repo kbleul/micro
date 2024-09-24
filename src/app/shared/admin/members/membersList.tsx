@@ -62,7 +62,7 @@ const MembersList = () => {
     ],
     selectedBranchId && selectedBranchId !== "001-branch"
       ? `${process.env.NEXT_PUBLIC_BACKEND_URL}branches/members/${selectedBranchId}`
-      : `${process.env.NEXT_PUBLIC_BACKEND_URL}members?page=${currentPage}&perPage=${pageSize}`,
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}members?page=${currentPage}&perPage=${pageSize}&name=${searchText}`,
     headers
   );
 
@@ -71,7 +71,11 @@ const MembersList = () => {
   const branchesData = useFetchData(
     [queryKeys.getAllBranches],
     `${process.env.NEXT_PUBLIC_BACKEND_URL}branches`,
-    headers
+    headers,
+    session?.user?.permissions &&
+      session?.user?.permissions.includes("read:branch")
+      ? true
+      : false
   );
 
   const fetchStateHandler = handleFetchState(
@@ -82,7 +86,11 @@ const MembersList = () => {
     />
   );
 
-  if (fetchStateHandler) {
+  if (
+    fetchStateHandler &&
+    session?.user?.permissions &&
+    session?.user?.permissions.includes("read:branch")
+  ) {
     return fetchStateHandler;
   }
 
@@ -138,26 +146,31 @@ const MembersList = () => {
         }
       >
         <section className="flex justify-between items-center mb-8">
-          <div className="flex  gap-x-4">
-            <Select
-              name={"name"}
-              options={[firstBranch, ...Branches]}
-              isSearchable={true}
-              placeholder="All"
-              onChange={(value: any) => {
-                setSelectedBranchId(value.id);
-              }}
-              getOptionLabel={(value: { id: string; name: string }) =>
-                value.name
-              }
-              getOptionValue={(value: { id: string; name: string }) => value.id}
-              className="font-medium z-[100] w-[180px]"
-              classNamePrefix="react-select"
-              isDisabled={false}
-              isLoading={false}
-              isClearable={true}
-            />
-          </div>
+          {session?.user?.permissions &&
+            session?.user?.permissions.includes("read:branch") && (
+              <div className="flex  gap-x-4">
+                <Select
+                  name={"name"}
+                  options={[firstBranch, ...Branches]}
+                  isSearchable={true}
+                  placeholder="All"
+                  onChange={(value: any) => {
+                    setSelectedBranchId(value.id);
+                  }}
+                  getOptionLabel={(value: { id: string; name: string }) =>
+                    value.name
+                  }
+                  getOptionValue={(value: { id: string; name: string }) =>
+                    value.id
+                  }
+                  className="font-medium z-[100] w-[180px]"
+                  classNamePrefix="react-select"
+                  isDisabled={false}
+                  isLoading={false}
+                  isClearable={true}
+                />
+              </div>
+            )}
           <div className=" flex items-center  px-5 py-4 w-1/2">
             <Input
               variant="flat"

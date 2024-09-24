@@ -273,29 +273,65 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                         </div>
                       ))}
 
-                      <div className="flex justify-between mt-6">
-                        <Button
-                          onClick={() => {
-                            data.push({
-                              interest_rate: 0,
-                              threshold: 0,
-                            });
-                          }}
-                          className="w-fit bg-primary text-white font-semibold"
-                        >
-                          Add Tier
-                        </Button>
-                        {values.interest_tiers.length > 1 && (
+                      {session?.user?.permissions.includes(
+                        "create:account-type"
+                      ) && (
+                        <div className="flex justify-between mt-6">
                           <Button
                             onClick={() => {
-                              data.pop();
+                              data.push({
+                                interest_rate: 0,
+                                threshold: 0,
+                              });
                             }}
-                            className="w-fit bg-red-400 text-white font-semibold"
+                            className="w-fit bg-primary text-white font-semibold"
                           >
-                            Remove Tier
+                            Add Tier
                           </Button>
-                        )}
-                      </div>
+                          {values.interest_tiers.length > 1 && (
+                            <Button
+                              onClick={() => {
+                                data.pop();
+                              }}
+                              className="w-fit bg-red-400 text-white font-semibold"
+                            >
+                              Remove Tier
+                            </Button>
+                          )}
+                        </div>
+                      )}
+
+                      {session?.user?.permissions.includes(
+                        "create:account-type"
+                      ) ||
+                        (session?.user?.permissions.includes(
+                          "update:account-type"
+                        ) &&
+                          id && (
+                            <div className="flex justify-between mt-6">
+                              <Button
+                                onClick={() => {
+                                  data.push({
+                                    interest_rate: 0,
+                                    threshold: 0,
+                                  });
+                                }}
+                                className="w-fit bg-primary text-white font-semibold"
+                              >
+                                Add Tier
+                              </Button>
+                              {values.interest_tiers.length > 1 && (
+                                <Button
+                                  onClick={() => {
+                                    data.pop();
+                                  }}
+                                  className="w-fit bg-red-400 text-white font-semibold"
+                                >
+                                  Remove Tier
+                                </Button>
+                              )}
+                            </div>
+                          ))}
                     </div>
                   )}
                 </FieldArray>
@@ -381,36 +417,71 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                         </div>
                       ))}
 
-                      <div className="flex justify-between mt-6">
-                        <Button
-                          onClick={() => {
-                            data.push({
-                              max_loan_amount: 0,
-                              threshold: 0,
-                            });
-                          }}
-                          className="w-fit bg-primary text-white font-semibold"
-                        >
-                          Add Tier
-                        </Button>
-                        {values.loan_tiers.length > 1 && (
+                      {session?.user?.permissions.includes(
+                        "create:account-type"
+                      ) && (
+                        <div className="flex justify-between mt-6">
                           <Button
                             onClick={() => {
-                              data.pop();
+                              data.push({
+                                max_loan_amount: 0,
+                                threshold: 0,
+                              });
                             }}
-                            className="w-fit bg-red-400 text-white font-semibold"
+                            className="w-fit bg-primary text-white font-semibold"
                           >
-                            Remove Tier
+                            Add Tier
                           </Button>
-                        )}
-                      </div>
+                          {values.loan_tiers.length > 1 && (
+                            <Button
+                              onClick={() => {
+                                data.pop();
+                              }}
+                              className="w-fit bg-red-400 text-white font-semibold"
+                            >
+                              Remove Tier
+                            </Button>
+                          )}
+                        </div>
+                      )}
+
+                      {session?.user?.permissions.includes(
+                        "create:account-type"
+                      ) ||
+                        (session?.user?.permissions.includes(
+                          "update:account-type"
+                        ) &&
+                          id && (
+                            <div className="flex justify-between mt-6">
+                              <Button
+                                onClick={() => {
+                                  data.push({
+                                    max_loan_amount: 0,
+                                    threshold: 0,
+                                  });
+                                }}
+                                className="w-fit bg-primary text-white font-semibold"
+                              >
+                                Add Tier
+                              </Button>
+                              {values.loan_tiers.length > 1 && (
+                                <Button
+                                  onClick={() => {
+                                    data.pop();
+                                  }}
+                                  className="w-fit bg-red-400 text-white font-semibold"
+                                >
+                                  Remove Tier
+                                </Button>
+                              )}
+                            </div>
+                          ))}
                     </div>
                   )}
                 </FieldArray>
               </section>
 
-              {(session?.user?.permissions.includes("update:account-type") ||
-                session?.user?.permissions.includes("update:account")) && (
+              {session?.user?.permissions.includes("create:account-type") && !id && (
                 <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
                   <Button
                     color="primary"
@@ -418,10 +489,25 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                     type="submit"
                     isLoading={postMutation.isPending}
                   >
-                    {id ? "Update" : "Create"}
+                    Create
                   </Button>
                 </div>
               )}
+
+              {
+                (session?.user?.permissions.includes("update:account-type") &&
+                  id && (
+                    <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
+                      <Button
+                        color="primary"
+                        className="px-10 text-white bg-primary-dark"
+                        type="submit"
+                        isLoading={postMutation.isPending}
+                      >
+                      Update
+                      </Button>
+                    </div>
+                  ))}
             </Form>
           );
         }}

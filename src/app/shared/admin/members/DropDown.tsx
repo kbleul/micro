@@ -1,6 +1,7 @@
 "use client";
 
 import { routes } from "@/config/routes";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
@@ -22,7 +23,12 @@ const DropDown = ({
   accounts: accountType[];
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-
+console.log({
+  viewHref,
+  depositHref,
+  withdrawHref,
+  accounts
+})
   return (
     <Popover
       isOpen={isOpen}
@@ -120,14 +126,14 @@ function DropdownMenu({
       icon: <LuUserCircle size={19} />,
       subMenu: [],
     },
-    {
+   {
       name: "Deposit",
       href: depositHref,
       isNested: true,
       icon: <MdOutlineInput size={19} className="text-gray-600" />,
       subMenu: getAccountItems("Deposit"),
     },
-    {
+   {
       name: "Withdraw",
       href: withdrawHref,
       isNested: true,
@@ -139,7 +145,7 @@ function DropdownMenu({
   return (
     <div className="w-[12rem] text-left rtl:text-right">
       <div className="grid p-1 font-medium text-gray-700">
-        {menuItems.map((item) => (
+        {menuItems.map((item:any) => (
           <>
             {item.isNested ? (
               <DropDownAccounts item={item} />

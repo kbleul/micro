@@ -15,7 +15,6 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
 
   console.log("user permissions----------", userPermissions);
 
-
   const menuItems: menuItemtype[] = [
     {
       name: "Dashboard",
@@ -68,14 +67,17 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
 
   if (
     userPermissions.includes("read:account-type") ||
-    userPermissions.includes("read:account")
+    userPermissions.includes("read:account") || userPermissions.includes("read:share")
   ) {
     const subItems: subMenuItemtype[] = [];
 
-    subItems.push({
+    userPermissions.includes("read:account-type") ||
+    userPermissions.includes("read:account") && subItems.push({
       name: "Saving Types",
       href: routes.home.accountSettings.account_types,
     });
+
+ 
 
     menuItems.push({
       name: "Account Settings",
@@ -85,41 +87,52 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
     });
   }
 
-  if (userPermissions.includes("read:account")) {
+  if (
+    userPermissions.includes("read:account") ||
+    userPermissions.includes("create:account")
+  ) {
     const subItems: subMenuItemtype[] = [];
 
-    subItems.push({
-      name: "View Members",
-      href: routes.home.members.view_all,
-    });
+    userPermissions.includes("read:account") &&
+      subItems.push({
+        name: "View Members",
+        href: routes.home.members.view_all,
+      });
 
-    subItems.push({
-      name: "Add Member",
-      href: routes.home.members["add-member"],
-    });
+    userPermissions.includes("create:account") &&
+      subItems.push({
+        name: "Add Member",
+        href: routes.home.members["add-member"],
+      });
 
-    menuItems.push({
-      name: "Members",
-      href: routes.home.members.view_all,
-      icon: <LuUsers2 />,
-      dropdownItems: subItems,
-    });
+    userPermissions.includes("read:account") &&
+      menuItems.push({
+        name: "Members",
+        href: routes.home.members.view_all,
+        icon: <LuUsers2 />,
+        dropdownItems: subItems,
+      });
   }
 
-  if (userPermissions.includes("manage:settings")) {
+  if (
+    userPermissions.includes("manage:settings") ||
+    userPermissions.includes("read:loan")
+  ) {
     const subItems: subMenuItemtype[] = [];
 
-    menuItems.push({
-      name: "Approval Requests",
-      href: routes.home.approvalRequests,
-      icon: <MdOutlineApproval />,
-    });
+    userPermissions.includes("manage:settings") &&
+      menuItems.push({
+        name: "Approval Requests",
+        href: routes.home.approvalRequests,
+        icon: <MdOutlineApproval />,
+      });
 
-    menuItems.push({
-      name: "Loan Queue",
-      href: routes.home.loanQueue,
-      icon: <PiQueue size="25" />,
-    });
+    userPermissions.includes("read:loan") &&
+      menuItems.push({
+        name: "Loan Queue",
+        href: routes.home.loanQueue,
+        icon: <PiQueue size="25" />,
+      });
   }
 
   // if (userPermissions.includes("read:branch")) {

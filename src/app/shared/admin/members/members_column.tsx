@@ -115,7 +115,10 @@ export const getColumns = (
     key: "status",
     render: (_: string, row: any) => (
       <div className="flex items-center justify-end gap-3 pe-4">
-        {permissions.includes("update:member") &&
+        {(permissions.includes("update:member") ||
+          permissions.includes(
+            "create:payment"
+          )) &&
           row?.accounts &&
           row?.accounts.length > 0 && (
             <DropDown

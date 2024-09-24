@@ -16,11 +16,11 @@ import { useFetchData } from "@/react-query/useFetchData";
 import { Stepper } from "rizzui";
 import { queryKeys } from "@/react-query/query-keys";
 import { handleFetchState } from "@/utils/fetch-state-handler";
-import { memberType } from "types/common_types";
+import { memberType, workflowType } from "types/common_types";
 import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 
-export const CategoriesArr = ["Account", "Loan"];
+export const CategoriesArr = ["Membership", "Loan"];
 
 const RequestsList = () => {
   const { data: session } = useSession();
@@ -30,7 +30,6 @@ const RequestsList = () => {
 
   const [tasks, setTasks] = useState<any>(null);
   const [categoryLink, setCategoryLink] = useState(CategoriesArr[0]);
-  const [showDetailsFor, setShowDetailsFor] = useState<string | null>(null);
 
   const pageHeader = {
     title: "Branches",
@@ -45,10 +44,66 @@ const RequestsList = () => {
     ],
   };
 
+  const workflowData = useFetchData(
+    [queryKeys.getWorkflows],
+    `${process.env.NEXT_PUBLIC_APPROVAL_BACKEND_URL}applications/${process.env.NEXT_PUBLIC_APPROVAL_APP_KEY}/workflows`,
+    headers
+  );
+
+  const fetchStateHandler = handleFetchState(workflowData, <></>);
+
+  if (fetchStateHandler) {
+    return fetchStateHandler;
+  }
+
+  const Workflows: workflowType[] =
+    workflowData?.data?.data?.applicationWorkflows?.workflows ?? [];
+
+  return (
+    <article className="">
+      <PageHeader
+        title={pageHeader.title ?? ""}
+        breadcrumb={pageHeader.breadcrumb}
+      />
+
+      <div className="mt-10">
+        <CustomCategoryButton
+          categoryLink={categoryLink}
+          setCategoryLink={setCategoryLink}
+          categoriesArr={CategoriesArr}
+          labels={CategoriesArr}
+        />
+      </div>
+
+      <ViewTasks
+        categoryLink={categoryLink}
+        setCategoryLink={setCategoryLink}
+        Workflows={Workflows}
+      />
+    </article>
+  );
+};
+
+const ViewTasks = ({
+  categoryLink,
+  setCategoryLink,
+  Workflows,
+}: {
+  categoryLink: string;
+  setCategoryLink: React.Dispatch<React.SetStateAction<string>>;
+  Workflows: workflowType[];
+}) => {
+  const postMutation = useDynamicMutation();
+  const headers = useGetHeadersApproval();
+  const { data: session } = useSession();
+
+  const [tasks, setTasks] = useState<any>(null);
+  const [showDetailsFor, setShowDetailsFor] = useState<string | null>(null);
+
   const fetchTasks = async () => {
     try {
       await postMutation.mutateAsync({
-        url: `${process.env.NEXT_PUBLIC_APPROVAL_BACKEND_URL}filter/tasks?type=${categoryLink === CategoriesArr[0] ? process.env.NEXT_PUBLIC_APPROVAL_MEMBER_WORKFLOW : process.env.NEXT_PUBLIC_APPROVAL_LOAN_WORKFLOW}`,
+        url: `${process.env.NEXT_PUBLIC_APPROVAL_BACKEND_URL}filter/tasks?type=${Workflows.find((workflow) => workflow.name.includes(categoryLink))?.id}`,
         method: "POST",
         headers,
         body: {
@@ -77,12 +132,7 @@ const RequestsList = () => {
   }, [categoryLink]);
 
   return (
-    <article className="">
-      <PageHeader
-        title={pageHeader.title ?? ""}
-        breadcrumb={pageHeader.breadcrumb}
-      />
-
+    <>
       {!tasks && (
         <div className="pt-20 flex justify-center items-center">
           <Loading />
@@ -91,15 +141,6 @@ const RequestsList = () => {
 
       {tasks && (
         <>
-          <div className="mt-10">
-            <CustomCategoryButton
-              categoryLink={categoryLink}
-              setCategoryLink={setCategoryLink}
-              categoriesArr={CategoriesArr}
-              labels={CategoriesArr}
-            />
-          </div>
-
           {tasks.length === 0 ? (
             <div className="pt-20 flex justify-center items-center">
               <p className="text-2xl font-medium text-center">
@@ -123,7 +164,7 @@ const RequestsList = () => {
           )}
         </>
       )}
-    </article>
+    </>
   );
 };
 

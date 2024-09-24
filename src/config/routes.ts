@@ -30,9 +30,9 @@ export const routes = {
       view_all: "/home/members",
       "add-member": "/home/members/add-member",
       "view-member": (memberId: string) =>
-        `/home/members/view-member/${memberId}`,
+        `/view-member/${memberId}`,
       "view-member-account": (memberId: string, accountId: string) =>
-        `/home/members/view-member/${memberId}/view-account/${accountId}`,
+        `/view-member/${memberId}/view-account/${accountId}`,
     },
     users: "/home/users",
     activityLogs: "/home/activity_log",

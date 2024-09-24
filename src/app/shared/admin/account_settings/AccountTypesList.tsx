@@ -64,8 +64,7 @@ const AccountTypesList = () => {
       />
 
       {session?.user?.permissions &&
-        (session?.user?.permissions.includes("create:account-type") ||
-          session?.user?.permissions.includes("create:account")) && (
+        session?.user?.permissions.includes("create:account-type") && (
           <AddBtnContainer
             items={Terms}
             actionName="account type"

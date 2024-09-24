@@ -10,11 +10,14 @@ import AddAccountForm from "./AddAccountForm";
 import { useFetchData } from "@/react-query/useFetchData";
 import { queryKeys } from "@/react-query/query-keys";
 import { useGetHeaders } from "@/hooks/use-get-headers";
-import { handleFetchState } from "@/utils/fetch-state-handler";
 import BuyShare from "./BuyShare";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const LeftSectionProfile = ({ userData }: { userData: memberType }) => {
   const { openModal } = useModal();
+  const { data: session } = useSession();
+  const router = useRouter();
 
   return (
     <article
@@ -50,7 +53,9 @@ const LeftSectionProfile = ({ userData }: { userData: memberType }) => {
         </p>
       </section>
 
-      <ShareBox memberId={userData.id}/>
+      {session?.user?.permissions.includes("read:share") && (
+        <ShareBox memberId={userData.id} />
+      )}
 
       <section className="px-4 border-t pt-10 pb-4 my-5">
         <Title as="h5" className="text-xl font-medium ml-2">
@@ -59,11 +64,12 @@ const LeftSectionProfile = ({ userData }: { userData: memberType }) => {
 
         <div className="">
           {userData.accounts.map((account) => (
-            <Link
-              href={routes.home.members["view-member-account"](
-                userData.id,
-                account.id
-              )}
+            <button
+            onClick={() =>  router.push(routes.home.members["view-member-account"](
+              userData.id,
+              account.id
+            ))
+            }
               key={account.id}
               className="flex justify-between items-center border my-4 rounded-xl px-4 py-4 hover:opacity-80 w-full"
             >
@@ -75,24 +81,27 @@ const LeftSectionProfile = ({ userData }: { userData: memberType }) => {
               <div className="border rounded-lg px-4 py-1 bg-primary hover:bg-primary-dark text-white font-medium text-xs">
                 <p className="">Manage</p>
               </div>
-            </Link>
+            </button>
           ))}
         </div>
 
-        <div className="w-full flex justify-center items-center">
-          <Button
-            color="primary"
-            size="xl"
-            className={`mt-10 xl:mt-0 ${userData.accounts.length < 3 && "xl:absolute bottom-4"}  w-3/5 py-1`}
-            onClick={() => {
-              openModal({
-                view: <AddAccountForm memberId={userData.id} />,
-              });
-            }}
-          >
-            Add New Account
-          </Button>
-        </div>
+        {session?.user?.permissions &&
+          session?.user?.permissions.includes("create:account") && (
+            <div className="w-full flex justify-center items-center">
+              <Button
+                color="primary"
+                size="xl"
+                className={`mt-10 xl:mt-0 ${userData.accounts.length < 3 && "xl:absolute bottom-4"}  w-3/5 py-1`}
+                onClick={() => {
+                  openModal({
+                    view: <AddAccountForm memberId={userData.id} />,
+                  });
+                }}
+              >
+                Add New Account
+              </Button>
+            </div>
+          )}
       </section>
     </article>
   );
@@ -101,6 +110,7 @@ const LeftSectionProfile = ({ userData }: { userData: memberType }) => {
 const ShareBox = ({ memberId }: { memberId: string }) => {
   const headers = useGetHeaders({ type: "Json" });
   const { openModal } = useModal();
+  const { data: session } = useSession();
 
   const sharesData = useFetchData(
     [queryKeys.getShare + memberId, memberId],
@@ -111,7 +121,6 @@ const ShareBox = ({ memberId }: { memberId: string }) => {
   if (sharesData.isFetching) {
     return <></>;
   }
-  console.log(sharesData?.data?.data);
 
   const shares: {
     quantity: number;
@@ -128,23 +137,25 @@ const ShareBox = ({ memberId }: { memberId: string }) => {
       </Title>
 
       <div className="">
-        <button
-          className="flex justify-between items-center border my-4 rounded-xl px-4 py-4 hover:opacity-80 w-full"
-          onClick={() => {
-            openModal({
-              view: <BuyShare member_id={memberId} />,
-            });
-          }}
-        >
-          <div className="flex flex-col text-left">
-            <p className="text-lg font-medium">{sharesValue}</p>
-            <p className="text-xs">Shares owned</p>
-          </div>
+        {session?.user?.permissions.includes("create:share") && (
+          <div className="flex justify-between items-center border my-4 rounded-xl px-4 py-4 w-full">
+            <div className="flex flex-col text-left">
+              <p className="text-lg font-medium">{sharesValue}</p>
+              <p className="text-xs">Shares owned</p>
+            </div>
 
-          <div className="border rounded-lg px-4 py-1 bg-primary hover:bg-primary-dark text-white font-medium text-xs">
-            <p className="">Buy more</p>
+            <button
+              className="border rounded-lg px-4 py-1 bg-primary hover:bg-primary-dark text-white font-medium text-xs"
+              onClick={() => {
+                openModal({
+                  view: <BuyShare member_id={memberId} />,
+                });
+              }}
+            >
+              <p className="">Buy more</p>
+            </button>
           </div>
-        </button>
+        )}
       </div>
     </section>
   );

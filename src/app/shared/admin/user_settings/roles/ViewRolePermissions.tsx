@@ -105,7 +105,7 @@ export default function ViewRolePermissions({
               })
             }
           >
-            Add Permissions
+            Assign Permissions
           </Button>
         </div>
       )}
@@ -124,7 +124,7 @@ export default function ViewRolePermissions({
                 })
               }
             >
-              Add Permissions
+              Assign Permissions
             </Button>
           </div>
 
