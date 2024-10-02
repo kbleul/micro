@@ -2,6 +2,7 @@
 import { Textarea } from "@/components/ui/textarea";
 import cn from "@/utils/class-names";
 import { useField, ErrorMessage } from "formik";
+import appendAsterisk from "./asterrisk";
 interface FormikTextAreaProps {
   label: string;
   name: string;
@@ -33,6 +34,7 @@ interface FormikTextAreaProps {
     | "success"
     | "warning"
     | undefined;
+  isRequired?: boolean;
 }
 
 const FormikTextArea: React.FC<FormikTextAreaProps> = ({
@@ -46,6 +48,7 @@ const FormikTextArea: React.FC<FormikTextAreaProps> = ({
   inputClassName,
   color,
   disabled = false,
+  isRequired = false,
 }) => {
   const [field] = useField(name);
   return (
@@ -54,7 +57,7 @@ const FormikTextArea: React.FC<FormikTextAreaProps> = ({
         <Textarea
           autoComplete="off"
           {...field}
-          label={label}
+          label={appendAsterisk(label, isRequired)}
           name={name}
           placeholder={placeholder}
           className={cn("[&>label>span]:font-medium customScroll", className)}

@@ -13,6 +13,7 @@ export const EmployeeSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
+    branch_name: Yup.string().required("Branch is required")
 });
 
 export type EmployeeType = {
@@ -24,7 +25,7 @@ export type EmployeeType = {
   email: string;
   tin_number: string;
   role: string;
-  branch_name: string
+  branch_name: string | null
 };
 
 

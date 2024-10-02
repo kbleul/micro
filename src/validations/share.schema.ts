@@ -20,4 +20,21 @@ type ShareType = {
   cheque_number: string | null;
 };
 
-export type { ShareType };
+
+export const ShareOwnerSchema = Yup.object().shape({
+  share_value: Yup.number().min(0, "Share value has to be grater than or equal to 0").required("Share value is required"),
+  total_shares: Yup.number().min(1, "Share value has to be grater than or equal to 1").required("Share amount is required"),
+  minimum_share: Yup.number().min(1, "Share amount should be greater than or equal to 1").required("Minimum amount of share is required"),
+  maximum_share: Yup.number()
+    .required("Maximum amount of share is required")
+    .test("is-less-than-total", "Maximum share must be less than total shares", function (value) {
+      const { total_shares } = this.parent;
+      return value < total_shares;
+    })
+
+});
+
+type ShareOwnerType = Yup.InferType<typeof ShareOwnerSchema>;
+
+
+export type { ShareType, ShareOwnerType };

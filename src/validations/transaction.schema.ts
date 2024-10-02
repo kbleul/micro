@@ -4,16 +4,16 @@ export const DepositeSchema = Yup.object().shape({
   account_id: Yup.string().required("Name is required"),
   amount: Yup.number()
     .min(0, "Amount is too small")
-    .test(
-      "amount-greater-than-unpaid-penalty-and-minimum",
-      "Amount must be greater than or equal to the sum of unpaid penalty and minimum threshold",
-      (amount, context) => {
-        const { unpaid_penalty_amounts, minimum_threshold } = context.parent;
-        return amount
-          ? amount >= unpaid_penalty_amounts + minimum_threshold
-          : false;
-      }
-    )
+    // .test(
+    //   "amount-greater-than-unpaid-penalty-and-minimum",
+    //   "Amount must be greater than or equal to the sum of unpaid penalty and minimum threshold",
+    //   (amount, context) => {
+    //     const { unpaid_penalty_amounts, minimum_threshold } = context.parent;
+    //     return amount
+    //       ? amount >= unpaid_penalty_amounts + minimum_threshold
+    //       : false;
+    //   }
+    // )
     .required("Amount is required"),
   unpaid_penalty_amounts: Yup.number().min(0, "Amount is too small"),
   minimum_threshold: Yup.number().min(0, "Amount is too small"),
@@ -25,7 +25,7 @@ export const DepositeSchema = Yup.object().shape({
       then: (schema) => schema.required("Cheque number is required"),
       otherwise: (schema) => schema.nullable(),
     }),
-    deposit_for: Yup.string().required("Payment for is required"),
+  deposit_for: Yup.string().required("Payment for is required"),
 });
 
 type DepositeType = {
@@ -65,6 +65,7 @@ export const WithdrawSchema = Yup.object().shape({
       then: (schema) => schema.required("Cheque number is required"),
       otherwise: (schema) => schema.nullable(),
     }),
+  purpose: Yup.string().required("Purpose is required"),
 });
 
 type WithdrawType = {
@@ -79,6 +80,7 @@ type WithdrawType = {
   able_to_withdraw_amount: string;
   payment_channel: string | null;
   cheque_number: string | null;
+  purpose: string;
 };
 
 export const loanApplicationSchema = Yup.object()
@@ -88,12 +90,6 @@ export const loanApplicationSchema = Yup.object()
       "Maximum amount able to get loan is required"
     ),
     amount: Yup.number(),
-      // .min(0, "Amount is too small")
-      // .max(
-      //   Yup.ref("max_loan"),
-      //   "Amount cannot exceed the available max loan amount"
-      // )
-      // .required("Amount is required"),
     duration: Yup.number()
       .min(1, "Duration should be in valid month")
       .required("Payment duration is required"),

@@ -15,6 +15,7 @@ import { useFetchData } from "@/react-query/useFetchData";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 import CustomSelect from "@/components/ui/form/select";
 import { paymentChannels, paymentChannelsOptions } from "@/utils/dummy";
+import FormikTextArea from "@/components/ui/form/formik-textarea";
 
 const WithdrawalForm = ({
   memberId,
@@ -63,6 +64,7 @@ const WithdrawalForm = ({
     able_to_withdraw_amount: transactionStatus?.able_to_withdraw_amount,
     payment_channel: null,
     cheque_number: null,
+    purpose: "",
   };
 
   const handleWithdraw = async (values: WithdrawType) => {
@@ -75,7 +77,7 @@ const WithdrawalForm = ({
           amount: values.amount,
           payment_channel: values.payment_channel,
           cheque_number: values.cheque_number,
-          purpose: "",
+          purpose: values.purpose,
         },
         onSuccess: (res: any) => {
           queryClient.invalidateQueries({
@@ -142,6 +144,16 @@ const WithdrawalForm = ({
                 suffix="birr"
               />
 
+              <FormikTextArea
+                name="purpose"
+                label="Purpose of withdraw"
+                color="primary"
+                className="col-span-2  w-full"
+                isRequired
+              />
+
+              
+
               <div className="mt-4 w-full flex flex-col gap-6 ">
                 <CustomSelect
                   isSearchable
@@ -167,7 +179,7 @@ const WithdrawalForm = ({
                   label="Cheque Number"
                   color="primary"
                   className="col-span-2 md:col-span-1 w-full mt-2"
-                  labelClassName="pb-2"
+                  labelClassName=""
                   isRequired
                 />
               )}
@@ -176,7 +188,7 @@ const WithdrawalForm = ({
                 name="amount"
                 label="Amount to withdraw(must be less than zero able to withdraw amount)"
                 color="primary"
-                className="col-span-2 md:col-span-1 w-full"
+                className="col-span-2 w-full"
                 type="number"
                 disabled={transactionStatus.able_to_withdraw ? false : true}
                 suffix="birr"

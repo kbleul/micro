@@ -50,7 +50,7 @@ const AddTypeForm = ({ id }: { id?: string }) => {
   }
 
   const AccountTYpe: InterstTypeType = typesData?.data?.data;
-
+  console.log(";;;;;;;;;;;;;;;;;;", AccountTYpe);
   const initialValues: InterstTypeType = {
     name: id ? AccountTYpe.name : "",
     minimum_threshold: id ? AccountTYpe.minimum_threshold : 0,
@@ -77,7 +77,7 @@ const AddTypeForm = ({ id }: { id?: string }) => {
       id && AccountTYpe.loan_tiers
         ? AccountTYpe.loan_tiers.flatMap((trier) => {
             return {
-              max_loan_amount: trier.max_loan_amount,
+              // max_loan_amount: trier.max_loan_amount,
               threshold: trier.threshold,
               max_loan_multiplier: trier.max_loan_multiplier,
               penalty_rate: trier.penalty_rate,
@@ -87,7 +87,7 @@ const AddTypeForm = ({ id }: { id?: string }) => {
           })
         : [
             {
-              max_loan_amount: 0,
+              // max_loan_amount: 0,
               threshold: 0,
               max_loan_multiplier: 0,
               penalty_rate: 0,
@@ -95,6 +95,8 @@ const AddTypeForm = ({ id }: { id?: string }) => {
               interest_rate: 0,
             },
           ],
+    tax_on_interest: id ? AccountTYpe.tax_on_interest : 0,
+    registration_fee: id ? AccountTYpe.registration_fee : 0,
   };
 
   const createTermSubmitHandler = async (values: InterstTypeType) => {
@@ -123,8 +125,6 @@ const AddTypeForm = ({ id }: { id?: string }) => {
         },
         onError: (err: any) => {
           handleErrorWithToast(err, toast);
-
-          // toast.error(err?.response?.data?.data);
         },
       });
     } catch (err) {
@@ -190,6 +190,7 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                     )
                   }
                   isRequired
+                  labelClassName="mb-0 py-1"
                 />
 
                 <FormikInput
@@ -223,6 +224,7 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                       (p) => p.name === AccountTYpe.interest_period
                     )
                   }
+                  labelClassName="mb-0 py-1"
                 />
 
                 <FormikInput
@@ -233,6 +235,28 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                   color="primary"
                   className="col-span-1"
                   type="number"
+                />
+
+                <FormikInput
+                  name="tax_on_interest"
+                  label="Tax on intrest"
+                  placeholder="Enter tax amount"
+                  color="primary"
+                  className="mb-2"
+                  type="number"
+                  isRequired
+                  suffix="%"
+                />
+
+                <FormikInput
+                  name="registration_fee"
+                  label="Registration Fee"
+                  placeholder="Enter the registration fee"
+                  color="primary"
+                  className="mb-2"
+                  type="number"
+                  isRequired
+                  suffix="birr"
                 />
 
                 <FieldArray name="interest_tiers">
@@ -351,7 +375,7 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                           key={index + "loan_tiers max_loan_amount"}
                           className="grid grid-cols-2 gap-4 transition-opacity  duration-300 ease-in-out transform  mb-4 pb-6 border p-4 border-broken "
                         >
-                          <FormikInput
+                          {/* <FormikInput
                             name={`loan_tiers[${index}].max_loan_amount`}
                             label="Max loan amount"
                             placeholder="Enter the max loan amount"
@@ -360,7 +384,7 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                             className="col-span-2"
                             type="number"
                             isRequired
-                          />
+                          /> */}
                           <FormikInput
                             name={`loan_tiers[${index}].threshold`}
                             label="Threshold"
@@ -481,33 +505,33 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                 </FieldArray>
               </section>
 
-              {session?.user?.permissions.includes("create:account-type") && !id && (
-                <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
-                  <Button
-                    color="primary"
-                    className="px-10 text-white bg-primary-dark"
-                    type="submit"
-                    isLoading={postMutation.isPending}
-                  >
-                    Create
-                  </Button>
-                </div>
-              )}
+              {session?.user?.permissions.includes("create:account-type") &&
+                !id && (
+                  <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
+                    <Button
+                      color="primary"
+                      className="px-10 text-white bg-primary-dark"
+                      type="submit"
+                      isLoading={postMutation.isPending}
+                    >
+                      Create
+                    </Button>
+                  </div>
+                )}
 
-              {
-                (session?.user?.permissions.includes("update:account-type") &&
-                  id && (
-                    <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
-                      <Button
-                        color="primary"
-                        className="px-10 text-white bg-primary-dark"
-                        type="submit"
-                        isLoading={postMutation.isPending}
-                      >
+              {session?.user?.permissions.includes("update:account-type") &&
+                id && (
+                  <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
+                    <Button
+                      color="primary"
+                      className="px-10 text-white bg-primary-dark"
+                      type="submit"
+                      isLoading={postMutation.isPending}
+                    >
                       Update
-                      </Button>
-                    </div>
-                  ))}
+                    </Button>
+                  </div>
+                )}
             </Form>
           );
         }}

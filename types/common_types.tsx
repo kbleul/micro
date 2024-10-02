@@ -142,6 +142,17 @@ export type memberType = {
   share: number;
 };
 
+export type shareType = {
+  id: string;
+  share_name: string;
+  share_value: number;
+  total_shares: number;
+  available_shares: number;
+  maximum_share: number;
+  minimum_share: number;
+  created_at: string;
+};
+
 export type ActivityLogsType = {
   id: string;
   user_id: string;

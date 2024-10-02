@@ -185,6 +185,27 @@ const DepositForm = ({
                 suffix="birr"
               />
 
+<div className=" w-full flex flex-col gap-6 ">
+                    <CustomSelect
+                      name="deposit_for"
+                      label="Payment For"
+                      options={paymentForOptions}
+                      onChange={(selectedOption: { value: string }) => {
+                        setFieldValue("deposit_for", selectedOption.value);
+                      }}
+                      placeholder="select payment for type"
+                      getOptionValue={(period: { value: string }) =>
+                        period.value
+                      }
+                      getOptionLabel={(period: { value: string }) =>
+                        period.value.toUpperCase()
+                      }
+                      noOptionsMessage={() => "Fetching..."}
+                      isRequired
+                      labelClassName="py-0 mt-0"
+                    />
+                  </div>
+
               <div className="mt-4 w-full flex flex-col gap-6 ">
                 <CustomSelect
                   isSearchable
@@ -204,84 +225,38 @@ const DepositForm = ({
                 />
               </div>
 
+            
+
               {values.payment_channel === paymentChannels.cheque && (
                 <FormikInput
                   name="cheque_number"
                   label="Cheque Number"
                   color="primary"
                   className="col-span-2 md:col-span-1 w-full mt-2"
-                  labelClassName="pb-2"
+                  labelClassName=""
                   isRequired
                 />
               )}
 
-              {(transactionStatus?.days_left <= 0 ||
-                transactionStatus?.unpaid_penalty_amounts > 0) && (
-                <>
-                  <div className="mt-4 w-full flex flex-col gap-6 ">
-                    <CustomSelect
-                      name="deposit_for"
-                      label="Payment For"
-                      options={paymentForOptions}
-                      onChange={(selectedOption: { value: string }) => {
-                        setFieldValue("deposit_for", selectedOption.value);
-                      }}
-                      placeholder="select payment for type"
-                      getOptionValue={(period: { value: string }) =>
-                        period.value
-                      }
-                      getOptionLabel={(period: { value: string }) =>
-                        period.value.toUpperCase()
-                      }
-                      noOptionsMessage={() => "Fetching..."}
-                      isRequired
-                    />
-                  </div>
-                  <div className="mt-4 w-full flex flex-col gap-6 ">
-                    <CustomSelect
-                      isSearchable
-                      name="payment_channel"
-                      label="Payment Channel"
-                      options={paymentChannelsOptions}
-                      onChange={(selectedOption: { value: string }) => {
-                        setFieldValue("payment_channel", selectedOption.value);
-                      }}
-                      placeholder="select payment channels"
-                      getOptionValue={(period: { value: string }) =>
-                        period.value
-                      }
-                      getOptionLabel={(period: { value: string }) =>
-                        period.value
-                      }
-                      noOptionsMessage={() => "Fetching payment channels..."}
-                      isRequired
-                    />
-                  </div>
 
-                  {values.payment_channel === paymentChannels.cheque && (
-                    <FormikInput
-                      name="cheque_number"
-                      label="Cheque Number"
-                      color="primary"
-                      className="col-span-2 md:col-span-1 w-full mt-2"
-                      labelClassName="pb-2"
-                      isRequired
-                    />
-                  )}
-                </>
-              )}
 
-              <FormikInput
+                 
+
+          <div className="grid grid-cols-2 col-span-2">
+          <FormikInput
                 name="amount"
                 label="Amount to deposit(Must be greater or equal to minimum deposit threshold plus penality)"
                 color="primary"
-                className="col-span-2 md:col-span-1 w-full mt-2"
+                className="col-span-2 md:col-span-1  w-full mt-2"
                 labelClassName="pb-2"
                 type="number"
                 suffix="birr"
                 isRequired
               />
 
+          </div>
+
+            
               {session?.user?.permissions.includes("update:account") && (
                 <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
                   <Button

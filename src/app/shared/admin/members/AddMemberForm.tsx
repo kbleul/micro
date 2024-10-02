@@ -49,7 +49,7 @@ const AddMemberForm = ({
   className?: string;
 }) => {
   const postMutation = useDynamicMutation();
-  const headers = useGetHeaders({ type: "Json" });
+  const headers = useGetHeaders({ type: "FormData" });
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -438,6 +438,7 @@ const AddMemberForm = ({
                         isSearchable
                         name="birth_region"
                         label="Region"
+                        labelClassName="mb-0 py-0"
                         options={REGIONS}
                         onChange={(selectedOption: any) => {
                           setFieldValue("birth_region", selectedOption.name);
@@ -519,6 +520,7 @@ const AddMemberForm = ({
                         isSearchable
                         name="current_region"
                         label="Region"
+                        labelClassName="mb-0 py-0"
                         options={REGIONS}
                         onChange={(selectedOption: any) => {
                           setFieldValue("current_region", selectedOption.name);
@@ -626,7 +628,7 @@ const AddMemberForm = ({
                                   isRequired
                                 />
 
-                                <div className="mt-4 w-full flex flex-col gap-6 col-span-2">
+                                <div className=" w-full flex flex-col gap-6 col-span-2">
                                   <CustomSelect
                                     name={`emergency_contacts.[${index}].relationship`}
                                     label="Marriage Status"
@@ -659,7 +661,7 @@ const AddMemberForm = ({
                                   label="Occupation"
                                   placeholder="Enter Ocuppation"
                                   color="primary"
-                                  className="mt-3"
+                                  className="mt-2"
                                   isRequired
                                 />
 
@@ -793,7 +795,7 @@ const AddMemberForm = ({
                                 isRequired
                               />
 
-                              <div className="mt-4 w-full flex flex-col gap-6 col-span-2">
+                              <div className="w-full flex flex-col gap-6 col-span-2">
                                 <CustomSelect
                                   name={`heirs.[${index}].relationship`}
                                   label="Marriage Status"
@@ -824,7 +826,7 @@ const AddMemberForm = ({
                                 label="Occupation"
                                 placeholder="Enter Ocuppation"
                                 color="primary"
-                                className="mt-3"
+                                className="mt-2"
                                 isRequired
                               />
 

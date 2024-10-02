@@ -70,12 +70,17 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
     userPermissions.includes("read:account") || userPermissions.includes("read:share")
   ) {
     const subItems: subMenuItemtype[] = [];
-
-    userPermissions.includes("read:account-type") ||
-    userPermissions.includes("read:account") && subItems.push({
+    (userPermissions.includes("read:account-type") ||
+    userPermissions.includes("read:account")) && subItems.push({
       name: "Saving Types",
       href: routes.home.accountSettings.account_types,
     });
+
+    userPermissions.includes("read:share") && subItems.push({
+      name: "Share Info",
+      href: routes.home.accountSettings.share,
+    });
+
 
  
 

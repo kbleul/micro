@@ -13,6 +13,7 @@ export const routes = {
     accountSettings: {
       interst_terms: "/home/account_settings/interst_terms",
       account_types: "/home/account_settings/account_types",
+      share: "/home/account_settings/share"
     },
     branches: {
       view_all: "/home/branches",

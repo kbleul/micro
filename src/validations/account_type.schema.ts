@@ -27,9 +27,9 @@ export const InterstTermSchema = Yup.object().shape({
   loan_tiers: Yup.array()
     .of(
       Yup.object().shape({
-        max_loan_amount: Yup.number()
-          .min(0, "Amount is too low")
-          .required("Amount is required"),
+        // max_loan_amount: Yup.number()
+        //   .min(0, "Amount is too low")
+        //   .required("Amount is required"),
         max_loan_multiplier: Yup.number()
           .min(0, "Number is too low")
           .required("Amount is required"),
@@ -47,9 +47,14 @@ export const InterstTermSchema = Yup.object().shape({
         threshold: Yup.number()
           .min(0, "Threshold")
           .required("Threshold is required"),
+         
       })
     )
     .required("Loan Tiers is required"),
+    tax_on_interest: Yup.number()
+    .required("Tax is required"),
+    registration_fee: Yup.number()
+    .required("Registration fee is required"),
 });
 
 type InterstTypeType = Yup.InferType<typeof InterstTermSchema>;

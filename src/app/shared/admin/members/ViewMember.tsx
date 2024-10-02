@@ -30,11 +30,9 @@ export const CategoriesArr = [
 
 const ViewMember = () => {
   console.log("categoryLink")
-// return (<>sdsa</>)
   const headers = useGetHeaders({ type: "Json" });
   const location = useLocation();
 
-  // Extract the query params from the URL
   const queryParams = new URLSearchParams(location.search);
   const actionParam = queryParams.get("action");
 

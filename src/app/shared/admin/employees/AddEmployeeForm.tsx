@@ -45,8 +45,6 @@ const AddEmployeeForm = ({
 
   const { data: session } = useSession();
 
-
-  console.log("mysession", session)
   const pageHeader = {
     title: employeeId ? "View Employee" : "Add New Employee",
     breadcrumb: [
@@ -63,6 +61,20 @@ const AddEmployeeForm = ({
       },
     ],
   };
+
+  const branchesData = useFetchData(
+    [queryKeys.getAllBranches],
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}branches`,
+    headers
+  );
+
+  const fetchStateHandlerBranch = handleFetchState(
+    branchesData,
+    <PageHeader
+      title={pageHeader.title ?? ""}
+      breadcrumb={pageHeader.breadcrumb}
+    />
+  );
 
   const rolesData = useFetchData(
     [queryKeys.getAllRoles, employeeId],
@@ -97,9 +109,11 @@ const AddEmployeeForm = ({
     />
   );
 
-  if (fetchStateHandlerRoles) {
+  if (fetchStateHandlerRoles || fetchStateHandlerBranch) {
     return fetchStateHandler;
   }
+
+  const Branches = branchesData?.data?.data?.branches ?? [];
 
   const initialValues: EmployeeType = {
     first_name: "",
@@ -110,7 +124,7 @@ const AddEmployeeForm = ({
     role: "",
     date_of_birth: undefined,
     gender: "",
-    branch_name: session?.user?.user?.branch?.name
+    branch_name: null,
   };
 
   const createEmployeeSubmitHandler = async (values: EmployeeType) => {
@@ -263,13 +277,20 @@ const AddEmployeeForm = ({
                       className=""
                     />
 
-                    <FormikInput
+                    <CustomSelect
+                      isSearchable
                       name="branch_name"
                       label="Branch Name"
-                      placeholder=""
-                      color="primary"
-                      className=""
-                      disabled
+                      options={Branches}
+                      onChange={(selectedOption: any) => {
+                        setFieldValue("branch_name", selectedOption.id);
+                      }}
+                      placeholder="select role"
+                      getOptionValue={(branch: any) => branch?.id}
+                      getOptionLabel={(branch: any) => branch?.name}
+                      noOptionsMessage={() => "Fetching branches..."}
+                      isRequired
+                      labelClassName="mb-0 py-0"
                     />
                   </FormGroup>
                   <FormGroup
