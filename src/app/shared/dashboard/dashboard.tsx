@@ -53,17 +53,18 @@ const Dashboard = () => {
 
   return (
     <div className="@container">
-      <div className="grid grid-cols-12 gap-6 3xl:gap-8">
+    <div className="grid grid-cols-12 gap-6 3xl:gap-8">
         <StatCards className="col-span-full @2xl:grid-cols-3 @6xl:grid-cols-4" analytics={analytics} />
       </div>
-
+  
 
       <article className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-2 gap-8 w-full items-stretch mt-10">
-        <CustomPieChart analytics={analytics?.gender_distribution} />
-        <CustomPieChartAccount analytics={analytics?.account_type_usage} />
+      {analytics?.gender_distribution && analytics?.gender_distribution.length > 0 &&  <CustomPieChart analytics={analytics?.gender_distribution} />}
+      {analytics?.account_type_usage && analytics?.account_type_usage.length &&  <CustomPieChartAccount analytics={analytics?.account_type_usage} />}
+   
 
-        <CustomLineChart analytics={analytics?.savings_status_distribution} />
-        <CustomLineChartSaving analytics={analytics?.members_grouped_by_branch} />
+      {analytics?.savings_status_distribution && analytics?.savings_status_distribution.length > 0 &&  <CustomLineChart analytics={analytics?.savings_status_distribution} />}
+      {analytics?.members_grouped_by_branch  &&  <CustomLineChartSaving analytics={analytics?.members_grouped_by_branch} /> }
 
         
       </article>

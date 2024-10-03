@@ -358,7 +358,7 @@ const AddMemberForm = ({
                               />
 
                               <FormikInput
-                                name={`children.${index}.age`}
+                                name={`children[].${index}.age`}
                                 label="Age"
                                 placeholder="Enter age"
                                 color="primary"

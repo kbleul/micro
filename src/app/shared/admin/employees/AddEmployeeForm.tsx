@@ -161,7 +161,6 @@ const AddEmployeeForm = ({
         onSuccess: (res) => {
           toast.success("Employee Created Successfully");
 
-          router.push(routes.home.employees.view_all);
         },
         onError: (err) => {
           handleErrorWithToast(err, toast);
