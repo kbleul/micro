@@ -17,16 +17,26 @@ import ControlledTable from "@/components/controlled-table";
 import { PiMagnifyingGlassBold, PiXBold } from "react-icons/pi";
 import { getColumns } from "./employee_column";
 import { roleTypes } from "types/common_types";
+import DeletePopover from "@/components/delete-popover";
+import { useModal } from "../../modal-views/use-modal";
+import useDynamicMutation from "@/react-query/usePostData";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const firstRole = { id: "001-role", name: "All", slug: "all" };
 
 const EmployeesList = () => {
   const { data: session } = useSession();
+  const { openModal, closeModal } = useModal();
+  const postMutation = useDynamicMutation();
 
   const headers = useGetHeaders({ type: "Json" });
+  const queryClient = useQueryClient();
 
   const [searchText, setSearchText] = useState("");
-  const [selectedRole, setSelectedRole] = useState<string | null>(firstRole.name.toLocaleLowerCase());
+  const [selectedRole, setSelectedRole] = useState<string | null>(
+    firstRole.name.toLocaleLowerCase()
+  );
 
   const [currentPage, setCurrentPage] = React.useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -78,6 +88,43 @@ const EmployeesList = () => {
 
   const Roles: roleTypes[] = rolesData?.data?.data ?? [];
 
+  const handleDelete = async (employeeId: string) => {
+    try {
+      await postMutation.mutateAsync({
+        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}users/${employeeId}`,
+        method: "DELETE",
+        headers,
+        body: {},
+        onSuccess: (res: any) => {
+          queryClient.invalidateQueries({
+            queryKey: [queryKeys.getAllEmployees],
+          });
+
+          toast.success("Employee deleted Successfully");
+          closeModal();
+        },
+        onError: (err: any) => {
+          toast.error(err?.response?.data?.data);
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const deleteEmployee = (employeeId: string) => {
+    openModal({
+      view: (
+        <DeletePopover
+          title="Delete Employee"
+          description="Are you sure you want to delete this employee"
+          onDelete={() => handleDelete(employeeId)}
+        />
+      ),
+      customSize: "1550px",
+    });
+  };
+
   return (
     <main>
       <PageHeader
@@ -92,7 +139,11 @@ const EmployeesList = () => {
         action={
           session?.user?.permissions.includes("create:employee") && (
             <Link href={routes.home.employees["add-employee"]}>
-              <Button size="lg" color="primary" className="bg-primary-dark  text-white">
+              <Button
+                size="lg"
+                color="primary"
+                className="bg-primary-dark  text-white"
+              >
                 Add Employee
               </Button>
             </Link>
@@ -107,9 +158,7 @@ const EmployeesList = () => {
               getOptionLabel={(role) => role.name}
               getOptionValue={(role) => role.slug}
               defaultValue={firstRole}
-              onChange={(value: any) =>
-                setSelectedRole(value.slug)
-              }
+              onChange={(value: any) => setSelectedRole(value.slug)}
               className="w-full font-medium z-[100]"
               classNamePrefix="react-select"
               isDisabled={false}
@@ -177,7 +226,7 @@ const EmployeesList = () => {
             data={usersData?.data?.data?.users}
             scroll={{ x: 900 }}
             // @ts-ignore
-            columns={getColumns()}
+            columns={getColumns(deleteEmployee)}
             paginatorOptions={{
               pageSize,
               setPageSize,

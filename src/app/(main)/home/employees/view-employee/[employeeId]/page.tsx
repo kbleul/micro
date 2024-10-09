@@ -1,13 +1,13 @@
-import AddBranchForm from "@/app/shared/admin/branches/AddBranchForm";
+import AddEmployeeForm from "@/app/shared/admin/employees/AddEmployeeForm";
 import { metaObject } from "@/config/site.config";
 import React from "react";
 
 export const metadata = {
-  ...metaObject("Branches"),
+  ...metaObject("Employee"),
 };
 
-const page = ({ params }: { params: { branchId: string } }) => {
-  return <AddBranchForm branchId={params.branchId} />;
+const page = ({ params }: { params: { employeeId: string } }) => {
+  return <AddEmployeeForm employeeId={params.employeeId} />;
 };
 
 export default page;

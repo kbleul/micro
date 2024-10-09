@@ -24,8 +24,9 @@ import SelectLoader from "@/components/loader/select-loader";
 import { EmployeeSchema, EmployeeType } from "@/validations/employee.schema";
 import appendAsterisk from "@/components/ui/form/asterrisk";
 import { handleErrorWithToast } from "@/utils/error-toast-handler";
-import { secondaryDateFormat } from "@/utils/format-date";
+import { secondaryDateFormat, timeStampToDate } from "@/utils/format-date";
 import { validateDate } from "@/utils/date_checker";
+import { parsePhoneNumber } from "@/utils/parse-phone";
 
 const Select = dynamic(() => import("@/components/ui/select"), {
   ssr: false,
@@ -82,15 +83,15 @@ const AddEmployeeForm = ({
     headers
   );
 
-  const employeehData = useFetchData(
-    [queryKeys.getAllEmployees, employeeId],
+  const employeeData = useFetchData(
+    [queryKeys.getAllEmployees + employeeId, employeeId],
     `${process.env.NEXT_PUBLIC_BACKEND_URL}users/${employeeId}`,
     headers,
     !!employeeId
   );
 
   const fetchStateHandler = handleFetchState(
-    employeehData,
+    employeeData,
     <PageHeader
       title={pageHeader.title ?? ""}
       breadcrumb={pageHeader.breadcrumb}
@@ -114,17 +115,30 @@ const AddEmployeeForm = ({
   }
 
   const Branches = branchesData?.data?.data?.branches ?? [];
+  const Employees = employeeData?.data?.data?.user ?? null;
+  const Roles = rolesData?.data?.data ?? [];
+
+  console.log(Roles);
 
   const initialValues: EmployeeType = {
-    first_name: "",
-    last_name: "",
-    phone_number: "",
-    email: "",
-    tin_number: "",
-    role: "",
-    date_of_birth: undefined,
-    gender: "",
-    branch_name: null,
+    first_name: employeeId ? Employees?.first_name : "",
+    last_name: employeeId ? Employees?.last_name : "",
+    phone_number: employeeId ? parsePhoneNumber(Employees?.phone_number) : "",
+    email: employeeId ? Employees?.email : "",
+    tin_number: employeeId ? Employees?.tin_number : "",
+    role: employeeId
+      ? Roles.find((role: any) => role.id === Employees?.roles[0]?.id)?.slug
+      : "",
+    date_of_birth: employeeId
+      ? timeStampToDate(Employees?.date_of_birth)
+      : undefined,
+    gender: employeeId
+      ? (genderOptions.find((gen) => gen.value === Employees.gender)?.value ??
+        "")
+      : "",
+    branch_name: employeeId
+      ? Branches.find((branch: any) => branch.id === Employees?.branch_id)?.id
+      : null,
   };
 
   const createEmployeeSubmitHandler = async (values: EmployeeType) => {
@@ -148,8 +162,10 @@ const AddEmployeeForm = ({
 
     try {
       await postMutation.mutateAsync({
-        url: `${process.env.NEXT_PUBLIC_BACKEND_URL}users`,
-        method: "POST",
+        url: employeeId
+          ? `${process.env.NEXT_PUBLIC_BACKEND_URL}users/${employeeId}`
+          : `${process.env.NEXT_PUBLIC_BACKEND_URL}users`,
+        method: employeeId ? "PUT" : "POST",
         headers,
         body: {
           ...values,
@@ -158,9 +174,12 @@ const AddEmployeeForm = ({
           date_of_birth: secondaryDateFormat(values.date_of_birth),
           Status: true,
         },
-        onSuccess: (res) => {
-          toast.success("Employee Created Successfully");
-
+        onSuccess: () => {
+          toast.success(
+            employeeId
+              ? "Employee Updated Successfully"
+              : "Employee Created Successfully"
+          );
         },
         onError: (err) => {
           handleErrorWithToast(err, toast);
@@ -190,7 +209,7 @@ const AddEmployeeForm = ({
                 <div className="mb-10 grid gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
                   <FormGroup
                     title="Employee Info."
-                    description="Add employee information here..."
+                    description={`${employeeId ? "Update" : "Add"} employee information here...`}
                     className={cn(className)}
                   >
                     <FormikInput
@@ -233,6 +252,11 @@ const AddEmployeeForm = ({
                         <Select
                           options={genderOptions}
                           value={values.gender}
+                          defaultValue={
+                          employeeId &&  genderOptions.find(
+                              (gen) => gen.value === Employees.gender
+                            )?.value
+                          }
                           onChange={(value) => setFieldValue("gender", value)}
                           label="Gender"
                           error={errors?.gender}
@@ -281,6 +305,12 @@ const AddEmployeeForm = ({
                       name="branch_name"
                       label="Branch Name"
                       options={Branches}
+                      defaultValue={
+                        employeeId &&
+                        Branches.find(
+                          (branch: any) => branch.id === Employees?.branch_id
+                        )
+                      }
                       onChange={(selectedOption: any) => {
                         setFieldValue("branch_name", selectedOption.id);
                       }}
@@ -294,7 +324,7 @@ const AddEmployeeForm = ({
                   </FormGroup>
                   <FormGroup
                     title="More Info."
-                    description="Add more details here..."
+                    description={`${employeeId ? "Update" : "Add"} more details here...`}
                     className={cn(className)}
                   >
                     <div className="mt-4 w-full flex flex-col gap-6 col-span-2">
@@ -303,6 +333,9 @@ const AddEmployeeForm = ({
                         name="role"
                         label="Roles"
                         options={rolesData.data.data}
+                        defaultValue={employeeId && Roles.find(
+                          (role: any) => role.id === Employees.roles[0].id
+                        )}
                         onChange={(selectedOption: any) => {
                           if (
                             !session?.user?.permissions.includes(
@@ -325,6 +358,7 @@ const AddEmployeeForm = ({
                     </div>
                   </FormGroup>
                 </div>
+
 
                 {session?.user?.permissions &&
                   session?.user?.permissions.includes("create:employee") &&

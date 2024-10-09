@@ -8,12 +8,11 @@ export function formatDate(
   return dayjs(date).format(format);
 }
 
-
 export function secondaryDateFormat(dateObject: Date | undefined) {
-  if(!dateObject) return "";
+  if (!dateObject) return "";
   const year = dateObject.getFullYear();
-  const month = String(dateObject.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so add 1
-  const day = String(dateObject.getDate()).padStart(2, '0');
+  const month = String(dateObject.getMonth() + 1).padStart(2, "0"); // Months are 0-based, so add 1
+  const day = String(dateObject.getDate()).padStart(2, "0");
   return `${day}-${month}-${year}`;
 }
 
@@ -46,3 +45,25 @@ export function getReadableDateTime(dateString: string) {
 
   return `${month} ${day},${year} ${formattedHours}:${formattedMinutes} ${ampm}`;
 }
+
+export const timeStampToDate = (dateString: string) => {
+  console.log(dateString);
+
+  const dateStringarr = dateString.split(" ");
+
+  if (dateStringarr.length > 1) {
+    const dateOnly = dateString.split(" ")[0]; // "2024-10-09"
+    const timeOnly = dateString.split(" ")[1]; // "08:47:59.092486021"
+
+    const dateTimeString = `${dateOnly}T${timeOnly.slice(0, 8)}`; // "2024-10-09T08:47:59"
+
+    const dateObject = new Date(dateTimeString);
+
+    return dateObject;
+  } else {
+    const [day, month, year] = dateString.split('-');
+    const dateObject = new Date(`${year}-${month}-${day}`);
+
+    return dateObject;
+  }
+};
