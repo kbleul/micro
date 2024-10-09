@@ -15,8 +15,7 @@ import { useFetchData } from "@/react-query/useFetchData";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 import { paymentChannels, paymentChannelsOptions } from "@/utils/dummy";
 import CustomSelect from "@/components/ui/form/select";
-
-
+import TransactionsHistory from "./Transactions";
 
 const paymentForOptions = [
   {
@@ -151,14 +150,6 @@ const DepositForm = ({
                 disabled
                 suffix="birr"
               />
-              {/* <FormikInput
-                name="days_left"
-                label="Next Payment Day"
-                color="primary"
-                className="col-span-2 md:col-span-1 w-full"
-                disabled
-                suffix="days"
-              /> */}
 
               <FormikInput
                 name="unpaid_penalties"
@@ -185,26 +176,24 @@ const DepositForm = ({
                 suffix="birr"
               />
 
-<div className=" w-full flex flex-col gap-6 ">
-                    <CustomSelect
-                      name="deposit_for"
-                      label="Payment For"
-                      options={paymentForOptions}
-                      onChange={(selectedOption: { value: string }) => {
-                        setFieldValue("deposit_for", selectedOption.value);
-                      }}
-                      placeholder="select payment for type"
-                      getOptionValue={(period: { value: string }) =>
-                        period.value
-                      }
-                      getOptionLabel={(period: { value: string }) =>
-                        period.value.toUpperCase()
-                      }
-                      noOptionsMessage={() => "Fetching..."}
-                      isRequired
-                      labelClassName="py-0 mt-0"
-                    />
-                  </div>
+              <div className=" w-full flex flex-col gap-6 ">
+                <CustomSelect
+                  name="deposit_for"
+                  label="Payment For"
+                  options={paymentForOptions}
+                  onChange={(selectedOption: { value: string }) => {
+                    setFieldValue("deposit_for", selectedOption.value);
+                  }}
+                  placeholder="select payment for type"
+                  getOptionValue={(period: { value: string }) => period.value}
+                  getOptionLabel={(period: { value: string }) =>
+                    period.value.toUpperCase()
+                  }
+                  noOptionsMessage={() => "Fetching..."}
+                  isRequired
+                  labelClassName="py-0 mt-0"
+                />
+              </div>
 
               <div className="mt-4 w-full flex flex-col gap-6 ">
                 <CustomSelect
@@ -212,7 +201,6 @@ const DepositForm = ({
                   name="payment_channel"
                   label="Payment Channel"
                   labelClassName="mb-0 py-0"
-
                   options={paymentChannelsOptions}
                   onChange={(selectedOption: { value: string }) => {
                     setFieldValue("payment_channel", selectedOption.value);
@@ -225,8 +213,6 @@ const DepositForm = ({
                 />
               </div>
 
-            
-
               {values.payment_channel === paymentChannels.cheque && (
                 <FormikInput
                   name="cheque_number"
@@ -238,27 +224,21 @@ const DepositForm = ({
                 />
               )}
 
+              <div className="grid grid-cols-2 col-span-2">
+                <FormikInput
+                  name="amount"
+                  label="Amount to deposit(Must be greater or equal to minimum deposit threshold plus penality)"
+                  color="primary"
+                  className="col-span-2 md:col-span-1  w-full mt-2"
+                  labelClassName="pb-2"
+                  type="number"
+                  suffix="birr"
+                  isRequired
+                />
+              </div>
 
-
-                 
-
-          <div className="grid grid-cols-2 col-span-2">
-          <FormikInput
-                name="amount"
-                label="Amount to deposit(Must be greater or equal to minimum deposit threshold plus penality)"
-                color="primary"
-                className="col-span-2 md:col-span-1  w-full mt-2"
-                labelClassName="pb-2"
-                type="number"
-                suffix="birr"
-                isRequired
-              />
-
-          </div>
-
-            
               {session?.user?.permissions.includes("update:account") && (
-                <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
+                <div className="col-span-2 flex items-end justify-end gap-4 my-4">
                   <Button
                     color="primary"
                     className="px-10 text-white bg-primary-dark"
@@ -269,37 +249,18 @@ const DepositForm = ({
                   </Button>
                 </div>
               )}
-
-              {/* {transactionStatus?.days_left <= 0 ||
-                (transactionStatus?.unpaid_penalty_amounts > 0 && (
-                  <FormikInput
-                    name="amount"
-                    label="Amount to deposit(Must be greater or equal to minimum deposit threshold plus penality"
-                    color="primary"
-                    className="col-span-2 md:col-span-1 w-full"
-                    type="number"
-                    suffix="birr"
-                    isRequired
-                  />
-                ))}
-              {session?.user?.permissions.includes("update:account") &&
-                (transactionStatus?.days_left <= 0 ||
-                  transactionStatus?.unpaid_penalty_amounts > 0) && (
-                  <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
-                    <Button
-                      color="primary"
-                      className="px-10 text-white bg-primary-dark"
-                      type="submit"
-                      isLoading={postMutation.isPending}
-                    >
-                      Deposit
-                    </Button>
-                  </div>
-                )} */}
             </Form>
           );
         }}
       </Formik>
+
+      <TransactionsHistory
+        title="Deposit History"
+        type="deposit"
+        accountNumber={accountNumber}
+        memberId={memberId}
+        accountId={accountId}
+      />
     </article>
   );
 };

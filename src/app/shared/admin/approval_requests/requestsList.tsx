@@ -9,30 +9,25 @@ import useDynamicMutation from "@/react-query/usePostData";
 import { handleErrorWithToast } from "@/utils/error-toast-handler";
 import { toast } from "sonner";
 import Loading from "@/components/ui/Loading";
-import Link from "next/link";
 import CustomCategoryButton from "@/components/ui/CustomCategoryButton";
 import { IoIosArrowDown } from "react-icons/io";
 import { useFetchData } from "@/react-query/useFetchData";
-import { Stepper } from "rizzui";
 import { queryKeys } from "@/react-query/query-keys";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 import { memberType, workflowType } from "types/common_types";
-import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 
-export const CategoriesArr = ["Membership", "Loan"];
+export const CategoriesArr = ["Loan"];
 
 const RequestsList = () => {
-  const { data: session } = useSession();
-  const postMutation = useDynamicMutation();
+
 
   const headers = useGetHeadersApproval();
 
-  const [tasks, setTasks] = useState<any>(null);
   const [categoryLink, setCategoryLink] = useState(CategoriesArr[0]);
 
   const pageHeader = {
-    title: "Branches",
+    title: "Approval Requests",
     breadcrumb: [
       {
         href: routes.home.dashboard,
@@ -77,7 +72,6 @@ const RequestsList = () => {
 
       <ViewTasks
         categoryLink={categoryLink}
-        setCategoryLink={setCategoryLink}
         Workflows={Workflows}
       />
     </article>
@@ -86,11 +80,9 @@ const RequestsList = () => {
 
 const ViewTasks = ({
   categoryLink,
-  setCategoryLink,
   Workflows,
 }: {
   categoryLink: string;
-  setCategoryLink: React.Dispatch<React.SetStateAction<string>>;
   Workflows: workflowType[];
 }) => {
   const postMutation = useDynamicMutation();

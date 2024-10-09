@@ -9,11 +9,8 @@ import { RiToggleLine } from "react-icons/ri";
 import { TbEye } from "react-icons/tb";
 import Link from "next/link";
 import { routes } from "@/config/routes";
-import { Dropdown, Button, cn, ActionIcon, Popover } from "rizzui";
-import { HiAdjustmentsHorizontal } from "react-icons/hi2";
+import { ActionIcon } from "rizzui";
 import DropDown from "./DropDown";
-// import { DropdownMenu } from "@/layouts/profile-menu";
-// import DropDown from "./DropDown";
 
 export const getColumns = (
   changeStatus: (id: number, currentStatus: string) => void,
@@ -32,10 +29,10 @@ export const getColumns = (
             alt={""}
             width={45}
             height={45}
-            className="rounded-full"
+            className="rounded-full w-10 h-10 overflow-hidden"
           />
         ) : (
-          <div className="rounded-full w-8 h-8 bg-gray-100" />
+          <div className="rounded-full w-8 h-8 bg-gray-100 overflow-hidden" />
         )}
       </div>
     ),

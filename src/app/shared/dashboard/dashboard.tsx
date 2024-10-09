@@ -48,7 +48,6 @@ const Dashboard = () => {
     return fetchStateHandler;
   }
 
-  console.log( analyticsData?.data?.data)
   const analytics: any = analyticsData?.data?.data ?? null;
 
   return (

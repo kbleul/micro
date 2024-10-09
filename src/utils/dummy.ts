@@ -207,3 +207,14 @@ export const paymentChannelsOptions = [
     value: paymentChannels.cheque,
   },
 ];
+
+export const boolOptionsMain = [
+  {
+    name: "Yes",
+    value: true,
+  },
+  {
+    name: "No",
+    value: false,
+  },
+];

@@ -27,12 +27,37 @@ export const InterstTermSchema = Yup.object().shape({
   loan_tiers: Yup.array()
     .of(
       Yup.object().shape({
-        // max_loan_amount: Yup.number()
-        //   .min(0, "Amount is too low")
-        //   .required("Amount is required"),
-        max_loan_multiplier: Yup.number()
-          .min(0, "Number is too low")
-          .required("Amount is required"),
+        is_multiplier: Yup.boolean().required("Is multiplier is required"),
+        max_loan_amount: Yup.number()
+        .min(0, "Amount is too low")
+        .nullable() 
+        .test(
+          "max_loan_amount_required",
+          "Amount is required",
+          function (value) {
+            const { is_multiplier } = this.parent;
+            if (!is_multiplier) {
+              return value !== null && value !== undefined; 
+            }
+            return true; 
+          }
+        ),
+  
+      max_loan_multiplier: Yup.number()
+        .min(0, "Multiplier is too low")
+        .nullable() 
+        .test(
+          "max_loan_multiplier_required",
+          "Multiplier is required",
+          function (value) {
+            const { is_multiplier } = this.parent;
+            if (is_multiplier) {
+              return value !== null && value !== undefined;
+            }
+            return true; 
+          }
+        ),
+          
         penalty_rate: Yup.number()
           .min(0, "Rate is too low")
           .max(100, "Rate is too high")

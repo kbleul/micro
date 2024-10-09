@@ -24,6 +24,17 @@ import {
 } from "@/validations/account_type.schema";
 import { handleErrorWithToast } from "@/utils/error-toast-handler";
 
+export const boolOptionsMain = [
+  {
+    name: "Multiply",
+    value: true,
+  },
+  {
+    name: "Maximum amount",
+    value: false,
+  },
+];
+
 const AddTypeForm = ({ id }: { id?: string }) => {
   const headers = useGetHeaders({ type: "Json" });
   const { data: session } = useSession();
@@ -50,7 +61,6 @@ const AddTypeForm = ({ id }: { id?: string }) => {
   }
 
   const AccountTYpe: InterstTypeType = typesData?.data?.data;
-  console.log(";;;;;;;;;;;;;;;;;;", AccountTYpe);
   const initialValues: InterstTypeType = {
     name: id ? AccountTYpe.name : "",
     minimum_threshold: id ? AccountTYpe.minimum_threshold : 0,
@@ -77,7 +87,8 @@ const AddTypeForm = ({ id }: { id?: string }) => {
       id && AccountTYpe.loan_tiers
         ? AccountTYpe.loan_tiers.flatMap((trier) => {
             return {
-              // max_loan_amount: trier.max_loan_amount,
+              is_multiplier: trier.max_loan_amount === 0 ? true : false,
+              max_loan_amount: trier.max_loan_amount,
               threshold: trier.threshold,
               max_loan_multiplier: trier.max_loan_multiplier,
               penalty_rate: trier.penalty_rate,
@@ -87,7 +98,8 @@ const AddTypeForm = ({ id }: { id?: string }) => {
           })
         : [
             {
-              // max_loan_amount: 0,
+              is_multiplier: true,
+              max_loan_amount: 0,
               threshold: 0,
               max_loan_multiplier: 0,
               penalty_rate: 0,
@@ -375,32 +387,12 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                           key={index + "loan_tiers max_loan_amount"}
                           className="grid grid-cols-2 gap-4 transition-opacity  duration-300 ease-in-out transform  mb-4 pb-6 border p-4 border-broken "
                         >
-                          {/* <FormikInput
-                            name={`loan_tiers[${index}].max_loan_amount`}
-                            label="Max loan amount"
-                            placeholder="Enter the max loan amount"
-                            color="primary"
-                            suffix="birr"
-                            className="col-span-2"
-                            type="number"
-                            isRequired
-                          /> */}
                           <FormikInput
                             name={`loan_tiers[${index}].threshold`}
                             label="Threshold"
                             placeholder="Enter the threshold"
                             color="primary"
                             suffix="birr"
-                            className="col-span-2"
-                            type="number"
-                            isRequired
-                          />
-
-                          <FormikInput
-                            name={`loan_tiers[${index}].max_loan_multiplier`}
-                            label="Loan Multiplier"
-                            placeholder="Enter the maximum loan multiplier"
-                            color="primary"
                             className="col-span-2"
                             type="number"
                             isRequired
@@ -438,6 +430,61 @@ const AddTypeForm = ({ id }: { id?: string }) => {
                             type="number"
                             isRequired
                           />
+
+                          <div className="col-span-2">
+                            <CustomSelect
+                              name={`loan_tiers[${index}].is_multiplier`}
+                              label="Maximum loan amount type"
+                              options={boolOptionsMain}
+                              defaultValue={(id && AccountTYpe.loan_tiers[index].max_loan_multiplier === 0 )? boolOptionsMain[1] :  boolOptionsMain[0]}
+                              onChange={(selectedOption: any) => {
+                                setFieldValue(
+                                  `loan_tiers[${index}].is_multiplier`,
+                                  selectedOption.value
+                                );
+
+                                setFieldValue(
+                                  selectedOption.value
+                                    ? `loan_tiers[${index}].max_loan_amount`
+                                    : `loan_tiers[${index}].max_loan_multiplier`,
+                                  0
+                                );
+                              }}
+                              placeholder="select"
+                              getOptionValue={(option: any) => option?.value}
+                              getOptionLabel={(option: {
+                                name: string;
+                                value: string;
+                              }) => option.name}
+                              noOptionsMessage={() => "Unable to get options"}
+                              isRequired
+                              className="border-primary"
+                            />
+                          </div>
+
+                          {values.loan_tiers[index].is_multiplier ? (
+                            <FormikInput
+                              name={`loan_tiers[${index}].max_loan_multiplier`}
+                              label="Maximum loan amount type"
+                              placeholder="Enter the multiplier amount"
+                              color="primary"
+                              className="col-span-2"
+                              type="number"
+                              suffix="*amount"
+                              isRequired
+                            />
+                          ) : (
+                            <FormikInput
+                              name={`loan_tiers[${index}].max_loan_amount`}
+                              label="Max loan amount"
+                              placeholder="Enter the max loan amount"
+                              color="primary"
+                              suffix="birr"
+                              className="col-span-2"
+                              type="number"
+                              isRequired
+                            />
+                          )}
                         </div>
                       ))}
 

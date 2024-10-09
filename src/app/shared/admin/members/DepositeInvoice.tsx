@@ -200,8 +200,24 @@ const DepositeInvoice = forwardRef<HTMLDivElement, DepositeInvoiceProps>(
 
           <section className="border border-gray-700 border-l-0">
             <div className="py-2">
+              <p className="">ሼር</p>
+              <p className="font-medium text-[11px]">Share</p>
+            </div>
+            <div className="border-t border-t-gray-700">
+              <p className="col-span-2 text-sm py-2">
+              {ledgerData?.share &&
+                ledgerData?.share > 0
+                  ? ledgerData?.share
+                  : "-"}
+              </p>
+            </div>
+          </section>
+
+
+          <section className="border border-gray-700 border-l-0">
+            <div className="py-2">
               <p className="">መደበኛ ቁጠባ</p>
-              <p className="font-medium text-[11px]">Compulsory Saving</p>
+              <p className="font-medium text-[11px]">Voluntary Saving</p>
             </div>
             <div className="border-t border-t-gray-700">
               <p className="col-span-2 text-sm py-2">
@@ -269,15 +285,7 @@ const DepositeInvoice = forwardRef<HTMLDivElement, DepositeInvoiceProps>(
             </div>
           </section>
 
-          <section className="border border-gray-700 border-l-0">
-            <div className="py-2">
-              <p className="">ሌሎች</p>
-              <p className="font-medium text-[11px]">Others</p>
-            </div>
-            <div className="border-t border-t-gray-700">
-              <p className="col-span-2 text-sm py-2">-</p>
-            </div>
-          </section>
+        
         </article>}
 
         <article className="grid grid-cols-2 gap-20 mb-2">

@@ -16,6 +16,7 @@ import { handleFetchState } from "@/utils/fetch-state-handler";
 import CustomSelect from "@/components/ui/form/select";
 import { paymentChannels, paymentChannelsOptions } from "@/utils/dummy";
 import FormikTextArea from "@/components/ui/form/formik-textarea";
+import TransactionsHistory from "./Transactions";
 
 const WithdrawalForm = ({
   memberId,
@@ -205,7 +206,7 @@ const WithdrawalForm = ({
 
               {session?.user?.permissions.includes("update:account") &&
                 transactionStatus.able_to_withdraw && (
-                  <div className="col-span-2 flex items-end justify-end gap-4 mt-10">
+                  <div className="col-span-2 flex items-end justify-end gap-4 mt-4">
                     <Button
                       color="primary"
                       className="px-10 text-white bg-primary-dark"
@@ -223,6 +224,15 @@ const WithdrawalForm = ({
           );
         }}
       </Formik>
+
+      <TransactionsHistory
+        title="Withdrawal History"
+        type="withdraw"
+        accountNumber={accountNumber}
+        memberId={memberId}
+        accountId={accountId}
+      />
+
     </article>
   );
 };

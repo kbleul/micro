@@ -66,6 +66,8 @@ export const MemberSchema = Yup.object().shape({
 
   account_type_id: Yup.string().required("Account type is required"),
 
+  share: Yup.string().required("Share amount is required"),
+
   children: Yup.array().of(Yup.object().shape({
     name: Yup.string().required("Name is required"),
     age: Yup.number()
@@ -185,4 +187,5 @@ export type MemberType = {
   account_type_id: string;
   term_grace_period: number;
   term_amount: number;
+  share:  number
 };

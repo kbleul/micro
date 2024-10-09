@@ -30,7 +30,7 @@ export const getColumns = (viewInvoice: (row: any) => void) => [
     ),
   },
   {
-    title: <HeaderCell title="Compulsory Saving" />,
+    title: <HeaderCell title="Voluntary Saving" />,
     dataIndex: "compulsory_saving",
     key: "compulsory_saving",
     width: 150,
@@ -59,6 +59,17 @@ export const getColumns = (viewInvoice: (row: any) => void) => [
     render: (withdrawal: number) => (
       <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 text-center">
         {withdrawal > 0 ? withdrawal + " Birr" : " "}
+      </Text>
+    ),
+  },
+  {
+    title: <HeaderCell title="Share" />,
+    dataIndex: "share",
+    key: "share",
+    width: 150,
+    render: (share: number) => (
+      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1">
+        {share  ? share : " "}
       </Text>
     ),
   },

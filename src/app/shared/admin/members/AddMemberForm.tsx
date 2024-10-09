@@ -161,6 +161,7 @@ const AddMemberForm = ({
     account_type_id: "",
     term_grace_period: 0,
     term_amount: 0,
+    share: 0
   };
 
   const createEmployeeSubmitHandler = async (values: MemberType) => {
@@ -537,8 +538,7 @@ const AddMemberForm = ({
                         isSearchable
                         name="current_place"
                         label="City"
-                  labelClassName="mb-0 py-0"
-
+                        labelClassName="mb-0 py-0"
                         options={CITIES}
                         onChange={(selectedOption: any) => {
                           setFieldValue("current_place", selectedOption.name);
@@ -670,8 +670,7 @@ const AddMemberForm = ({
                                     isSearchable
                                     name={`emergency_contacts.[${index}].city`}
                                     label="City"
-                  labelClassName="mb-0 py-0"
-
+                                    labelClassName="mb-0 py-0"
                                     options={CITIES}
                                     onChange={(selectedOption: any) => {
                                       setFieldValue(
@@ -835,8 +834,7 @@ const AddMemberForm = ({
                                   isSearchable
                                   name={`heirs.[${index}].city`}
                                   label="City"
-                  labelClassName="mb-0 py-0"
-
+                                  labelClassName="mb-0 py-0"
                                   options={CITIES}
                                   onChange={(selectedOption: any) => {
                                     setFieldValue(
@@ -1053,6 +1051,17 @@ const AddMemberForm = ({
                       isRequired
                       type="number"
                       suffix="birr"
+                    />
+
+<FormikInput
+                      name={`share`}
+                      label="Share"
+                      placeholder="Enter amount of shares"
+                      color="primary"
+                      className=""
+                      isRequired
+                      type="number"
+                      suffix="shares"
                     />
 
                     <FormikInput

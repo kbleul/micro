@@ -58,7 +58,6 @@ const RolesList = () => {
   if (fetchStateHandler) {
     return fetchStateHandler;
   }
-console.log(rolesData?.data?.data )
   const Roles:any =rolesData?.data?.data ?? [];
 
   return (
