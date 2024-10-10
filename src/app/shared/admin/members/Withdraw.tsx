@@ -155,7 +155,7 @@ const WithdrawalForm = ({
 
               
 
-              <div className="mt-4 w-full flex flex-col gap-6 ">
+              <div className="mt-4 w-full flex flex-col gap-6 col-span-2 md:col-span-2">
                 <CustomSelect
                   isSearchable
                   name="payment_channel"

@@ -19,6 +19,3 @@ console.log(session)
 };
 
 export default Home;
-
-
-//	 bob.williams@branch4.com

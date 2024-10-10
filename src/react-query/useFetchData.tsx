@@ -8,7 +8,7 @@ interface Header extends AxiosRequestConfig {
     "Content-Type": string;
     Accept: string;
     Authorization: string | undefined;
-  } 
+  };
 }
 export const useFetchData = (
   queryKey: (string | number | boolean | undefined | null | any)[],
@@ -24,15 +24,8 @@ export const useFetchData = (
         const response = await axios.get(`${url}`, { headers });
         return response.data;
       } catch (error: any) {
-        if (error.response.status === 404) {
-
-          return { error: "Page not found" };
-        }
-
-        if (error.response.status === 401) {
-          signOut()
-          return { error: error.response.data };
-        }
+       
+      return  handleErrorCodes(error.response)
       }
     },
     placeholderData: (previousData) => previousData,
@@ -40,4 +33,21 @@ export const useFetchData = (
     retry: true,
     enabled: !!token && enabled,
   });
+};
+
+const handleErrorCodes = (response: any) => {
+  switch (response.status) {
+    case 404:
+      return { error: "Page not found" };
+
+    case 401:
+      signOut();
+      return { error: response.data };
+
+    case 403:
+      return { error: "You don't have all the neccessay permissions for this action. Please contact the admin to gain full access" };
+
+    default:
+      break;
+  }
 };

@@ -5,7 +5,7 @@ export const handleFetchState = (
   fetchState: {
     isPending: boolean;
     isFetching: boolean;
-    data?: { error?: { code: number; message: string } };
+    data?: { error?: string };
   },
   children?: React.ReactNode,
   className?: string
@@ -20,13 +20,17 @@ export const handleFetchState = (
       </main>
     );
   }
-
+  console.log("====", fetchState?.data);
   if (fetchState?.data?.error) {
     return (
-      <p className=" text-center mt-[20vh] text-lg">
-        {" "}
-        Unable to complete task !{" "}
-      </p>
+      <section className="mt-[10vh] text-center">
+        <div className="flex flex-col gap-4 justify-center items-center px-10 py-6 bg-gray-100 rounded-lg">
+          <p className="text-center font-medium  text-lg">
+            Unable to complete task !{" "}
+          </p>
+          <p className="font-medium  px-[10%]">{fetchState?.data?.error}</p>
+        </div>
+      </section>
     );
   }
 

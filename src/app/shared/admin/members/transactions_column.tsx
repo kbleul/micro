@@ -124,7 +124,7 @@ export const getColumns = (viewInvoice: (row: any) => void) => [
     title: <HeaderCell title="Date " />,
     dataIndex: "date",
     key: "date",
-    width: 10,
+    width: 250,
     render: (date: string) => (
       <Text className="text-sm text-gray-700 text-center">
         {convertDateTimeFormate(date)}
@@ -132,10 +132,21 @@ export const getColumns = (viewInvoice: (row: any) => void) => [
     ),
   },
   {
+    title: <HeaderCell title="Registration Fee" />,
+    dataIndex: "registration_fee",
+    key: "registration_fee",
+    width: 200,
+    render: (registration_fee: number) => (
+      <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 text-center">
+        {registration_fee > 0 ? registration_fee + " Birr" : " "}
+      </Text>
+    ),
+  },
+  {
     title: <HeaderCell title="Current Balance" />,
     dataIndex: "remaining_principal",
     key: "remaining_principal",
-    width: 100,
+    width: 250,
     render: (remaining_principal: string) => (
       <Text className="font-medium text-gray-700 tracking-wider line-clamp-1 capitalize text-center">
         {remaining_principal + " Birr"}

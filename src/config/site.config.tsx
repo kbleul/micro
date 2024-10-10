@@ -26,9 +26,9 @@ export const metaObject = (
       title: title ? `${title}` : title,
       description,
       url: "#",
-      siteName: "Droga Micro Finance", // https://developers.google.com/search/docs/appearance/site-names
+      siteName: "Droga Micro Finance",
       // images: {
-      //   url: "https://lively-landing-o64h8i5v7-unravel.vercel.app/thumbnail.png",
+      //   url: "",
       //   width: 1200,
       //   height: 630,
       // },

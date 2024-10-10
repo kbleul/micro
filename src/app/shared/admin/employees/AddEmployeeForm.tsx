@@ -118,7 +118,6 @@ const AddEmployeeForm = ({
   const Employees = employeeData?.data?.data?.user ?? null;
   const Roles = rolesData?.data?.data ?? [];
 
-  console.log(Roles);
 
   const initialValues: EmployeeType = {
     first_name: employeeId ? Employees?.first_name : "",
@@ -180,6 +179,8 @@ const AddEmployeeForm = ({
               ? "Employee Updated Successfully"
               : "Employee Created Successfully"
           );
+
+          router.push(routes.home.employees.view_all);
         },
         onError: (err) => {
           handleErrorWithToast(err, toast);

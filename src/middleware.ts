@@ -1,7 +1,6 @@
 import { pagesOptions } from "@/app/api/auth/[...nextauth]/pages-options";
 import withAuth, { NextRequestWithAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
-import { Role } from "./constants/role.enum";
 export default withAuth(
   function middleware(req: NextRequestWithAuth) {
     if (
