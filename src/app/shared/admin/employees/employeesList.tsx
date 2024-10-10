@@ -113,18 +113,18 @@ const EmployeesList = () => {
     }
   };
 
-  const deleteEmployee = (employeeId: string) => {
-    openModal({
-      view: (
-        <DeletePopover
-          title="Delete Employee"
-          description="Are you sure you want to delete this employee"
-          onDelete={() => handleDelete(employeeId)}
-        />
-      ),
-      customSize: "1550px",
-    });
-  };
+  // const deleteEmployee = (employeeId: string) => {
+  //   openModal({
+  //     view: (
+  //       <DeletePopover
+  //         title="Delete Employee"
+  //         description="Are you sure you want to delete this employee"
+  //         onDelete={() => handleDelete(employeeId)}
+  //       />
+  //     ),
+  //     customSize: "1550px",
+  //   });
+  // };
 
   return (
     <main>
@@ -227,7 +227,7 @@ const EmployeesList = () => {
             data={usersData?.data?.data?.users}
             scroll={{ x: 900 }}
             // @ts-ignore
-            columns={getColumns(deleteEmployee)}
+            columns={getColumns(handleDelete)}
             paginatorOptions={{
               pageSize,
               setPageSize,

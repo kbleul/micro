@@ -16,7 +16,7 @@ type Columns = {
   deleteEmployee: (employeeId: string) => void;
 };
 
-export const getColumns = ({deleteEmployee}:Columns ) => [
+export const getColumns = (deleteEmployee: (employeeId: string) => void ) => [
   {
     title: <HeaderCell title="Full Name" />,
     dataIndex: "full_name",
@@ -96,7 +96,7 @@ export const getColumns = ({deleteEmployee}:Columns ) => [
         </Tooltip>
 
         <ReusabelPopover
-          title={ `Delete Product`}
+          title={ `Delete Employee`}
           icon={<RiDeleteBin6Line className="h-4 w-4 text-red-400" />}
           description={`Are you sure you want to delete this employee?`}
           onDelete={() => deleteEmployee(row.id)}
