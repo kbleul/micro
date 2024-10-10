@@ -5,7 +5,7 @@ export const handleFetchState = (
   fetchState: {
     isPending: boolean;
     isFetching: boolean;
-    data?: { error?: string };
+    data?: { error?: string; code?: number };
   },
   children?: React.ReactNode,
   className?: string
@@ -21,7 +21,8 @@ export const handleFetchState = (
     );
   }
   console.log("====", fetchState?.data);
-  if (fetchState?.data?.error) {
+
+  if (fetchState?.data?.error && fetchState?.data?.code === 403) {
     return (
       <section className="mt-[10vh] text-center">
         <div className="flex flex-col gap-4 justify-center items-center px-10 py-6 bg-gray-100 rounded-lg">
@@ -33,6 +34,7 @@ export const handleFetchState = (
       </section>
     );
   }
+ 
 
   return null;
 };

@@ -38,14 +38,14 @@ export const useFetchData = (
 const handleErrorCodes = (response: any) => {
   switch (response.status) {
     case 404:
-      return { error: "Page not found" };
+      return { error: "Page not found", code: response.status };
 
     case 401:
       signOut();
-      return { error: response.data };
+      return { error: response.data, code: response.status };
 
     case 403:
-      return { error: "You don't have all the neccessay permissions for this action. Please contact the admin to gain full access" };
+      return { error: "You don't have all the neccessay permissions for this action. Please contact the admin to gain full access", code: response.status };
 
     default:
       break;

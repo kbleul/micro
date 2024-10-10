@@ -30,7 +30,7 @@ const TransactionsHistory = ({
 
   const ledgerData = useFetchData(
     [queryKeys.getAllTransactions + memberId, memberId, currentPage, pageSize],
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}accounts/ledgernnnn/${accountId}?type=${type}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}accounts/ledger/${accountId}?type=${type}`,
     headers
   );
 
