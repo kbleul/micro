@@ -16,6 +16,7 @@ import { handleFetchState } from "@/utils/fetch-state-handler";
 import { paymentChannels, paymentChannelsOptions } from "@/utils/dummy";
 import CustomSelect from "@/components/ui/form/select";
 import TransactionsHistory from "./Transactions";
+import { transactionStatusType } from "types/common_types";
 
 const paymentForOptions = [
   {
@@ -64,7 +65,7 @@ const DepositForm = ({
     return fetchStateHandler;
   }
 
-  const transactionStatus = transactionStatusData.data.data;
+  const transactionStatus:transactionStatusType = transactionStatusData.data.data;
 
   const initialValues: DepositeType = {
     account_id: accountNumber,
@@ -108,13 +109,12 @@ const DepositForm = ({
           setRefetchAccount((prev) => !prev);
         },
         onError: (err: any) => {
-          toast.error(err?.response?.data?.data);
+          handleErrorWithToast(err, toast);
+
         },
       });
     } catch (err) {
-      handleErrorWithToast(err, toast);
 
-      console.log(err);
     }
   };
 
@@ -176,6 +176,15 @@ const DepositForm = ({
                 suffix="birr"
               />
 
+              <FormikInput
+                name="days_left"
+                label="Days left for next payment"
+                color="primary"
+                className="col-span-2 md:col-span-1 w-full"
+                disabled
+                suffix="birr"
+              />
+
               <div className=" w-full flex flex-col gap-6 ">
                 <CustomSelect
                   name="deposit_for"
@@ -195,7 +204,7 @@ const DepositForm = ({
                 />
               </div>
 
-              <div className="mt-4 w-full flex flex-col gap-6 ">
+              <div className="w-full flex flex-col gap-6 ">
                 <CustomSelect
                   isSearchable
                   name="payment_channel"

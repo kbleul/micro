@@ -192,7 +192,6 @@ export const paymentChannels = {
   cash: "cash",
 };
 
-
 export const paymentChannelsOptions = [
   {
     name: paymentChannels.bank,
@@ -218,3 +217,26 @@ export const boolOptionsMain = [
     value: false,
   },
 ];
+
+export const loanStatuses = [
+  "paidoff",
+  "overdue",
+  "disbursed",
+  "approved",
+  "active",
+  "pending",
+  "cancelled",
+  ""
+];
+
+export const loanStatusCategorized = {
+  viewForm: [loanStatuses[0], loanStatuses[6], loanStatuses[7], "Able to request"],
+  viewLoan: [
+    loanStatuses[1],
+    loanStatuses[2],
+    loanStatuses[3],
+    loanStatuses[4],
+    loanStatuses[5],
+    "Unable to request",
+  ],
+};

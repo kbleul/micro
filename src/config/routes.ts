@@ -13,7 +13,7 @@ export const routes = {
     accountSettings: {
       interst_terms: "/home/account_settings/interst_terms",
       account_types: "/home/account_settings/account_types",
-      share: "/home/account_settings/share"
+      share: "/home/account_settings/share",
     },
     branches: {
       view_all: "/home/branches",
@@ -30,8 +30,7 @@ export const routes = {
     members: {
       view_all: "/home/members",
       "add-member": "/home/members/add-member",
-      "view-member": (memberId: string) =>
-        `/view-member/${memberId}`,
+      "view-member": (memberId: string) => `/view-member/${memberId}`,
       "view-member-account": (memberId: string, accountId: string) =>
         `/view-member/${memberId}/view-account/${accountId}`,
     },
@@ -39,5 +38,6 @@ export const routes = {
     activityLogs: "/home/activity_log",
     approvalRequests: "/home/approval_requests",
     loanQueue: "/home/loan_queue",
+    dispurseLoan: "/home/loan_dispurse",
   },
 };

@@ -47,7 +47,6 @@ export function getReadableDateTime(dateString: string) {
 }
 
 export const timeStampToDate = (dateString: string) => {
-  console.log(dateString);
 
   const dateStringarr = dateString.split(" ");
 

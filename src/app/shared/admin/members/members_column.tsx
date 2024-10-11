@@ -6,8 +6,7 @@ import { Tooltip } from "@/components/ui/tooltip";
 import Image from "next/image";
 import { IoToggleSharp } from "react-icons/io5";
 import { RiToggleLine } from "react-icons/ri";
-import { TbEye } from "react-icons/tb";
-import Link from "next/link";
+
 import { routes } from "@/config/routes";
 import { ActionIcon } from "rizzui";
 import DropDown from "./DropDown";
@@ -85,7 +84,12 @@ export const getColumns = (
     dataIndex: "status",
     key: "status",
     render: (_: string, row: any) => (
-      <Tooltip size="sm" content={() => "Change Status"} placement="top" color="invert">
+      <Tooltip
+        size="sm"
+        content={() => "Change Status"}
+        placement="top"
+        color="invert"
+      >
         <div className="flex items-center justify-start gap-3 pe-4 w-full pl-10">
           <ActionIcon
             tag="span"
@@ -106,16 +110,13 @@ export const getColumns = (
   },
 
   {
-    // Need to avoid this issue -> <td> elements in a large <table> do not have table headers.
     title: <HeaderCell title="Actions" className="opacity-0" />,
     dataIndex: "status",
     key: "status",
     render: (_: string, row: any) => (
       <div className="flex items-center justify-end gap-3 pe-4">
         {(permissions.includes("update:member") ||
-          permissions.includes(
-            "create:payment"
-          )) &&
+          permissions.includes("create:payment")) &&
           row?.accounts &&
           row?.accounts.length > 0 && (
             <DropDown
@@ -129,4 +130,3 @@ export const getColumns = (
     ),
   },
 ];
-//         // <Link href={routes.home.members["view-member"](row.id)}>

@@ -3,7 +3,7 @@
 import { routes } from "@/config/routes";
 import { useGetHeaders } from "@/hooks/use-get-headers";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PageHeader from "../../page-header";
 import { useFetchData } from "@/react-query/useFetchData";
 import { queryKeys } from "@/react-query/query-keys";
@@ -18,7 +18,6 @@ import { memberType } from "types/common_types";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import LoanApplication from "./LoanApplication";
-import { useLocation } from "react-use";
 
 export const CategoriesArr = [
   "Account Info",
@@ -28,24 +27,36 @@ export const CategoriesArr = [
   "Loan ",
 ];
 
-const ViewMember = () => {
-  console.log("categoryLink")
-  const headers = useGetHeaders({ type: "Json" });
-  const location = useLocation();
+const getCategoryLinkValue = (param: string | null) => {
+  switch (param) {
+    case "deposit":
+      return CategoriesArr[2];
 
-  const queryParams = new URLSearchParams(location.search);
-  const actionParam = queryParams.get("action");
+    case "withdraw":
+      return CategoriesArr[3];
+
+    case "ledger":
+      return CategoriesArr[1];
+
+    case "loan":
+      return CategoriesArr[4];
+
+    default:
+      return CategoriesArr[0];
+  }
+};
+
+const ViewMember = () => {
+  const headers = useGetHeaders({ type: "Json" });
 
   const pathname = usePathname().split("/");
   const memberId = pathname[2];
   const accountId = pathname[4];
 
+  let actionParam = null;
+
   const [categoryLink, setCategoryLink] = useState(
-    actionParam
-      ? actionParam === "deposit"
-        ? CategoriesArr[2]
-        : CategoriesArr[3]
-      : CategoriesArr[0]
+    getCategoryLinkValue(actionParam)
   );
 
   const [refetchAccount, setRefetchAccount] = useState(false);
@@ -66,6 +77,15 @@ const ViewMember = () => {
       },
     ],
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (window.location.search.includes("?")) {
+        actionParam = window.location.search.split("=")[1];
+        setCategoryLink(getCategoryLinkValue(actionParam));
+      }
+    }, 500);
+  }, []);
 
   const clientData = useFetchData(
     [queryKeys.getAllUsers + memberId, memberId, refetchAccount],
@@ -90,7 +110,6 @@ const ViewMember = () => {
   );
 
   const dispatchComponent = (categoryLink: string) => {
-    console.log(categoryLink)
     switch (categoryLink) {
       case CategoriesArr[1]:
         return (
@@ -135,8 +154,6 @@ const ViewMember = () => {
             accountId={accountId}
             accountNumber={currentAccount?.number ?? ""}
             currentBalance={currentAccount?.balance ?? 0}
-            setCategoryLink={setCategoryLink}
-            setRefetchAccount={setRefetchAccount}
           />
         );
 

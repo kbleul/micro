@@ -51,10 +51,8 @@ const LogsList = () => {
     return fetchStateHandler;
   }
 
-  console.log(LogsData?.data);
 
   const Logs: ActivityLogsType[] = LogsData?.data?.data?.data ?? [];
-  console.log(Logs);
 
   return (
     <main>

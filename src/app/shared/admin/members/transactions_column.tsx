@@ -11,7 +11,7 @@ export const getColumns = (viewInvoice: (row: any) => void) => [
     title: <HeaderCell title="Invoice Number" />,
     dataIndex: "voucher_number",
     key: "voucher_number",
-    width: 130,
+    width: 230,
     render: (voucher_number: string) => (
       <Text className="font-medium text-gray-700 line-clamp-1 capitalize">
         {voucher_number}

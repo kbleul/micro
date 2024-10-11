@@ -7,6 +7,7 @@ import { FaUsers } from "react-icons/fa";
 import { RiMailSettingsLine } from "react-icons/ri";
 import { LuUsers2 } from "react-icons/lu";
 import { LiaMoneyBillWaveSolid } from "react-icons/lia";
+import { IoMdReturnRight } from "react-icons/io";
 
 export const getMenuItems = (userPermissions: string[] | undefined | null) => {
   if (!userPermissions) {
@@ -122,7 +123,6 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
     userPermissions.includes("manage:settings") ||
     userPermissions.includes("read:loan")
   ) {
-    const subItems: subMenuItemtype[] = [];
 
     userPermissions.includes("manage:settings") &&
       menuItems.push({
@@ -137,15 +137,16 @@ export const getMenuItems = (userPermissions: string[] | undefined | null) => {
         href: routes.home.loanQueue,
         icon: <PiQueue size="25" />,
       });
+
+      userPermissions.includes("read:loan") &&
+      menuItems.push({
+        name: "Dispurse Loan",
+        href: routes.home.dispurseLoan,
+        icon: <IoMdReturnRight size="25" />,
+      });
   }
 
-  // if (userPermissions.includes("read:branch")) {
-  //   menuItems.push({
-  //     name: "Transactions",
-  //     href: routes.home.branches.view_all,
-  //     icon: <LiaMoneyBillWaveSolid />,
-  //   });
-  // }
+  
 
   return menuItems;
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ActionIcon, Button, Input } from "rizzui";
+import { Input } from "rizzui";
 import { useGetHeaders } from "@/hooks/use-get-headers";
 import { useFetchData } from "@/react-query/useFetchData";
 import { queryKeys } from "@/react-query/query-keys";
@@ -9,12 +9,8 @@ import Select from "react-select";
 
 import { routes } from "@/config/routes";
 import PageHeader from "@/app/shared/page-header";
-import { useSession } from "next-auth/react";
-import { useQueryClient } from "@tanstack/react-query";
-import useDynamicMutation from "@/react-query/usePostData";
 import WidgetCard from "@/components/cards/widget-card";
 import ControlledTable from "@/components/controlled-table";
-import { PiMagnifyingGlassBold, PiXBold } from "react-icons/pi";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 import { getColumns } from "./queueColumns";
 import { MarriageStatusOptions } from "@/utils/dummy";
@@ -25,14 +21,10 @@ const marriageStatusOption = [
 ];
 
 const QueueList = () => {
-  const queryClient = useQueryClient();
-  const postMutation = useDynamicMutation();
 
-  const { data: session } = useSession();
 
   const headers = useGetHeaders({ type: "Json" });
 
-  const [searchText, setSearchText] = useState("");
   const [refetch, setRefetch] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -83,7 +75,7 @@ const QueueList = () => {
   };
 
   const loansData = useFetchData(
-    [queryKeys.getLoanRequests, currentPage, pageSize, searchText, refetch],
+    [queryKeys.getLoanRequests, currentPage, pageSize, refetch],
     getLink(),
 
     headers
@@ -129,41 +121,7 @@ const QueueList = () => {
         headerClassName="widget-card-header flex-col sm:flex-row [&>.ps-2]:ps-0 [&>.ps-2]:w-full sm:[&>.ps-2]:w-auto [&>.ps-2]:mt-3 sm:[&>.ps-2]:mt-0"
         action={<></>}
       >
-        {/* <div className=" flex items-center justify-end  px-5 py-4 w-1/2 ml-[50%]">
-          <Input
-            variant="flat"
-            value={searchText}
-            onChange={(e) => setSearchText(() => e.target.value)}
-            placeholder="Search members by name..."
-            className=" w-full"
-            prefix={
-              <PiMagnifyingGlassBold className="h-[18px] w-[18px] text-gray-600" />
-            }
-            suffix={
-              searchText && (
-                <Button
-                  size="sm"
-                  variant="text"
-                  className="h-auto w-auto px-0"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setSearchText(() => "");
-                  }}
-                >
-                  Clear
-                </Button>
-              )
-            }
-          />
-          <ActionIcon
-            variant="text"
-            size="sm"
-            className="ms-3 text-gray-500 hover:text-gray-700"
-            onClick={() => {}}
-          >
-            <PiXBold className="h-5 w-5" />
-          </ActionIcon>
-        </div> */}
+        
 
         <div className={"table-wrapper flex-grow"}>
           <ControlledTable

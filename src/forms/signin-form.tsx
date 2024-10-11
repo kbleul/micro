@@ -53,7 +53,6 @@ export default function SignInForm() {
           //   return;
           // }
           setIsLoading(true);
-console.log(responseData?.data?.roles, responseData?.data?.access_token, responseData?.data?.permissions)
           signIn("credentials", {
             data: JSON.stringify({
               ...responseData?.data,

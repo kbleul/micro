@@ -10,18 +10,16 @@ import { handleErrorWithToast } from "@/utils/error-toast-handler";
 import { toast } from "sonner";
 import Loading from "@/components/ui/Loading";
 import CustomCategoryButton from "@/components/ui/CustomCategoryButton";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 import { useFetchData } from "@/react-query/useFetchData";
 import { queryKeys } from "@/react-query/query-keys";
 import { handleFetchState } from "@/utils/fetch-state-handler";
 import { memberType, workflowType } from "types/common_types";
-import { useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 
 export const CategoriesArr = ["Loan"];
 
 const RequestsList = () => {
-
-
   const headers = useGetHeadersApproval();
 
   const [categoryLink, setCategoryLink] = useState(CategoriesArr[0]);
@@ -70,10 +68,7 @@ const RequestsList = () => {
         />
       </div>
 
-      <ViewTasks
-        categoryLink={categoryLink}
-        Workflows={Workflows}
-      />
+      <ViewTasks categoryLink={categoryLink} Workflows={Workflows} />
     </article>
   );
 };
@@ -178,9 +173,7 @@ const ResuestCard = ({
   setTasks: React.Dispatch<any>;
 }) => {
   const postMutation = useDynamicMutation();
-  const queryClient = useQueryClient();
   const { data: session } = useSession();
-
   const headers = useGetHeadersApproval();
 
   const handleApprove = async (isApprove: string) => {
@@ -257,20 +250,22 @@ const ResuestCard = ({
         >
           Approve
         </button>
-        <button
-          className={`border px-5 py-1 hover:opacity-60 border-black text-black font-semibold rounded-lg flex items-center gap-2`}
-          type="button"
-          disabled={postMutation.isPending}
-          onClick={() =>
-            setShowDetailsFor((prev) => (prev === task.id ? null : task.id))
+        <Link
+          href={
+            routes.home.members["view-member-account"](
+              task?.data?.account?.member_id,
+              task?.data?.account_id
+            ) + "?action=loan"
           }
         >
-          <p className="">Details</p>
-          <IoIosArrowDown
-            size={20}
-            className={`text-gray-700 ${showDetailsFor === task?.id && "rotate-180"}`}
-          />
-        </button>
+          <button
+            className={`border px-5 py-1 hover:opacity-60 border-black text-black font-semibold rounded-lg flex items-center gap-2`}
+            type="button"
+          >
+            <p className="">View Details</p>
+            <IoIosArrowForward size={20} className={`text-gray-700 `} />
+          </button>
+        </Link>
       </div>
     </section>
   );
@@ -293,18 +288,6 @@ const ApprovalDetails = ({
             Total Approval Steps:{" "}
             <span className="font-bold">{task?.workflow?.steps.length}</span>
           </p>
-
-          {/* <Stepper currentIndex={currentStep} direction="vertical">
-            {task?.workflow?.steps.map((step: any, index: number) => (
-              <Stepper.Step
-                key={step.id}
-                title={`Step ${index + 1} `}
-                description={step?.name}
-                variant={"outline"}
-                dot={false}
-              />
-            ))}
-          </Stepper> */}
         </div>
         <div className="col-span-2">
           {categoryLink === CategoriesArr[0] ? (
@@ -344,19 +327,6 @@ const MemberDetails = ({ memberId }: { memberId: string }) => {
   return (
     <article className="pb-12">
       <section className="">
-        {/* <div>
-          {MemberInfo?.photo && MemberInfo?.photo !== "" ? (
-            <Image
-              src={MemberInfo?.photo}
-              alt={""}
-              width={45}
-              height={45}
-              className="rounded-full"
-            />
-          ) : (
-            <div className="rounded-full w-8 h-8 bg-gray-100" />
-          )}
-        </div> */}
         <p className="font-medium text-base mb-4 border-b w-full">
           Member Information
         </p>

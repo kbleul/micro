@@ -17,6 +17,7 @@ import CustomSelect from "@/components/ui/form/select";
 import { paymentChannels, paymentChannelsOptions } from "@/utils/dummy";
 import FormikTextArea from "@/components/ui/form/formik-textarea";
 import TransactionsHistory from "./Transactions";
+import { transactionStatusType } from "types/common_types";
 
 const WithdrawalForm = ({
   memberId,
@@ -51,7 +52,7 @@ const WithdrawalForm = ({
   if (fetchStateHandler) {
     return fetchStateHandler;
   }
-  const transactionStatus = transactionStatusData.data.data;
+  const transactionStatus:transactionStatusType = transactionStatusData.data.data;
 
   const initialValues: WithdrawType = {
     account_id: accountNumber,

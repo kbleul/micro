@@ -37,7 +37,7 @@ type DepositeType = {
   unpaid_penalties: string;
   unpaid_penalty_amounts: number;
   able_to_withdraw: boolean;
-  able_to_withdraw_amount: string;
+  able_to_withdraw_amount: number;
   minimum_threshold: number;
   payment_channel: string | null;
   cheque_number: string | null;
@@ -77,7 +77,7 @@ type WithdrawType = {
   unpaid_penalties: number;
   unpaid_penalty_amounts: number;
   able_to_withdraw: boolean;
-  able_to_withdraw_amount: string;
+  able_to_withdraw_amount: number;
   payment_channel: string | null;
   cheque_number: string | null;
   purpose: string;
@@ -98,13 +98,28 @@ export const loanApplicationSchema = Yup.object()
     repayment_period_frequency: Yup.string().required(
       "Repayment_period_frequency is required"
     ),
-    collaterals: Yup.array().of(
+    collaterals: Yup.array()
+    .of(
       Yup.object().shape({
         name: Yup.string().required("Name is required"),
         attachment_photo: Yup.mixed(),
       })
+    )
+    .test(
+      'collaterals-or-guarantors',
+      'Either one collateral or two guarantors must be provided',
+      function (collaterals) {
+        const guarantors = this.parent.guarantors;
+        // If two guarantors are provided, collaterals array is optional
+        if (guarantors && guarantors.length >= 2) {
+          return true;
+        }
+        // Otherwise, validate collaterals (at least 1)
+        return collaterals && collaterals.length >= 1;
+      }
     ),
-    guarantors: Yup.array().of(
+  guarantors: Yup.array()
+    .of(
       Yup.object().shape({
         name: Yup.string().required("Name is required"),
         phone_number: Yup.string()
@@ -113,19 +128,23 @@ export const loanApplicationSchema = Yup.object()
           .matches(/^\d{9}$/, "Phone number must be 9 digits long"),
         occupation: Yup.string().required("Occupation is required"),
       })
+    )
+    .test(
+      'guarantors-or-collaterals',
+      'Either two guarantors or one collateral must be provided',
+      function (guarantors) {
+        const collaterals = this.parent.collaterals;
+        // If one collateral is provided, guarantors array is optional
+        if (collaterals && collaterals.length >= 1) {
+          return true;
+        }
+        // Otherwise, validate guarantors (at least 2)
+        return guarantors && guarantors.length >= 2;
+      }
     ),
+
   })
-  .test(
-    "collaterals-or-guarantors",
-    "Either one collateral or two guarantors are required",
-    function (values) {
-      const { collaterals, guarantors } = values || {};
-      return (
-        (collaterals && collaterals?.length === 1) ||
-        (guarantors && guarantors?.length >= 2)
-      );
-    }
-  );
+
 
 type loanApplicationType = {
   current_balance: number;

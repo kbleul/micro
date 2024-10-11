@@ -113,7 +113,6 @@ const AddTypeForm = ({ id }: { id?: string }) => {
 
   const createTermSubmitHandler = async (values: InterstTypeType) => {
     try {
-      console.log(values);
       await postMutation.mutateAsync({
         url: id
           ? `${process.env.NEXT_PUBLIC_BACKEND_URL}account-types/${id}`

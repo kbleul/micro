@@ -205,3 +205,24 @@ export type workflowType = {
   steps: workflowStepType[];
   updated_at: string;
 };
+
+export type transactionStatusType = {
+  able_to_loan: boolean;
+  able_to_withdraw: boolean;
+  able_to_withdraw_amount: number;
+  active_loan_status: string;
+  days_left: number;
+  days_left_for_loan: number;
+  has_active_loan: boolean;
+  loan_status: {
+    statuses: string[];
+  };
+  max_loan_amount: number;
+  period: string;
+  regular_saving_payment_date: string;
+  regular_saving_payment_date_has_passed: boolean;
+  status_color: string;
+  total_unpaid_saving_amount: number;
+  unpaid_penalties: number;
+  unpaid_penalty_amounts: number;
+};

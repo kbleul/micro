@@ -1,13 +1,12 @@
 "use client";
 
 import { routes } from "@/config/routes";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import { LuFolderOutput, LuUserCircle } from "react-icons/lu";
 import { MdOutlineInput, MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { PiUserCircleThin } from "react-icons/pi";
+
 import { ActionIcon, Popover } from "rizzui";
 import { accountType } from "types/common_types";
 
@@ -23,12 +22,7 @@ const DropDown = ({
   accounts: accountType[];
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-console.log({
-  viewHref,
-  depositHref,
-  withdrawHref,
-  accounts
-})
+
   return (
     <Popover
       isOpen={isOpen}
@@ -61,14 +55,7 @@ const DropDownAccounts = ({ item }: { item: any }) => {
       setIsOpen={setIsOpen}
       content={() =>
         item.subMenu.map((x: any) => (
-          //   <button
-          //     key={x.href}
-          //     className="group my-0.5 flex items-center justify-between gap-3 rounded-md px-2.5 py-2 hover:bg-gray-200 focus:outline-none hover:dark:bg-gray-700"
-          //   >
-          //     <div className="flex items-center gap-3">
-          //       <p className="text-sm">{x.name}</p>
-          //     </div>
-          //   </button>
+       
           <Link
             key={x.name}
             href={x.href}
@@ -145,13 +132,13 @@ function DropdownMenu({
   return (
     <div className="w-[12rem] text-left rtl:text-right">
       <div className="grid p-1 font-medium text-gray-700">
-        {menuItems.map((item:any) => (
+        {menuItems.map((item:any, index) => (
           <>
             {item.isNested ? (
-              <DropDownAccounts item={item} />
+              <DropDownAccounts item={item} key={index + "mm-key=" + index} />
             ) : (
               <Link
-                key={item.name}
+                key={item.name + index}
                 href={item.href}
                 className="group my-0.5 flex items-center gap-3 rounded-md px-2.5 py-2 hover:bg-gray-200 focus:outline-none hover:dark:bg-gray-700"
               >

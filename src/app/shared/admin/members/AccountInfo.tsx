@@ -55,7 +55,7 @@ const AccountInfo = ({
             {currentAccount?.account_type?.interest_period}
           </p>
         </div>
-        <div className="md:mt-6">
+        <div className="md:mt-3">
           <p className=" font-medium text-base mb-1">
             Minimum deposit threshold(on each payment)
           </p>

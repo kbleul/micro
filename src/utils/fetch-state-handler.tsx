@@ -20,7 +20,6 @@ export const handleFetchState = (
       </main>
     );
   }
-  console.log("====", fetchState?.data);
 
   if (fetchState?.data?.error && fetchState?.data?.code === 403) {
     return (
