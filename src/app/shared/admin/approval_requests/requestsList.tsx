@@ -103,7 +103,7 @@ const ViewTasks = ({
           user_id: session?.user?.user?.id,
         },
         onSuccess: (res: any) => {
-          setTasks(res?.data?.tasks);
+          setTasks(res?.data?.tasks?.filter((task: any) => task.status === "pending"));
         },
         onError: (err: any) => {
           handleErrorWithToast(err, toast);
