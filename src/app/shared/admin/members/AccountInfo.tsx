@@ -134,6 +134,13 @@ const AccountInfo = ({
                     {teir?.max_loan_multiplier} times
                   </p>
                 </div>
+
+                <div className="">
+                  <p className=" font-medium text-base mb-1">Threshold</p>
+                  <p className="border rounded-md border-black p-3 capitalize font-medium">
+                    {teir?.threshold} 
+                  </p>
+                </div>
               </section>
             ))}
         </div>
